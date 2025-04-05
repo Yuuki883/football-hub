@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  app:
+    container_name: footballhub_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+    command: npm run dev
+
+  # DB が必要なら以下を追加
+  db:
+    image: postgres:15-alpine
+    container_name: footballhub_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: footballhub
+    ports:
+      - '5433:5432'
+    volumes:
+      - footballhub_db_data:/var/lib/postgresql/data
+
+volumes:
+  footballhub_db_data:
