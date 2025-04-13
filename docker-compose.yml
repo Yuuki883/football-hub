@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   app:
-    container_name: footballhub_app
+    container_name: football_hub_app
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,16 +15,16 @@ services:
     command: npm run dev
 
   db:
-    image: postgres:15-alpine
-    container_name: footballhub_db
+    image: postgres:15
+    container_name: football_hub_db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: footballhub
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: football_hub
     ports:
       - '5433:5432'
     volumes:
-      - footballhub_db_data:/var/lib/postgresql/data
+      - football_hub_db_data:/var/lib/postgresql/data
 
 volumes:
-  footballhub_db_data:
+  football_hub_db_data:
