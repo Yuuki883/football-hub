@@ -14,7 +14,7 @@ export async function fetchNews(): Promise<NewsItem[]> {
   try {
     // 複数のRSSフィードを取得
     const feeds = [
-      'https://www.goal.com/ja/feed',
+      'https://web.gekisaka.jp/feed?category=foreign',
       'https://www.soccer-king.jp/feed',
       'https://www.football-zone.net/feed',
     ];
