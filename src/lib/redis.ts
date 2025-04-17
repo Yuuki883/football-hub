@@ -1,32 +1,47 @@
-// src/lib/redis.ts
+import { Redis } from '@upstash/redis';
 import { createClient } from 'redis';
 
-// Redisクライアントの設定
-const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+let redisClient: any = null;
 
-// クライアントのシングルトンインスタンス
-let redis: ReturnType<typeof createClient>;
-
-// Redisクライアントを取得（必要に応じて接続）
 export const getRedisClient = async () => {
-  // サーバーサイドでのみ実行
-  if (typeof window === 'undefined') {
-    // 初回実行時またはクライアントが未定義の場合に作成
-    if (!redis) {
-      redis = createClient({
-        url: redisUrl,
-      });
+  if (typeof window !== 'undefined') return null;
 
-      // 未接続の場合は接続
-      if (!redis.isOpen) {
-        await redis.connect().catch((err: Error) => {
-          console.error('Redis connection error:', err);
-        });
-      }
+  // すでに初期化済みならそれを返す
+  if (redisClient) return redisClient;
+
+  // 環境変数でどちらのクライアントを使うか判断
+  const useUpstash =
+    process.env.USE_UPSTASH_REDIS === 'true' || process.env.VERCEL === 'true';
+
+  if (useUpstash) {
+    // Upstash Redis (Vercel環境用)
+    redisClient = new Redis({
+      url: process.env.UPSTASH_REDIS_URL || '',
+      token: process.env.UPSTASH_REDIS_TOKEN || '',
+    });
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Using Upstash Redis client');
     }
-    return redis;
+  } else {
+    // 通常のRedis (Docker開発環境用)
+    const client = createClient({
+      url: process.env.REDIS_URL || 'redis://localhost:6379',
+    });
+
+    try {
+      if (!client.isOpen) await client.connect();
+    } catch (err) {
+      console.error('Redis connection error:', err);
+      return null;
+    }
+
+    redisClient = client;
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Using standard Redis client');
+    }
   }
 
-  // クライアントサイドではnullを返す（または適切なモックを返す）
-  return null;
+  return redisClient;
 };
