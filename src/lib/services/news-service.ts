@@ -10,7 +10,7 @@ export interface NewsItem {
   image?: string;
 }
 
-export async function fetchNews(): Promise<NewsItem[]> {
+export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
   try {
     // 複数のRSSフィードを取得
     const feeds = [
@@ -44,14 +44,14 @@ export async function fetchNews(): Promise<NewsItem[]> {
 
     console.log(`Total news items fetched: ${allNews.length}`);
 
-    // 日付でソートして最新6件を返す
+    // 日付でソートして指定された件数を返す
     const sortedNews = allNews
       .sort(
         (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
       )
-      .slice(0, 6);
+      .slice(0, limit);
 
-    console.log('Latest 6 news items:', sortedNews);
+    console.log(`Latest ${limit} news items returned`);
     return sortedNews;
   } catch (error) {
     console.error('RSSフィードの取得に失敗しました:', error);

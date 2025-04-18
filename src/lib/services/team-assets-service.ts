@@ -2,7 +2,7 @@
 import { getRedisClient } from '@/lib/redis';
 
 // APIキーを環境変数から取得
-const SPORTSDB_API_KEY = process.env.SPORTSDB_API_KEY || '3'; // デフォルトは無料APIの'3'
+const THE_SPORTS_DB_API_KEY = process.env.THE_SPORTS_DB_API_KEY || '3'; // デフォルトは無料APIの'3'
 
 export async function getTeamMedia(teamName: string) {
   const redis = await getRedisClient();
@@ -16,7 +16,7 @@ export async function getTeamMedia(teamName: string) {
 
   try {
     //The Sports DB APIを使用
-    const apiUrl = `https://www.thesportsdb.com/api/v1/json/${SPORTSDB_API_KEY}/searchteams.php?t=${encodeURIComponent(
+    const apiUrl = `https://www.thesportsdb.com/api/v1/json/${THE_SPORTS_DB_API_KEY}/searchteams.php?t=${encodeURIComponent(
       teamName
     )}`;
 
