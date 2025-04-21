@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NewsItem } from '@/lib/services/news-service';
@@ -12,6 +12,20 @@ interface NewsCardProps {
 
 export default function NewsCard({ news, priority = false }: NewsCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [formattedDate, setFormattedDate] = useState<string>('');
+
+  // クライアントサイドでのみ日付をフォーマット
+  useEffect(() => {
+    // クライアントサイドでのみ日付をフォーマット
+    const date = new Date(news.pubDate);
+    setFormattedDate(
+      date.toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })
+    );
+  }, [news.pubDate]);
 
   return (
     <Link
@@ -45,11 +59,7 @@ export default function NewsCard({ news, priority = false }: NewsCardProps) {
 
       <div className="p-4">
         <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-          {new Date(news.pubDate).toLocaleDateString('ja-JP', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })}
+          {formattedDate || '読み込み中...'}
         </div>
         <h3 className="font-semibold text-lg mb-2">{news.title}</h3>
         <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
