@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# docker scripts
+docker-clear-cache.sh
+docker-restart-env.sh
+docker-restart-redis.sh
+
