@@ -3,10 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      'crests.football-data.org',
       'upload.wikimedia.org',
       'tmssl.akamaized.net',
-      'www.thesportsdb.com',
+      'media.api-sports.io',
     ],
   },
   webpack: (config, { isServer }) => {

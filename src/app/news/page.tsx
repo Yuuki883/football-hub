@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export const revalidate = 1800;
 
 export default async function NewsPage() {
-  // サーバー側でデータを直接取得（12件取得）
-  const news = await fetchNews(12);
+  // サーバー側でデータを直接取得（より多くのニュースを表示）
+  const news = await fetchNews(24);
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -20,7 +20,7 @@ export default async function NewsPage() {
         サッカーニュース
       </h1>
 
-      <div className="my-8">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <NewsGrid initialNews={news} />
       </div>
     </main>

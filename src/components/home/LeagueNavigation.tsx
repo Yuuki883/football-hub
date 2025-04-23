@@ -1,32 +1,100 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 // サッカーリーグのデータ
-const leagues = [
-  { id: 'PL', name: 'プレミアリーグ', slug: 'premier-league' },
-  { id: 'PD', name: 'ラ・リーガ', slug: 'la-liga' },
-  { id: 'BL1', name: 'ブンデスリーガ', slug: 'bundesliga' },
-  { id: 'SA', name: 'セリエA', slug: 'serie-a' },
-  { id: 'FL1', name: 'リーグ・アン', slug: 'ligue-1' },
-  { id: 'CL', name: 'チャンピオンズリーグ', slug: 'champions-league' },
+const LEAGUE_PAGES = [
+  {
+    id: 'PL',
+    code: 'PL',
+    name: 'プレミアリーグ',
+    emblem: 'https://media.api-sports.io/football/leagues/39.png',
+    slug: 'premier-league',
+  },
+  {
+    id: 'PD',
+    code: 'PD',
+    name: 'ラ・リーガ',
+    emblem: 'https://media.api-sports.io/football/leagues/140.png',
+    slug: 'la-liga',
+  },
+  {
+    id: 'BL1',
+    code: 'BL1',
+    name: 'ブンデスリーガ',
+    emblem: 'https://media.api-sports.io/football/leagues/78.png',
+    slug: 'bundesliga',
+  },
+  {
+    id: 'SA',
+    code: 'SA',
+    name: 'セリエA',
+    emblem: 'https://media.api-sports.io/football/leagues/135.png',
+    slug: 'serie-a',
+  },
+  {
+    id: 'FL1',
+    code: 'FL1',
+    name: 'リーグ・アン',
+    emblem: 'https://media.api-sports.io/football/leagues/61.png',
+    slug: 'ligue-1',
+  },
+  {
+    id: 'CL',
+    code: 'CL',
+    name: 'チャンピオンズリーグ',
+    emblem: 'https://media.api-sports.io/football/leagues/2.png',
+    slug: 'champions-league',
+  },
+  {
+    id: 'EL',
+    code: 'EL',
+    name: 'ヨーロッパリーグ',
+    emblem: 'https://media.api-sports.io/football/leagues/3.png',
+    slug: 'europa-league',
+  },
+  {
+    id: 'ECL',
+    code: 'ECL',
+    name: 'カンファレンスリーグ',
+    emblem: 'https://media.api-sports.io/football/leagues/848.png',
+    slug: 'conference-league',
+  },
 ];
 
 export default function LeagueNavigation() {
   return (
-    <div className="mb-8">
-      <h2 className="sr-only">リーグナビゲーション</h2>
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-        {leagues.map((league) => (
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {LEAGUE_PAGES.map((league) => (
           <Link
             key={league.id}
             href={`/leagues/${league.slug}`}
-            className="bg-white dark:bg-gray-800 rounded-lg p-4 text-center hover:shadow-md transition-shadow flex flex-col items-center justify-center"
+            className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
           >
-            <div className="text-sm font-semibold text-gray-800 dark:text-white">
-              {league.name}
+            <div className="w-14 h-14 mb-3 flex items-center justify-center">
+              <Image
+                src={league.emblem || '/league-placeholder.png'}
+                alt={league.name}
+                width={56}
+                height={56}
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                }}
+                className="object-contain"
+              />
             </div>
+            <span className="text-sm font-medium text-center w-full truncate px-1">
+              {league.name}
+            </span>
           </Link>
         ))}
       </div>
     </div>
   );
 }
+
+// リーグデータを外部から使用できるようにエクスポート
+export { LEAGUE_PAGES };
