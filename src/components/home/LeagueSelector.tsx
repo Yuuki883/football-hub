@@ -61,7 +61,7 @@ const LEAGUE_PAGES = [
   },
 ];
 
-export default function LeagueNavigation() {
+export default function LeagueSelector() {
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">

@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import LiveMatchesCarousel from '@/components/home/LiveMatchesCarousel';
 import NewsHighlights from '@/components/home/NewsHighlights';
 import AllMatchesSection from '@/components/home/AllMatchesSection';
-import LeagueNavigation from '@/components/home/LeagueNavigation';
+import LeagueSelector from '@/components/home/LeagueSelector';
 
 export const metadata: Metadata = {
   title: 'FootballHub - サッカー試合&ニュースポータル',
@@ -36,7 +36,7 @@ export default function HomePage() {
           <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
             リーグ一覧
           </h2>
-          <LeagueNavigation />
+          <LeagueSelector />
         </div>
       </section>
 
