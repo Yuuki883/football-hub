@@ -1,79 +1,90 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { League } from '@/lib/types/football';
 
-// サッカーリーグのデータ
-const LEAGUE_PAGES = [
-  {
-    id: 'PL',
-    code: 'PL',
-    name: 'プレミアリーグ',
-    emblem: 'https://media.api-sports.io/football/leagues/39.png',
-    slug: 'premier-league',
-  },
-  {
-    id: 'PD',
-    code: 'PD',
-    name: 'ラ・リーガ',
-    emblem: 'https://media.api-sports.io/football/leagues/140.png',
-    slug: 'la-liga',
-  },
-  {
-    id: 'BL1',
-    code: 'BL1',
-    name: 'ブンデスリーガ',
-    emblem: 'https://media.api-sports.io/football/leagues/78.png',
-    slug: 'bundesliga',
-  },
-  {
-    id: 'SA',
-    code: 'SA',
-    name: 'セリエA',
-    emblem: 'https://media.api-sports.io/football/leagues/135.png',
-    slug: 'serie-a',
-  },
-  {
-    id: 'FL1',
-    code: 'FL1',
-    name: 'リーグ・アン',
-    emblem: 'https://media.api-sports.io/football/leagues/61.png',
-    slug: 'ligue-1',
-  },
-  {
-    id: 'CL',
-    code: 'CL',
-    name: 'チャンピオンズリーグ',
-    emblem: 'https://media.api-sports.io/football/leagues/2.png',
-    slug: 'champions-league',
-  },
-  {
-    id: 'EL',
-    code: 'EL',
-    name: 'ヨーロッパリーグ',
-    emblem: 'https://media.api-sports.io/football/leagues/3.png',
-    slug: 'europa-league',
-  },
-  {
-    id: 'ECL',
-    code: 'ECL',
-    name: 'カンファレンスリーグ',
-    emblem: 'https://media.api-sports.io/football/leagues/848.png',
-    slug: 'conference-league',
-  },
-];
+// スラグとIDのマッピング
+const SLUG_MAPPING: Record<number, string> = {
+  39: 'premier-league',
+  140: 'la-liga',
+  78: 'bundesliga',
+  135: 'serie-a',
+  61: 'ligue-1',
+  2: 'champions-league',
+  3: 'europa-league',
+  848: 'conference-league',
+};
+
+// リーグの並び順を定義
+const LEAGUE_ORDER = [39, 140, 78, 135, 61, 2, 3, 848];
 
 export default function LeagueNavigation() {
+  const [leagues, setLeagues] = useState<League[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // APIからリーグ情報を取得
+    const fetchLeagues = async () => {
+      try {
+        const response = await fetch('/api/leagues');
+        if (!response.ok) {
+          throw new Error('Failed to fetch leagues');
+        }
+        const data = await response.json();
+
+        // リーグデータをソート
+        const sortedLeagues = [...data.leagues];
+        sortedLeagues.sort((a, b) => {
+          const indexA = LEAGUE_ORDER.indexOf(a.id);
+          const indexB = LEAGUE_ORDER.indexOf(b.id);
+          return indexA - indexB;
+        });
+
+        setLeagues(sortedLeagues);
+      } catch (error) {
+        console.error('Error fetching leagues:', error);
+        // エラー時はフォールバックとして静的データを使用
+        setLeagues(getFallbackLeagues());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeagues();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-lg animate-pulse"
+            >
+              <div className="w-14 h-14 mb-3 bg-gray-200 dark:bg-gray-600 rounded-full"></div>
+              <div className="h-4 w-24 bg-gray-200 dark:bg-gray-600 rounded"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {LEAGUE_PAGES.map((league) => (
+        {leagues.map((league) => (
           <Link
             key={league.id}
-            href={`/leagues/${league.slug}`}
+            href={`/leagues/${SLUG_MAPPING[league.id] || league.id}`}
             className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
           >
             <div className="w-14 h-14 mb-3 flex items-center justify-center">
               <Image
-                src={league.emblem || '/league-placeholder.png'}
+                src={league.logo || '/league-placeholder.png'}
                 alt={league.name}
                 width={56}
                 height={56}
@@ -96,5 +107,56 @@ export default function LeagueNavigation() {
   );
 }
 
-// リーグデータを外部から使用できるようにエクスポート
-export { LEAGUE_PAGES };
+// フォールバック用のリーグデータ
+function getFallbackLeagues(): League[] {
+  return [
+    {
+      id: 39,
+      name: 'Premier League',
+      type: 'League',
+      logo: 'https://media.api-sports.io/football/leagues/39.png',
+    },
+    {
+      id: 140,
+      name: 'La Liga',
+      type: 'League',
+      logo: 'https://media.api-sports.io/football/leagues/140.png',
+    },
+    {
+      id: 78,
+      name: 'Bundesliga',
+      type: 'League',
+      logo: 'https://media.api-sports.io/football/leagues/78.png',
+    },
+    {
+      id: 135,
+      name: 'Serie A',
+      type: 'League',
+      logo: 'https://media.api-sports.io/football/leagues/135.png',
+    },
+    {
+      id: 61,
+      name: 'Ligue 1',
+      type: 'League',
+      logo: 'https://media.api-sports.io/football/leagues/61.png',
+    },
+    {
+      id: 2,
+      name: 'UEFA Champions League',
+      type: 'Cup',
+      logo: 'https://media.api-sports.io/football/leagues/2.png',
+    },
+    {
+      id: 3,
+      name: 'UEFA Europa League',
+      type: 'Cup',
+      logo: 'https://media.api-sports.io/football/leagues/3.png',
+    },
+    {
+      id: 848,
+      name: 'UEFA Europa Conference League',
+      type: 'Cup',
+      logo: 'https://media.api-sports.io/football/leagues/848.png',
+    },
+  ];
+}
