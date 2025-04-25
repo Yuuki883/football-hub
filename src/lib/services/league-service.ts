@@ -249,3 +249,23 @@ export async function getLeagueTeams(
     return null;
   }
 }
+
+/**
+ * 対象の全リーグ情報を取得
+ */
+export async function getAllLeagues(): Promise<LeagueData[]> {
+  try {
+    // 対象リーグのIDリスト（欧州5大リーグとUEFA主要大会）
+    const leagueIds = [39, 140, 78, 135, 61, 2, 3, 848];
+
+    // 並列でリーグ情報を取得
+    const promises = leagueIds.map((id) => getLeagueById(id));
+    const results = await Promise.all(promises);
+
+    // nullを除外して返す
+    return results.filter((league): league is LeagueData => league !== null);
+  } catch (error) {
+    console.error('リーグ一覧の取得中にエラーが発生しました:', error);
+    return [];
+  }
+}
