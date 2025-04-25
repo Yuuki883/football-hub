@@ -1,8 +1,8 @@
 import { LeagueData, Standing, Match, Player } from '@/lib/types/football';
 
 const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY || '';
-const API_FOOTBALL_HOST = 'v3.football.api-sports.io';
-const API_BASE_URL = 'https://v3.football.api-sports.io';
+const API_FOOTBALL_HOST = process.env.API_FOOTBALL_HOST;
+const API_FOOTBALL_BASE_URL = process.env.API_FOOTBALL_BASE_URL;
 
 // 共通のヘッダーとオプションを設定
 const fetchOptions = {
@@ -17,7 +17,7 @@ const fetchOptions = {
 
 // URLにクエリパラメータを追加するヘルパー関数
 function createUrl(endpoint: string, params?: Record<string, any>): string {
-  const url = new URL(`${API_BASE_URL}${endpoint}`);
+  const url = new URL(`${API_FOOTBALL_BASE_URL}${endpoint}`);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -75,26 +75,66 @@ export async function getLeagueBySlug(
  */
 export async function getLeagueStandings(
   leagueIdOrSlug: number | string,
-  season: number
-): Promise<Standing[][] | null> {
-  // スラグの場合はIDに変換
-  let leagueId = leagueIdOrSlug;
-  if (typeof leagueIdOrSlug === 'string' && isNaN(Number(leagueIdOrSlug))) {
-    const league = await getLeagueBySlug(leagueIdOrSlug);
-    if (!league) return null;
-    leagueId = league.league.id;
-  }
-
+  season: number = 2024
+): Promise<any> {
   try {
-    const response = await fetch(
-      createUrl('/standings', { league: leagueId, season }),
-      fetchOptions
-    );
+    const isNumeric = !isNaN(Number(leagueIdOrSlug));
+    let leagueId = leagueIdOrSlug;
+
+    if (!isNumeric) {
+      const league = await getLeagueBySlug(leagueIdOrSlug as string);
+      if (!league) {
+        console.error('リーグIDが見つかりませんでした:', leagueIdOrSlug);
+        return [];
+      }
+      leagueId = league.league.id;
+    }
+
+    const apiUrl = `${API_FOOTBALL_BASE_URL}/standings?league=${leagueId}&season=${season}`;
+    const response = await fetch(apiUrl, {
+      headers: fetchOptions.headers,
+      next: { revalidate: 3600 }, // 1時間ごとに再検証
+    });
+
+    if (!response.ok) {
+      console.error('API応答エラー:', response.status, response.statusText);
+      return [];
+    }
+
     const data = await response.json();
-    return data.response[0]?.league?.standings || null;
+
+    if (!data.response || data.response.length === 0) {
+      console.log(
+        `${leagueIdOrSlug}の順位表データが見つかりません (シーズン: ${season})`
+      );
+      return [];
+    }
+
+    // Champions League, Europa League, Conference Leagueの場合は複数グループがある
+    if (
+      ['champions-league', 'europa-league', 'conference-league'].includes(
+        leagueIdOrSlug as string
+      ) ||
+      [2, 3, 848].includes(Number(leagueId))
+    ) {
+      // レスポンスの構造を確認
+      const firstItem = data.response[0];
+
+      // すでに複数グループの場合はそのまま返す
+      if (Array.isArray(firstItem.league.standings)) {
+        // すでに複数グループの配列が含まれている場合
+        return firstItem.league.standings;
+      } else {
+        // 単一グループの場合は配列に包んで返す
+        return [firstItem.league.standings];
+      }
+    }
+
+    // 通常のリーグの場合
+    return data.response[0]?.league?.standings || [];
   } catch (error) {
-    console.error('Error fetching standings:', error);
-    return null;
+    console.error('順位表の取得中にエラーが発生しました:', error);
+    return [];
   }
 }
 

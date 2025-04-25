@@ -12,6 +12,7 @@ import {
   getLeagueTopAssists,
   getLeagueBySlug,
 } from '@/lib/services/league-service';
+import { Match } from '@/lib/types/football';
 
 interface LeaguePageProps {
   params: {
@@ -49,6 +50,18 @@ export default async function LeaguePage({
 }: LeaguePageProps) {
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
+  const currentYear = new Date().getFullYear();
+
+  // UEFA大会かどうかを判定
+  const isUefaCompetition = [
+    'champions-league',
+    'europa-league',
+    'conference-league',
+  ].includes(slug);
+
+  // 過去のシーズンかどうか（2023年以前を過去シーズンとする）
+  // 注: 2025年は今のシステム上の現在年で、2024は現行シーズン
+  const isPastSeason = season < 2024;
 
   // 並行データ取得
   const [standings, matches, topScorers, topAssists] = await Promise.all([
@@ -60,32 +73,67 @@ export default async function LeaguePage({
 
   // 最近の試合と今後の試合に分ける
   const now = new Date();
-  const recentMatches =
-    matches
-      ?.filter((match) => new Date(match.fixture.date) < now)
-      .sort(
+
+  let recentMatches: Match[] = [];
+  let upcomingMatches: Match[] = [];
+
+  // UEFA大会の過去シーズンの場合のみ、決勝戦を表示
+  if (isUefaCompetition && isPastSeason) {
+    if (matches && matches.length > 0) {
+      // 試合の日付をもとにソート（最新の試合が先頭に）
+      const sortedMatches = [...matches].sort(
         (a, b) =>
           new Date(b.fixture.date).getTime() -
           new Date(a.fixture.date).getTime()
-      )
-      .slice(0, 5) || [];
+      );
 
-  const upcomingMatches =
-    matches
-      ?.filter((match) => new Date(match.fixture.date) >= now)
-      .sort(
-        (a, b) =>
-          new Date(a.fixture.date).getTime() -
-          new Date(b.fixture.date).getTime()
-      )
-      .slice(0, 5) || [];
+      // まず「Final」というラウンド名を含む試合を検索
+      let finalMatch = sortedMatches.find((match) =>
+        match.league.round.toLowerCase().includes('final')
+      );
+
+      // 見つからない場合は、一番最後の試合を決勝戦とみなす
+      if (!finalMatch && sortedMatches.length > 0) {
+        finalMatch = sortedMatches[0]; // 日付でソートしているので最初の要素が最も新しい（最終戦）
+      }
+
+      if (finalMatch) {
+        recentMatches = [finalMatch];
+      }
+    }
+  } else {
+    // 通常の処理（現行シーズンまたはUEFA以外のリーグ）
+    recentMatches =
+      matches
+        ?.filter((match) => new Date(match.fixture.date) < now)
+        .sort(
+          (a, b) =>
+            new Date(b.fixture.date).getTime() -
+            new Date(a.fixture.date).getTime()
+        )
+        .slice(0, 5) || [];
+
+    upcomingMatches =
+      matches
+        ?.filter((match) => new Date(match.fixture.date) >= now)
+        .sort(
+          (a, b) =>
+            new Date(a.fixture.date).getTime() -
+            new Date(b.fixture.date).getTime()
+        )
+        .slice(0, 5) || [];
+  }
 
   return (
     <>
       <div className="mb-12">
         <h2 className="text-xl font-semibold mb-4">順位表</h2>
         <Suspense fallback={<div>読み込み中...</div>}>
-          <StandingsTable standings={standings} leagueSlug={slug} />
+          <StandingsTable
+            standings={standings}
+            leagueSlug={slug}
+            season={season}
+          />
         </Suspense>
         <div className="mt-4 text-right">
           <Link
@@ -98,18 +146,29 @@ export default async function LeaguePage({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div>
-          <h2 className="text-xl font-semibold mb-4">最近の試合</h2>
-          <Suspense fallback={<div>読み込み中...</div>}>
-            <MatchesList matches={recentMatches} />
-          </Suspense>
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold mb-4">今後の試合</h2>
-          <Suspense fallback={<div>読み込み中...</div>}>
-            <MatchesList matches={upcomingMatches} />
-          </Suspense>
-        </div>
+        {isUefaCompetition && isPastSeason ? (
+          <div className="md:col-span-2">
+            <h2 className="text-xl font-semibold mb-4">決勝戦</h2>
+            <Suspense fallback={<div>読み込み中...</div>}>
+              <MatchesList matches={recentMatches} />
+            </Suspense>
+          </div>
+        ) : (
+          <>
+            <div>
+              <h2 className="text-xl font-semibold mb-4">最近の試合</h2>
+              <Suspense fallback={<div>読み込み中...</div>}>
+                <MatchesList matches={recentMatches} />
+              </Suspense>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold mb-4">今後の試合</h2>
+              <Suspense fallback={<div>読み込み中...</div>}>
+                <MatchesList matches={upcomingMatches} />
+              </Suspense>
+            </div>
+          </>
+        )}
         <div className="mt-4 text-right md:col-span-2">
           <Link
             href={`/leagues/${slug}/matches?season=${season}`}
