@@ -1,7 +1,7 @@
 import { LeagueData, Standing, Match, Player } from '@/lib/types/football';
 
 const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY || '';
-const API_FOOTBALL_HOST = process.env.API_FOOTBALL_HOST;
+const API_FOOTBALL_HOST = process.env.API_FOOTBALL_HOST || '';
 const API_FOOTBALL_BASE_URL = process.env.API_FOOTBALL_BASE_URL;
 
 // 共通のヘッダーとオプションを設定

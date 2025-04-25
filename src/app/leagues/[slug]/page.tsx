@@ -133,6 +133,7 @@ export default async function LeaguePage({
             standings={standings}
             leagueSlug={slug}
             season={season}
+            isOverview={true}
           />
         </Suspense>
         <div className="mt-4 text-right">
