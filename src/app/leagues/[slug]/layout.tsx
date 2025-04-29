@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import LeagueHeader from './components/LeagueHeader';
 import LeagueNavigation from './components/LeagueNavigation';
 import SeasonSelector from './components/SeasonSelector';
+import PageLayout from '@/components/layout/PageLayout';
 import { getLeagueBySlug } from '@/lib/services/league-service';
 
 interface LeagueLayoutProps {
@@ -59,13 +60,15 @@ export default async function LeagueLayout({
   const { league, country } = leagueData;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <LeagueHeader league={league} country={country}>
-        <LeagueNavigation slug={slug}>
-          <SeasonSelector currentSeason={season} />
-        </LeagueNavigation>
-      </LeagueHeader>
+    <PageLayout className="p-0">
+      <div className="mb-6">
+        <LeagueHeader league={league} country={country}>
+          <LeagueNavigation slug={slug}>
+            <SeasonSelector currentSeason={season} />
+          </LeagueNavigation>
+        </LeagueHeader>
+      </div>
       {children}
-    </div>
+    </PageLayout>
   );
 }
