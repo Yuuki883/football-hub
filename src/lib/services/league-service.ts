@@ -67,6 +67,7 @@ export async function getLeagueBySlug(
   }
 
   // マッピングになければ該当リーグなし
+  console.warn(`No mapping found for slug: "${slug}"`);
   return null;
 }
 
@@ -104,9 +105,6 @@ export async function getLeagueStandings(
     const data = await response.json();
 
     if (!data.response || data.response.length === 0) {
-      console.log(
-        `${leagueIdOrSlug}の順位表データが見つかりません (シーズン: ${season})`
-      );
       return [];
     }
 

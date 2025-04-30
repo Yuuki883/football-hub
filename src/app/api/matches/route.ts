@@ -72,7 +72,6 @@ async function getFromCacheOrFetch<T>(
   if (!forceRefresh) {
     const cached = await cacheGet(cacheKey);
     if (cached) {
-      console.log(`Cache hit for ${cacheKey}`);
       return cached;
     }
   }
@@ -82,7 +81,6 @@ async function getFromCacheOrFetch<T>(
 
   // キャッシュ保存
   await cacheSet(cacheKey, data, ttl);
-  console.log(`Cached data for ${cacheKey} with TTL: ${ttl}s`);
 
   return data;
 }
@@ -96,12 +94,6 @@ export async function GET(request: Request) {
   const leagueCode = url.searchParams.get('leagueCode');
   const forceRefresh = url.searchParams.get('forceRefresh') === 'true';
   const datesOnly = url.searchParams.get('datesOnly') === 'true';
-
-  // アクセスログ
-  console.log(
-    `API route called for date: ${date}, leagueCode: ${leagueCode || 'all'}, ` +
-      `forceRefresh: ${forceRefresh}, datesOnly: ${datesOnly}`
-  );
 
   try {
     // 日付のみのリクエストの場合
