@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import EntityHeader from '@/components/common/EntityHeader';
 import TabNavigation from '@/components/common/TabNavigation';
-import SeasonSelector from './SeasonSelector';
 
 interface TeamHeaderProps {
   team: {
@@ -47,9 +46,7 @@ export default function TeamHeader({
 
   // ナビゲーション生成
   const navigation = (
-    <TabNavigation tabs={tabs} basePath={basePath}>
-      {!isScheduleTab && <SeasonSelector currentSeason={season} />}
-    </TabNavigation>
+    <TabNavigation tabs={tabs} basePath={basePath}></TabNavigation>
   );
 
   return (
