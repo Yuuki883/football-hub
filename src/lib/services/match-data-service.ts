@@ -145,8 +145,6 @@ function formatMatches(fixtures: any[]): Match[] {
  * API-Footballからデータを取得する共通関数
  */
 async function fetchFromAPI(url: string): Promise<any> {
-  console.log('API URL:', url);
-
   const response = await fetch(url, {
     headers: {
       'x-apisports-key': API_FOOTBALL_KEY || '',
@@ -199,19 +197,9 @@ export async function getMatchesByLeague(
       const dateFrom = today.toISOString().split('T')[0];
       const dateTo = ninetyDaysLater.toISOString().split('T')[0];
 
-      console.log(
-        `Fetching matches for league: ${leagueCode} (ID: ${leagueId}) with season: ${season}`
-      );
-
       // API リクエスト
       const url = `${API_FOOTBALL_BASE_URL}/fixtures?league=${leagueId}&season=${season}&from=${dateFrom}&to=${dateTo}&timezone=Asia/Tokyo`;
       const data = await fetchFromAPI(url);
-
-      console.log(
-        `リーグ ${leagueCode} (ID: ${leagueId}) の試合数: ${
-          data.response ? data.response.length : 0
-        }`
-      );
 
       // API-Football形式からアプリ形式に変換して返す
       return data.response && data.response.length > 0
@@ -262,12 +250,6 @@ export async function getMatchesByDateRange(
       const url = `${API_FOOTBALL_BASE_URL}/fixtures?league=${leagueId}&season=${season}&from=${dateFrom}&to=${dateTo}&timezone=Asia/Tokyo`;
       const data = await fetchFromAPI(url);
 
-      console.log(
-        `リーグ ${leagueCode} (ID: ${leagueId}) の期間${dateFrom}〜${dateTo}の試合数: ${
-          data.response ? data.response.length : 0
-        }`
-      );
-
       // API-Football形式からアプリ形式に変換
       return data.response && data.response.length > 0
         ? data.response.map((fixture: any) => formatMatch(fixture))
@@ -301,8 +283,6 @@ export async function getAllLeagueMatches(
   return withCache(
     cacheKey,
     async () => {
-      console.log(`Fetching matches for all leagues on date: ${date}`);
-
       // 全リーグのコード一覧
       const leagueCodes = Object.keys(LEAGUE_ID_MAPPING);
       let allMatches: Match[] = [];
@@ -329,10 +309,6 @@ export async function getAllLeagueMatches(
       // 試合開始時間順にソート
       allMatches.sort(
         (a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()
-      );
-
-      console.log(
-        `Retrieved ${allMatches.length} matches across all leagues for date ${date}`
       );
 
       return allMatches;
@@ -370,10 +346,6 @@ export async function getLeagueStandings(
   return withCache(
     cacheKey,
     async () => {
-      console.log(
-        `Fetching standings for league: ${leagueCode} (ID: ${leagueId}) with season: ${season}`
-      );
-
       // API リクエスト
       const url = `${API_FOOTBALL_BASE_URL}/standings?league=${leagueId}&season=${season}`;
       const data = await fetchFromAPI(url);
@@ -441,15 +413,8 @@ export async function getMatchDatesForLeague(
     async () => {
       // API-Footballから日付のみを取得
       const url = `${API_FOOTBALL_BASE_URL}/fixtures?league=${leagueId}&season=${season}`;
-      console.log('Fetching match dates URL:', url);
 
       const data = await fetchFromAPI(url);
-
-      console.log(
-        `Retrieved fixtures count for ${leagueCode}: ${
-          data.response?.length || 0
-        }`
-      );
 
       // 日付のみを抽出して重複を排除
       const dateSet = new Set<string>();

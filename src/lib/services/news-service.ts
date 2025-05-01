@@ -23,11 +23,7 @@ export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
 
     for (const feed of feeds) {
       try {
-        console.log(`Fetching feed: ${feed}`);
         const feedData = await parser.parseURL(feed);
-        console.log(
-          `Successfully fetched feed: ${feed}, items: ${feedData.items.length}`
-        );
 
         const newsItems = feedData.items.map((item) => ({
           title: item.title || '',
@@ -42,8 +38,6 @@ export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
       }
     }
 
-    console.log(`Total news items fetched: ${allNews.length}`);
-
     // 日付でソートして指定された件数を返す
     const sortedNews = allNews
       .sort(
@@ -51,7 +45,6 @@ export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
       )
       .slice(0, limit);
 
-    console.log(`Latest ${limit} news items returned`);
     return sortedNews;
   } catch (error) {
     console.error('RSSフィードの取得に失敗しました:', error);
