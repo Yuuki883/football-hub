@@ -29,10 +29,10 @@ export default function TeamHeader({
 
   // チーム詳細ページのタブを定義
   const tabs = [
-    { name: '日程', path: '' },
-    { name: '順位表', path: '/standings' },
-    { name: '選手', path: '/players' },
-    { name: 'スタッツ', path: '/stats' },
+    { name: '日程', path: `/teams/${teamId}` },
+    { name: '順位表', path: `/teams/${teamId}/standings` },
+    { name: '選手', path: `/teams/${teamId}/players` },
+    { name: 'スタッツ', path: `/teams/${teamId}/stats` },
   ];
 
   // 現在のパスが日程タブかどうかを判定

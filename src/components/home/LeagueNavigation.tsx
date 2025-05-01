@@ -49,11 +49,6 @@ export default function LeagueNavigation() {
           const fallbackLeague = getFallbackLeagues().find(
             (l) => l.id === leagueId
           );
-          if (fallbackLeague) {
-            console.log(
-              `Fallback used for league ID: ${leagueId} (${fallbackLeague.name})`
-            );
-          }
           return fallbackLeague;
         }).filter(Boolean); // undefinedを除外
 
