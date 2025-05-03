@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import MatchesList from '../components/MatchesList';
-import {
-  getLeagueMatches,
-  getLeagueBySlug,
-} from '@/lib/services/league-service';
+import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface MatchesPageProps {
   params: {
@@ -43,7 +41,7 @@ export default async function MatchesPage({
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
 
-  const matches = await getLeagueMatches(slug, season);
+  const matches = await getLeagueFixtures(slug, { season });
 
   return (
     <>
@@ -51,7 +49,7 @@ export default async function MatchesPage({
         <h1 className="text-2xl font-bold mb-6">試合一覧</h1>
 
         <Suspense fallback={<div>読み込み中...</div>}>
-          <MatchesList matches={matches} />
+          <MatchesList matches={matches || []} />
         </Suspense>
       </div>
     </>

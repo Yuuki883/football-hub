@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import StandingsTable from '../components/StandingsTable';
-import {
-  getLeagueStandings,
-  getLeagueBySlug,
-} from '@/lib/services/league-service';
+import { getLeagueStandings } from '@/features/leagues/api/league-standings';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface StandingsPageProps {
   params: {

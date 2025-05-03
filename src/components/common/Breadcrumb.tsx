@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
-import { PATH_DISPLAY_MAP } from '@/lib/constants/breadcrumbs';
+import { PATH_DISPLAY_MAP } from '@/features/navigation/breadcrumbs';
 
 export default function Breadcrumb() {
   const pathname = usePathname();

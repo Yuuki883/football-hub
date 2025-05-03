@@ -5,7 +5,7 @@ import LeagueHeader from './components/LeagueHeader';
 import LeagueNavigation from './components/LeagueNavigation';
 import SeasonSelector from './components/SeasonSelector';
 import PageLayout from '@/components/layout/PageLayout';
-import { getLeagueBySlug } from '@/lib/services/league-service';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface LeagueLayoutProps {
   children: React.ReactNode;

@@ -7,7 +7,7 @@ import { getRedisClient } from '@/lib/redis';
  * Redis接続状態を確認し、システムの健全性を報告します
  *
  * レスポンス:
- * - 200: システムは正常に動作しています
+ * - 200: システムは正常に動作
  * - 503: Redis接続エラー
  */
 export async function GET() {

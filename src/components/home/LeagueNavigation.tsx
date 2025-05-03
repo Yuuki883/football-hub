@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { League } from '@/lib/types/football';
+import { League } from '@/lib/api-football/types/leagues';
 
 // スラグとIDのマッピング
 const SLUG_MAPPING: Record<number, string> = {

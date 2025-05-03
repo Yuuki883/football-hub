@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 interface NavigationTab {
   name: string;

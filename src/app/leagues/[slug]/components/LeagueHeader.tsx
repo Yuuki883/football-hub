@@ -1,6 +1,6 @@
 'use client';
 
-import { League, Country } from '@/lib/types/football';
+import type { League, Country } from '@/lib/api-football/types/leagues';
 import EntityHeader from '@/components/common/EntityHeader';
 
 interface LeagueHeaderProps {
