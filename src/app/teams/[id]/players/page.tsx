@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getTeamById } from '@/features/teams/services/team-service';
+import { getTeamById } from '@/features/teams/api/team-info';
 import {
   getTeamPlayers,
   groupPlayersByPosition,
-} from '@/features/teams/services/team-players-service';
+} from '@/features/teams/api/team-players';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PlayersList from '@/features/teams/components/PlayersList';
 import PageLayout from '@/components/layout/PageLayout';

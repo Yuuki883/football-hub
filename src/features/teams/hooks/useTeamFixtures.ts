@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Match } from '@/lib/types/football';
+import { Match } from '@/lib/api-football/types';
 import { getTeamFixtures } from '../services/team-fixtures-service';
 
 interface UseTeamFixturesOptions {
@@ -55,7 +55,7 @@ export function useTeamFixtures({
         const futureGames: Match[] = [];
 
         allFixtures.forEach((match) => {
-          const matchDate = new Date(match.fixture.date);
+          const matchDate = new Date(match.utcDate);
           if (matchDate < today) {
             pastGames.push(match);
           } else {

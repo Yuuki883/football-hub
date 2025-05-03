@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { Match } from '@/lib/types/football';
+import { Match } from '@/lib/api-football/fixtures';
 
 interface TeamScheduleProps {
   pastFixtures: Match[];
@@ -31,7 +31,7 @@ export default function TeamSchedule({
 
   // 試合のステータスを取得する関数
   const getMatchStatus = (match: Match) => {
-    switch (match.fixture.status.short) {
+    switch (match.status) {
       case 'FT':
         return '試合終了';
       case 'HT':
@@ -41,9 +41,9 @@ export default function TeamSchedule({
       case '2H':
         return '後半';
       case 'NS':
-        return formatMatchTime(match.fixture.date);
+        return formatMatchTime(match.utcDate);
       default:
-        return match.fixture.status.short;
+        return match.statusText || match.status;
     }
   };
 
@@ -63,16 +63,16 @@ export default function TeamSchedule({
         <div className="space-y-2">
           {fixtures.map((match) => (
             <Link
-              key={match.fixture.id}
-              href={`/matches/${match.fixture.id}`}
+              key={match.id}
+              href={`/matches/${match.id}`}
               className="block p-3 border rounded-lg hover:bg-gray-50 transition-colors"
             >
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">
-                  {formatMatchDate(match.fixture.date)}
+                  {formatMatchDate(match.utcDate)}
                 </div>
                 <div className="px-2 py-1 text-xs rounded bg-gray-100 text-gray-700">
-                  {match.league.name}
+                  {match.competition.name}
                 </div>
               </div>
               <div className="mt-2 flex items-center justify-between">
@@ -80,8 +80,8 @@ export default function TeamSchedule({
                 <div className="flex items-center space-x-2 flex-1">
                   <div className="relative w-6 h-6">
                     <Image
-                      src={match.teams.home.logo}
-                      alt={match.teams.home.name}
+                      src={match.homeTeam.crest}
+                      alt={match.homeTeam.name}
                       fill
                       sizes="24px"
                       className="object-contain"
@@ -89,47 +89,54 @@ export default function TeamSchedule({
                   </div>
                   <span
                     className={`font-medium ${
-                      match.teams.home.winner ? 'text-green-600' : ''
+                      match.score.home !== null &&
+                      match.score.away !== null &&
+                      match.score.home > match.score.away
+                        ? 'text-green-600'
+                        : ''
                     }`}
                   >
-                    {match.teams.home.name}
+                    {match.homeTeam.name}
                   </span>
                 </div>
 
                 {/* スコア・ステータス */}
                 <div className="flex flex-col items-center mx-3">
-                  {match.fixture.status.short === 'NS' ? (
+                  {match.status === 'NS' ? (
                     <div className="text-xs text-gray-500">
                       {getMatchStatus(match)}
                     </div>
                   ) : (
                     <div className="flex items-center space-x-1">
-                      <span className="font-bold">{match.goals.home}</span>
+                      <span className="font-bold">{match.score.home}</span>
                       <span className="text-gray-400">-</span>
-                      <span className="font-bold">{match.goals.away}</span>
+                      <span className="font-bold">{match.score.away}</span>
                     </div>
                   )}
-                  {match.fixture.status.short !== 'NS' &&
-                    match.fixture.status.short !== 'FT' && (
-                      <div className="text-xs text-gray-500 mt-1">
-                        {getMatchStatus(match)}
-                      </div>
-                    )}
+                  {match.status !== 'NS' && match.status !== 'FT' && (
+                    <div className="text-xs text-gray-500 mt-1">
+                      {getMatchStatus(match)}
+                    </div>
+                  )}
                 </div>
 
                 {/* アウェイチーム */}
                 <div className="flex items-center space-x-2 flex-1 justify-end">
                   <span
                     className={`font-medium ${
-                      match.teams.away.winner ? 'text-green-600' : ''
+                      match.score.home !== null &&
+                      match.score.away !== null &&
+                      match.score.away > match.score.home
+                        ? 'text-green-600'
+                        : ''
                     }`}
                   >
-                    {match.teams.away.name}
+                    {match.awayTeam.name}
                   </span>
                   <div className="relative w-6 h-6">
                     <Image
-                      src={match.teams.away.logo}
-                      alt={match.teams.away.name}
+                      src={match.awayTeam.crest}
+                      alt={match.awayTeam.name}
                       fill
                       sizes="24px"
                       className="object-contain"

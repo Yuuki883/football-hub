@@ -1,7 +1,11 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import TeamGrid from '../components/TeamGrid';
-import { getLeagueTeams, getLeagueBySlug } from '@/lib/services/league-service';
+import {
+  getLeagueTeams,
+  FormattedTeam,
+} from '@/features/leagues/api/league-teams';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface TeamsPageProps {
   params: {
@@ -40,7 +44,25 @@ export default async function TeamsPage({
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
 
-  const teams = await getLeagueTeams(slug, season);
+  const teamsData = await getLeagueTeams(slug, { season });
+
+  const teams = teamsData.map((team) => ({
+    team: {
+      id: parseInt(team.id),
+      name: team.name,
+      logo: team.crest,
+      country: team.country,
+      founded: team.founded,
+    },
+    venue: team.venue
+      ? {
+          id: 0,
+          name: team.venue,
+          capacity: team.venueCapacity,
+          address: team.address,
+        }
+      : undefined,
+  }));
 
   return (
     <>

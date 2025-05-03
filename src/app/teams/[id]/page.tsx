@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import TeamSchedule from '@/features/teams/components/TeamSchedule';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
-import { getTeamById } from '@/features/teams/services/team-service';
-import { getTeamFixtures } from '@/features/teams/services/team-fixtures-service';
+import { getTeamById } from '@/features/teams/api/team-info';
+import { getTeamFixtures } from '@/features/teams/api/team-fixtures';
 
 interface TeamPageProps {
   params: {
