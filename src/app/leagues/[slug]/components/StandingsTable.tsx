@@ -20,6 +20,7 @@ interface Props {
   leagueSlug?: string;
   season?: number;
   isOverview?: boolean; // 概要ページ用の表示フラグ
+  highlightTeamId?: string; // ハイライト表示するチームID
 }
 
 export default function StandingsTable({
@@ -27,6 +28,7 @@ export default function StandingsTable({
   leagueSlug,
   season = 2024,
   isOverview = false, // デフォルトは詳細表示
+  highlightTeamId,
 }: Props) {
   if (!standings || !standings.length) {
     return (
@@ -162,11 +164,16 @@ export default function StandingsTable({
               {group.standings.map((s) => {
                 const pos = getPositionInfo(s, leagueSlug, season);
                 const headers = getHeaders();
+                const isHighlighted =
+                  highlightTeamId && s.team.id === highlightTeamId;
 
                 return (
                   <tr
                     key={s.team.id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className={clsx(
+                      'hover:bg-gray-50 dark:hover:bg-gray-700',
+                      isHighlighted && 'bg-blue-50 dark:bg-blue-900/20'
+                    )}
                   >
                     <td className={getCellClass(headers[0])}>
                       <Badge color={pos.color} className="inline-block">

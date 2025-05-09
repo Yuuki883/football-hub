@@ -13,14 +13,16 @@ const SeasonSelector: React.FC<SeasonSelectorProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const season = searchParams.get('season');
+  // console.log(season);
 
   // 内部の選択状態を管理
-  const [selectedSeason, setSelectedSeason] = useState(currentSeason);
+  const [selectedSeason, setSelectedSeason] = useState(season || 2024);
 
   // currentSeasonが変更されたときに内部の状態も更新
-  useEffect(() => {
-    setSelectedSeason(currentSeason);
-  }, [currentSeason]);
+  // useEffect(() => {
+  //   setSelectedSeason(currentSeason);
+  // }, [currentSeason]);
 
   // 利用可能なシーズンリスト（最新から過去3シーズンまで）
   const seasons = [

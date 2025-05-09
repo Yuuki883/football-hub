@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { PlayerGroup } from '../services/team-players-service';
+import type { PlayerGroup } from '../api/team-players';
 
 interface PlayersListProps {
   playerGroups: PlayerGroup[];
@@ -49,7 +49,16 @@ export default function PlayersList({ playerGroups }: PlayersListProps) {
                 </div>
 
                 <div className="text-sm text-gray-600 space-y-1 mt-auto">
-                  <p>年齢: {player.age}歳</p>
+                  <div className="flex items-center">
+                    {player.nationality && (
+                      <div className="flex items-center mr-2">
+                        <span className="bg-gray-100 px-1.5 py-0.5 rounded text-xs">
+                          {player.nationality}
+                        </span>
+                      </div>
+                    )}
+                    <span>{player.age}歳</span>
+                  </div>
                 </div>
               </div>
             ))}
