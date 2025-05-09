@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import type { PlayerGroup } from '../api/team-players';
+import type { PlayerGroup } from '../types/types';
 
 interface PlayersListProps {
   playerGroups: PlayerGroup[];
