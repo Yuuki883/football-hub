@@ -8,6 +8,7 @@
 import { getFixtures } from '@/lib/api-football/fixtures-api';
 import type { Match } from '@/lib/api-football/fixtures';
 import { DEFAULT_SEASON } from '@/config/api';
+import { TeamFixturesParams } from '../types/types';
 
 /**
  * チームの試合日程を取得する
@@ -18,13 +19,7 @@ import { DEFAULT_SEASON } from '@/config/api';
  */
 export async function getTeamFixtures(
   teamId: number | string,
-  params: {
-    season?: number | string;
-    past?: boolean;
-    future?: boolean;
-    limit?: number;
-    forceRefresh?: boolean;
-  } = {}
+  params: TeamFixturesParams = {}
 ): Promise<Match[]> {
   if (!teamId) {
     throw new Error('チームIDが指定されていません');

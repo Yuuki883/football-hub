@@ -9,29 +9,7 @@ import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { CACHE_TTL } from '@/config/api';
 import { FormattedPlayer } from '@/lib/api-football/types/players';
-
-// Team Playersのための内部型定義
-interface TeamPlayer {
-  id: number;
-  name: string;
-  age: number;
-  number?: number;
-  position: string;
-  photo: string;
-  nationality?: string;
-  height?: string;
-  weight?: string;
-  injured?: boolean;
-  rating?: string | null;
-  marketValue?: string | null;
-}
-
-// ポジショングループの型定義
-export interface PlayerGroup {
-  position: string;
-  displayName: string;
-  players: TeamPlayer[];
-}
+import { TeamPlayer, PlayerGroup } from '../types/types';
 
 /**
  * チームの現在のスクワッド（選手一覧）を取得する
