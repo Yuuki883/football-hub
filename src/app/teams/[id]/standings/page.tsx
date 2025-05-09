@@ -66,8 +66,6 @@ export default async function TeamStandingsPage({
       notFound();
     }
 
-    console.log(`チームデータ取得成功: ${teamData.team.name}`);
-
     // チームの所属リーグの順位表を取得
     const { standings, leagueId, teamInLeagueData } = await getTeamStandings(
       id,

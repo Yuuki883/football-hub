@@ -16,12 +16,6 @@ interface TeamPageProps {
   };
 }
 
-// IDを使用する理由:
-// 1. API-Footballが数値IDをプライマリキーとして使用しているため、API呼び出しが直接可能
-// 2. チーム名は変更される可能性があるが、IDは不変
-// 3. スラッグ方式を採用すると、チーム名が変わった時にリダイレクト処理が必要になる
-// 4. IDはすでにリーグ詳細ページなどで使用されており、整合性を保つため
-
 export async function generateMetadata({
   params,
 }: TeamPageProps): Promise<Metadata> {

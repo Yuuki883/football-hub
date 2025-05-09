@@ -128,7 +128,6 @@ export default async function LeaguePage({
   return (
     <>
       <div className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">順位表</h2>
         <Suspense fallback={<div>読み込み中...</div>}>
           <StandingsTable
             standings={standings}
