@@ -5,8 +5,8 @@ import AssistsRanking from '../components/AssistsRanking';
 import {
   getLeagueTopScorers,
   getLeagueTopAssists,
-  getLeagueBySlug,
-} from '@/lib/services/league-service';
+} from '@/features/leagues/api/league-stats';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface StatsPageProps {
   params: {

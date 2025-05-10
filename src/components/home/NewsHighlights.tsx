@@ -1,5 +1,6 @@
-import { fetchNews, NewsItem } from '@/lib/services/news-service';
-import NewsGrid from '@/components/news/NewsGrid';
+import { fetchNews } from '@/features/news/api/news';
+import { NewsItem } from '@/features/news/types/type';
+import NewsGrid from '@/features/news/components/NewsGrid';
 import Link from 'next/link';
 
 export default async function NewsHighlightsSection() {

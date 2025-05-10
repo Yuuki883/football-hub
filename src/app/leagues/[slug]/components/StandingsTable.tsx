@@ -4,16 +4,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import type { Standing } from '@/lib/types/football';
-import { getPositionInfo, getLegendItems } from '@/lib/utils/standings';
-import { UEFA_LEAGUES } from '@/lib/constants/standings';
+import type {
+  FormattedStandingGroup,
+  FormattedStanding,
+} from '@/lib/api-football/types/standings';
+import {
+  getPositionInfo,
+  getLegendItems,
+} from '@/features/standings/utils/standings';
+import { UEFA_LEAGUES } from '@/features/standings/standings';
 import { Badge } from '@/components/common/Badge';
 
 interface Props {
-  standings: Standing[][];
+  standings: FormattedStandingGroup[] | null;
   leagueSlug?: string;
   season?: number;
   isOverview?: boolean; // 概要ページ用の表示フラグ
+  highlightTeamId?: string; // ハイライト表示するチームID
 }
 
 export default function StandingsTable({
@@ -21,8 +28,9 @@ export default function StandingsTable({
   leagueSlug,
   season = 2024,
   isOverview = false, // デフォルトは詳細表示
+  highlightTeamId,
 }: Props) {
-  if (!standings.length) {
+  if (!standings || !standings.length) {
     return (
       <div className="p-6 text-center bg-white dark:bg-gray-800 rounded-lg shadow">
         <p className="text-gray-600 dark:text-gray-300">
@@ -43,8 +51,11 @@ export default function StandingsTable({
       leagueSlug as 'champions-league' | 'europa-league' | 'conference-league'
     );
 
-  // 旧フォーマット：全グループ合成凡例
-  const all = isOldUefa ? standings.flat() : standings[0];
+  // 新形式のデータ構造を使用
+  const all = isOldUefa
+    ? standings.flatMap((group) => group.standings)
+    : standings[0].standings;
+
   const legend = getLegendItems(all, leagueSlug, season);
 
   // 概要ページと詳細ページで表示するヘッダーを変更
@@ -74,7 +85,7 @@ export default function StandingsTable({
   };
 
   // フォームを視覚的に表示するヘルパー関数
-  const renderForm = (form: string) => {
+  const renderForm = (form?: string) => {
     if (!form) return null;
 
     return (
@@ -128,12 +139,10 @@ export default function StandingsTable({
       </div>
 
       {/* 各グループまたは単一グループ */}
-      {(isOldUefa ? standings : [standings[0]]).map((group, gi) => (
+      {standings.map((group, gi) => (
         <div key={gi} className="bg-white dark:bg-gray-800 rounded-lg p-4">
-          {isOldUefa && (
-            <h3 className="text-lg font-medium mb-3">
-              グループ {String.fromCharCode(65 + gi)}
-            </h3>
+          {standings.length > 1 && (
+            <h3 className="text-lg font-medium mb-3">{group.groupName}</h3>
           )}
 
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -152,25 +161,30 @@ export default function StandingsTable({
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-800 divide-y">
-              {group.map((s) => {
+              {group.standings.map((s) => {
                 const pos = getPositionInfo(s, leagueSlug, season);
                 const headers = getHeaders();
+                const isHighlighted =
+                  highlightTeamId && s.team.id === highlightTeamId;
 
                 return (
                   <tr
                     key={s.team.id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                    className={clsx(
+                      'hover:bg-gray-50 dark:hover:bg-gray-700',
+                      isHighlighted && 'bg-blue-50 dark:bg-blue-900/20'
+                    )}
                   >
                     <td className={getCellClass(headers[0])}>
                       <Badge color={pos.color} className="inline-block">
-                        {s.rank}
+                        {s.position}
                       </Badge>
                     </td>
                     <td className={getCellClass(headers[1])}>
                       <div className="flex items-center gap-2">
                         <div className="relative w-6 h-6 flex-shrink-0">
                           <Image
-                            src={s.team.logo}
+                            src={s.team.crest}
                             alt={s.team.name}
                             fill
                             sizes="24px"
@@ -186,18 +200,14 @@ export default function StandingsTable({
                         </Link>
                       </div>
                     </td>
-                    <td className={getCellClass(headers[2])}>{s.all.played}</td>
+                    <td className={getCellClass(headers[2])}>
+                      {s.playedGames}
+                    </td>
                     {!isOverview && (
                       <>
-                        <td className={getCellClass(headers[3])}>
-                          {s.all.win}
-                        </td>
-                        <td className={getCellClass(headers[4])}>
-                          {s.all.draw}
-                        </td>
-                        <td className={getCellClass(headers[5])}>
-                          {s.all.lose}
-                        </td>
+                        <td className={getCellClass(headers[3])}>{s.won}</td>
+                        <td className={getCellClass(headers[4])}>{s.draw}</td>
+                        <td className={getCellClass(headers[5])}>{s.lost}</td>
                       </>
                     )}
                     <td
@@ -205,21 +215,23 @@ export default function StandingsTable({
                         isOverview ? headers[3] : headers[6]
                       )}
                     >
-                      {s.all.goals.for}
+                      {s.goalsFor}
                     </td>
                     <td
                       className={getCellClass(
                         isOverview ? headers[4] : headers[7]
                       )}
                     >
-                      {s.all.goals.against}
+                      {s.goalsAgainst}
                     </td>
                     <td
                       className={getCellClass(
                         isOverview ? headers[5] : headers[8]
                       )}
                     >
-                      {s.goalsDiff > 0 ? `+${s.goalsDiff}` : s.goalsDiff}
+                      {s.goalDifference > 0
+                        ? `+${s.goalDifference}`
+                        : s.goalDifference}
                     </td>
                     <td
                       className={`font-bold ${getCellClass(

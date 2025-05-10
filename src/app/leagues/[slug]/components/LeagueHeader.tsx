@@ -1,7 +1,7 @@
 'use client';
 
-import Image from 'next/image';
-import { League, Country } from '@/lib/types/football';
+import type { League, Country } from '@/lib/api-football/types/leagues';
+import EntityHeader from '@/components/common/EntityHeader';
 
 interface LeagueHeaderProps {
   league: League;
@@ -14,42 +14,23 @@ const LeagueHeader: React.FC<LeagueHeaderProps> = ({
   country,
   children,
 }) => {
+  // UEFAの大会かどうかを判定
+  const isUefaCompetition = [2, 3, 848].includes(league.id);
+
+  // UEFA大会の場合は欧州全体の国旗を使用、それ以外は通常の国旗を使用
+  const flagUrl = isUefaCompetition
+    ? 'https://media.api-sports.io/flags/eu.svg' // 欧州の旗
+    : country.flag;
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm mb-6 overflow-hidden">
-      <div className="flex items-center gap-4 p-4 border-b border-gray-100 dark:border-gray-700">
-        <div className="relative w-16 h-16 flex-shrink-0">
-          <Image
-            src={league.logo}
-            alt={league.name}
-            fill
-            className="object-contain"
-            sizes="64px"
-          />
-        </div>
-        <div className="flex-grow">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {league.name}
-          </h1>
-          <div className="flex items-center gap-2 mt-1">
-            {country.flag && (
-              <div className="relative w-5 h-4">
-                <Image
-                  src={country.flag}
-                  alt={country.name}
-                  fill
-                  className="object-cover rounded-sm"
-                  sizes="20px"
-                />
-              </div>
-            )}
-            <span className="text-gray-600 dark:text-gray-300">
-              {country.name}
-            </span>
-          </div>
-        </div>
-      </div>
-      {children && <div className="px-4">{children}</div>}
-    </div>
+    <EntityHeader
+      name={league.name}
+      logo={league.logo}
+      country={country.name}
+      flag={flagUrl}
+    >
+      {children}
+    </EntityHeader>
   );
 };
 

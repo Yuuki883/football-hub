@@ -1,5 +1,5 @@
-import { fetchNews } from '@/lib/services/news-service';
-import NewsGrid from '@/components/news/NewsGrid';
+import { fetchNews } from '@/features/news/api/news';
+import NewsGrid from '@/features/news/components/NewsGrid';
 import { Metadata } from 'next';
 import PageLayout from '@/components/layout/PageLayout';
 

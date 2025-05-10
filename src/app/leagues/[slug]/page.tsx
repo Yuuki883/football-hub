@@ -5,14 +5,14 @@ import StandingsTable from './components/StandingsTable';
 import MatchesList from './components/MatchesList';
 import ScorersRanking from './components/ScorersRanking';
 import AssistsRanking from './components/AssistsRanking';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import {
-  getLeagueStandings,
-  getLeagueMatches,
   getLeagueTopScorers,
   getLeagueTopAssists,
-  getLeagueBySlug,
-} from '@/lib/services/league-service';
-import { Match } from '@/lib/types/football';
+} from '@/features/leagues/api/league-stats';
+import { getLeagueStandings } from '@/features/leagues/api/league-standings';
+import { Match } from '@/lib/api-football/types';
 
 interface LeaguePageProps {
   params: {
@@ -20,6 +20,7 @@ interface LeaguePageProps {
   };
   searchParams: {
     season?: string;
+    forceRefresh?: string;
   };
 }
 
@@ -50,6 +51,7 @@ export default async function LeaguePage({
 }: LeaguePageProps) {
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
+  const forceRefresh = searchParams.forceRefresh === 'true';
   const currentYear = new Date().getFullYear();
 
   // UEFA大会かどうかを判定
@@ -64,12 +66,14 @@ export default async function LeaguePage({
   const isPastSeason = season < 2024;
 
   // 並行データ取得
-  const [standings, matches, topScorers, topAssists] = await Promise.all([
-    getLeagueStandings(slug, season),
-    getLeagueMatches(slug, season),
-    getLeagueTopScorers(slug, season),
-    getLeagueTopAssists(slug, season),
+  const [standings, topScorers, topAssists] = await Promise.all([
+    getLeagueStandings(slug, { season, forceRefresh }),
+    getLeagueTopScorers(slug, season, forceRefresh),
+    getLeagueTopAssists(slug, season, forceRefresh),
   ]);
+
+  // 試合データを別途取得
+  const matches = await getLeagueFixtures(slug, { season, forceRefresh });
 
   // 最近の試合と今後の試合に分ける
   const now = new Date();
@@ -82,14 +86,13 @@ export default async function LeaguePage({
     if (matches && matches.length > 0) {
       // 試合の日付をもとにソート（最新の試合が先頭に）
       const sortedMatches = [...matches].sort(
-        (a, b) =>
-          new Date(b.fixture.date).getTime() -
-          new Date(a.fixture.date).getTime()
+        (a: Match, b: Match) =>
+          new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime()
       );
 
       // まず「Final」というラウンド名を含む試合を検索
-      let finalMatch = sortedMatches.find((match) =>
-        match.league.round.toLowerCase().includes('final')
+      let finalMatch = sortedMatches.find((match: Match) =>
+        match.matchday?.toLowerCase().includes('final')
       );
 
       // 見つからない場合は、一番最後の試合を決勝戦とみなす
@@ -105,21 +108,19 @@ export default async function LeaguePage({
     // 通常の処理（現行シーズンまたはUEFA以外のリーグ）
     recentMatches =
       matches
-        ?.filter((match) => new Date(match.fixture.date) < now)
+        ?.filter((match: Match) => new Date(match.utcDate) < now)
         .sort(
-          (a, b) =>
-            new Date(b.fixture.date).getTime() -
-            new Date(a.fixture.date).getTime()
+          (a: Match, b: Match) =>
+            new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime()
         )
         .slice(0, 5) || [];
 
     upcomingMatches =
       matches
-        ?.filter((match) => new Date(match.fixture.date) >= now)
+        ?.filter((match: Match) => new Date(match.utcDate) >= now)
         .sort(
-          (a, b) =>
-            new Date(a.fixture.date).getTime() -
-            new Date(b.fixture.date).getTime()
+          (a: Match, b: Match) =>
+            new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()
         )
         .slice(0, 5) || [];
   }
@@ -127,7 +128,6 @@ export default async function LeaguePage({
   return (
     <>
       <div className="mb-12">
-        <h2 className="text-xl font-semibold mb-4">順位表</h2>
         <Suspense fallback={<div>読み込み中...</div>}>
           <StandingsTable
             standings={standings}

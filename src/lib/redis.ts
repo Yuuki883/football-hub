@@ -34,7 +34,6 @@ export async function getRedisClient(): Promise<any> {
         url: process.env.UPSTASH_REDIS_URL,
         token: process.env.UPSTASH_REDIS_TOKEN,
       });
-      console.log('Connected to Upstash Redis');
     } else if (process.env.REDIS_URL) {
       // 通常のRedis (Docker開発環境用)
       const client = createClient({
@@ -47,7 +46,6 @@ export async function getRedisClient(): Promise<any> {
 
       await client.connect();
       redisClient = client;
-      console.log('Connected to Redis');
     } else {
       console.warn('No Redis configuration found');
       return null;

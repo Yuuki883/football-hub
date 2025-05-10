@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 // 試合オブジェクトの型定義
 interface Match {
@@ -74,7 +74,7 @@ export default function AllMatchesSection() {
    * 試合データ取得
    */
   const {
-    data: matches,
+    data: matchesData,
     isLoading,
     isError,
     error,
@@ -86,7 +86,7 @@ export default function AllMatchesSection() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json() as Promise<Match[]>;
+        return response.json();
       } catch (error) {
         console.error('Error fetching matches:', error);
         throw error;
@@ -124,7 +124,10 @@ export default function AllMatchesSection() {
 
   // リーグごとに試合をグループ化
   const matchesByLeague = useMemo(() => {
-    if (!matches || matches.length === 0) return {};
+    // APIのレスポンス構造が変更されたため、matchesプロパティから試合データを取得
+    const matches = matchesData?.matches || [];
+
+    if (matches.length === 0) return {};
 
     const result: Record<string, LeagueData> = {};
 
@@ -153,7 +156,7 @@ export default function AllMatchesSection() {
     });
 
     return result;
-  }, [matches]);
+  }, [matchesData]);
 
   return (
     <div>
@@ -181,7 +184,7 @@ export default function AllMatchesSection() {
           <MatchesSkeleton />
         ) : isError ? (
           <ErrorDisplay error={error} onRetry={handleRefresh} />
-        ) : !matches || matches.length === 0 ? (
+        ) : !matchesData?.matches || matchesData.matches.length === 0 ? (
           <EmptyMatchesDisplay date={selectedDate} />
         ) : (
           <div className="divide-y divide-gray-200 dark:divide-gray-700">

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { fetchNews } from '@/lib/services/news-service';
+import { fetchNews } from '@/features/news/api/news';
 import { getRedisClient } from '@/lib/redis';
 
 export async function GET(request: Request) {
