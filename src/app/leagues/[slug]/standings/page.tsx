@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import StandingsTable from '../components/StandingsTable';
-import {
-  getLeagueStandings,
-  getLeagueBySlug,
-} from '@/lib/services/league-service';
+import { getLeagueStandings } from '@/features/leagues/api/league-standings';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface StandingsPageProps {
   params: {
@@ -48,8 +46,6 @@ export default async function StandingsPage({
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-6">順位表</h1>
-
         <Suspense fallback={<div>読み込み中...</div>}>
           <StandingsTable
             standings={standings}

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { League } from '@/lib/types/football';
+import { League } from '@/lib/api-football/types/leagues';
 
 // スラグとIDのマッピング
 const SLUG_MAPPING: Record<number, string> = {
@@ -34,15 +34,25 @@ export default function LeagueNavigation() {
         }
         const data = await response.json();
 
-        // リーグデータをソート
-        const sortedLeagues = [...data.leagues];
-        sortedLeagues.sort((a, b) => {
-          const indexA = LEAGUE_ORDER.indexOf(a.id);
-          const indexB = LEAGUE_ORDER.indexOf(b.id);
-          return indexA - indexB;
-        });
+        // APIレスポンスからリーグを取得
+        const apiLeagues = data.leagues || [];
 
-        setLeagues(sortedLeagues);
+        // 各リーグIDごとに、APIレスポンスから該当するリーグを見つけるか、
+        // 見つからない場合はフォールバックデータを使用
+        const orderedLeagues = LEAGUE_ORDER.map((leagueId) => {
+          const leagueFromApi = apiLeagues.find(
+            (l: League) => l.id === leagueId
+          );
+          if (leagueFromApi) return leagueFromApi;
+
+          // APIにリーグが見つからない場合はフォールバックから取得
+          const fallbackLeague = getFallbackLeagues().find(
+            (l) => l.id === leagueId
+          );
+          return fallbackLeague;
+        }).filter(Boolean); // undefinedを除外
+
+        setLeagues(orderedLeagues);
       } catch (error) {
         console.error('Error fetching leagues:', error);
         // エラー時はフォールバックとして静的データを使用
@@ -76,32 +86,38 @@ export default function LeagueNavigation() {
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {leagues.map((league) => (
-          <Link
-            key={league.id}
-            href={`/leagues/${SLUG_MAPPING[league.id] || league.id}`}
-            className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-          >
-            <div className="w-14 h-14 mb-3 flex items-center justify-center">
-              <Image
-                src={league.logo || '/league-placeholder.png'}
-                alt={league.name}
-                width={56}
-                height={56}
-                style={{
-                  width: 'auto',
-                  height: 'auto',
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                }}
-                className="object-contain"
-              />
-            </div>
-            <span className="text-sm font-medium text-center w-full truncate px-1">
-              {league.name}
-            </span>
-          </Link>
-        ))}
+        {leagues.map((league) => {
+          // リーグIDに対応するスラグを取得
+          const slug = SLUG_MAPPING[league.id];
+          const href = `/leagues/${slug || league.id}`;
+
+          return (
+            <Link
+              key={league.id}
+              href={href}
+              className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+            >
+              <div className="w-14 h-14 mb-3 flex items-center justify-center">
+                <Image
+                  src={league.logo || '/league-placeholder.png'}
+                  alt={league.name}
+                  width={56}
+                  height={56}
+                  style={{
+                    width: 'auto',
+                    height: 'auto',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                  }}
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-sm font-medium text-center w-full truncate px-1">
+                {league.name}
+              </span>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

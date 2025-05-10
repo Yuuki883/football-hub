@@ -1,15 +1,21 @@
-import Parser from 'rss-parser';
+/**
+ * ニュースAPI
+ *
+ * RSSフィードからサッカーニュースを取得する機能を提供
+ */
 
+import Parser from 'rss-parser';
+import { NewsItem } from '../types/type';
 const parser = new Parser();
 
-export interface NewsItem {
-  title: string;
-  link: string;
-  pubDate: string;
-  content: string;
-  image?: string;
-}
-
+/**
+ * サッカーニュースを取得する
+ *
+ * 複数のRSSフィードからニュースを一括取得し、日付順にソート
+ *
+ * @param limit 取得する記事数 (デフォルト: 6)
+ * @returns ニュース記事の配列
+ */
 export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
   try {
     // 複数のRSSフィードを取得
@@ -19,30 +25,26 @@ export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
       'https://www.football-zone.net/feed',
     ];
 
-    const allNews: NewsItem[] = [];
-
-    for (const feed of feeds) {
+    // 3つのフィードを並列で処理
+    const feedPromises = feeds.map(async (feed) => {
       try {
-        console.log(`Fetching feed: ${feed}`);
         const feedData = await parser.parseURL(feed);
-        console.log(
-          `Successfully fetched feed: ${feed}, items: ${feedData.items.length}`
-        );
-
-        const newsItems = feedData.items.map((item) => ({
+        return feedData.items.map((item) => ({
           title: item.title || '',
           link: item.link || '',
           pubDate: item.pubDate || '',
           content: item.contentSnippet || '',
           image: item.enclosure?.url || undefined,
         }));
-        allNews.push(...newsItems);
       } catch (feedError) {
         console.error(`Error fetching feed ${feed}:`, feedError);
+        return []; // エラー時は空配列を返す
       }
-    }
+    });
 
-    console.log(`Total news items fetched: ${allNews.length}`);
+    // すべてのフィード処理を待機して結果を一つの配列にまとめる
+    const allNewsArrays = await Promise.all(feedPromises);
+    const allNews = allNewsArrays.flat();
 
     // 日付でソートして指定された件数を返す
     const sortedNews = allNews
@@ -51,7 +53,6 @@ export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
       )
       .slice(0, limit);
 
-    console.log(`Latest ${limit} news items returned`);
     return sortedNews;
   } catch (error) {
     console.error('RSSフィードの取得に失敗しました:', error);

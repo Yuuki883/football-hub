@@ -1,20 +1,26 @@
 import { getRedisClient } from '@/lib/redis';
+import { API_FOOTBALL, DEFAULT_SEASON } from '@/config/api';
+import { Match } from '@/lib/api-football/types';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
+import { formatMatch } from '@/lib/api-football/fixtures';
 
-const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY;
-const API_FOOTBALL_HOST = 'v3.football.api-sports.io';
-const API_BASE_URL = `https://${API_FOOTBALL_HOST}/v3`;
-
+/**
+ * APIヘッダーを取得
+ */
 export function getApiHeaders(): Record<string, string> {
-  if (!API_FOOTBALL_KEY) {
-    throw new Error('API_FOOTBALL_KEY is not defined');
+  if (!API_FOOTBALL.KEY) {
+    throw new Error('API_FOOTBALL.KEY is not defined');
   }
   return {
-    'x-apisports-key': API_FOOTBALL_KEY,
+    'x-apisports-key': API_FOOTBALL.KEY,
   };
 }
 
+/**
+ * APIベースURLを取得
+ */
 export function getApiBaseUrl(): string {
-  return API_BASE_URL;
+  return API_FOOTBALL.BASE_URL;
 }
 
 /**
@@ -37,41 +43,11 @@ export async function getLiveScores() {
     }
 
     // API-Footballから現在のライブスコアを取得
-    const response = await fetch(
-      `${getApiBaseUrl()}/fixtures?league=39&season=2024`,
-      {
-        method: 'GET',
-        headers: getApiHeaders(),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    const data = await response.json();
+    const url = createUrl('/fixtures', { live: 'all' });
+    const data = await fetchFromAPI(url);
 
     // レスポンスを整形してアプリで使いやすい形式に変換
-    const scores = data.response.map((fixture: any) => ({
-      id: fixture.fixture.id.toString(),
-      competition: {
-        name: fixture.league.name,
-        emblem: fixture.league.logo,
-      },
-      minute: fixture.fixture.status.elapsed?.toString() || '0',
-      homeTeam: {
-        name: fixture.teams.home.name,
-        crest: fixture.teams.home.logo,
-      },
-      awayTeam: {
-        name: fixture.teams.away.name,
-        crest: fixture.teams.away.logo,
-      },
-      score: {
-        home: fixture.goals.home,
-        away: fixture.goals.away,
-      },
-    }));
+    const scores = data.response.map((fixture: any) => formatMatch(fixture));
 
     // キャッシュに保存（1分間 - ライブスコアは頻繁に更新されるため短めに設定）
     if (redis) {
@@ -90,7 +66,7 @@ export async function getLiveScores() {
 /**
  * 特定の日付の試合情報を取得する
  */
-export async function getFixturesByDate(date: string) {
+export async function getFixturesByDate(date: string): Promise<Match[]> {
   try {
     if (typeof window !== 'undefined') {
       console.warn('getFixturesByDate was called on the client side');
@@ -109,48 +85,11 @@ export async function getFixturesByDate(date: string) {
     }
 
     // API-Footballから特定日付の試合を取得
-    const response = await fetch(`${getApiBaseUrl()}/fixtures?date=${date}`, {
-      method: 'GET',
-      headers: getApiHeaders(),
-    });
+    const url = createUrl('/fixtures', { date });
+    const data = await fetchFromAPI(url);
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // レスポンスを整形
-    const fixtures = data.response.map((fixture: any) => ({
-      id: fixture.fixture.id.toString(),
-      utcDate: fixture.fixture.date,
-      status: fixture.fixture.status.short,
-      matchday: fixture.league.round,
-      competition: {
-        id: fixture.league.id.toString(),
-        name: fixture.league.name,
-        code: fixture.league.country,
-        type: fixture.league.type,
-        emblem: fixture.league.logo,
-      },
-      homeTeam: {
-        id: fixture.teams.home.id.toString(),
-        name: fixture.teams.home.name,
-        shortName: fixture.teams.home.name,
-        crest: fixture.teams.home.logo,
-      },
-      awayTeam: {
-        id: fixture.teams.away.id.toString(),
-        name: fixture.teams.away.name,
-        shortName: fixture.teams.away.name,
-        crest: fixture.teams.away.logo,
-      },
-      score: {
-        home: fixture.goals.home,
-        away: fixture.goals.away,
-      },
-      venue: fixture.fixture.venue?.name || '',
-    }));
+    // レスポンスを整形して返す
+    const fixtures = data.response.map((fixture: any) => formatMatch(fixture));
 
     // キャッシュに保存（30分間）
     if (redis) {
@@ -168,107 +107,31 @@ export async function getFixturesByDate(date: string) {
 
 /**
  * 特定のリーグの試合情報を取得する
+ *
+ * このメソッドは後方互換性のために残されています。
+ * 新しい実装では features/leagues/api/league-fixtures を使用してください。
+ *
  * @param leagueId リーグID
+ * @deprecated 代わりに features/leagues/api/league-fixtures の getLeagueFixtures を使用してください
  */
-export async function getLeagueMatches(leagueId: string) {
+export async function getLeagueMatches(leagueId: string): Promise<Match[]> {
   try {
     if (typeof window !== 'undefined') {
       console.warn('getLeagueMatches was called on the client side');
       return [];
     }
 
-    // リーグIDからAPI-Football用のリーグIDに変換
-    // API-Footballは数値IDを使用するが、アプリでは文字列コードを使用している可能性があるため
-    const leagueMapping: Record<string, number> = {
-      PL: 39, // プレミアリーグ
-      PD: 140, // ラ・リーガ
-      BL1: 78, // ブンデスリーガ
-      SA: 135, // セリエA
-      FL1: 61, // リーグ・アン
-      CL: 2, // UEFAチャンピオンズリーグ
-    };
-
-    const apiLeagueId = leagueMapping[leagueId] || parseInt(leagueId, 10);
-    if (!apiLeagueId) {
-      throw new Error(`Invalid league ID: ${leagueId}`);
-    }
-
-    // Redisキャッシュをチェック
-    const redis = await getRedisClient();
-    const cacheKey = `league-matches:${leagueId}`;
-
-    if (redis) {
-      const cached = await redis.get(cacheKey);
-      if (cached) {
-        return JSON.parse(cached);
-      }
-    }
-
-    // 現在の日付とその7日後を計算
-    const today = new Date();
-    const nextWeek = new Date(today);
-    nextWeek.setDate(today.getDate() + 7);
-
-    const dateFrom = today.toISOString().split('T')[0];
-    const dateTo = nextWeek.toISOString().split('T')[0];
-
-    // API-Footballからリーグの試合を取得
-    const response = await fetch(
-      `${getApiBaseUrl()}/fixtures?league=${apiLeagueId}&season=${today.getFullYear()}&from=${dateFrom}&to=${dateTo}`,
-      {
-        method: 'GET',
-        headers: getApiHeaders(),
-      }
+    console.warn(
+      'getLeagueMatches is deprecated. Use getLeagueFixtures from features/leagues/api/league-fixtures instead'
     );
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // レスポンスを整形
-    const matches = data.response
-      .map((fixture: any) => ({
-        id: fixture.fixture.id.toString(),
-        utcDate: fixture.fixture.date,
-        status: fixture.fixture.status.short,
-        matchday: fixture.league.round,
-        competition: {
-          id: fixture.league.id.toString(),
-          name: fixture.league.name,
-          code: fixture.league.country,
-          type: fixture.league.type,
-          emblem: fixture.league.logo,
-        },
-        homeTeam: {
-          id: fixture.teams.home.id.toString(),
-          name: fixture.teams.home.name,
-          shortName: fixture.teams.home.name,
-          crest: fixture.teams.home.logo,
-        },
-        awayTeam: {
-          id: fixture.teams.away.id.toString(),
-          name: fixture.teams.away.name,
-          shortName: fixture.teams.away.name,
-          crest: fixture.teams.away.logo,
-        },
-        score: {
-          home: fixture.goals.home,
-          away: fixture.goals.away,
-        },
-        venue: fixture.fixture.venue?.name || '',
-      }))
-      .slice(0, 10); // 最大10試合に制限
-
-    // キャッシュに保存（3時間）
-    if (redis) {
-      await redis.set(cacheKey, JSON.stringify(matches), {
-        EX: 3 * 60 * 60, // 3時間
-      });
-    }
-
-    return matches;
+    // 後方互換性のために、この関数自体は残しておきますが、
+    // 機能は新しい実装を直接使用することをお勧め
+    // このメソッドは将来的に削除される可能性があります。
+    const { getLeagueFixtures } = await import(
+      '@/features/leagues/api/league-fixtures'
+    );
+    return getLeagueFixtures(leagueId, {});
   } catch (error) {
     console.error(`Failed to fetch matches for league ${leagueId}:`, error);
     return [];

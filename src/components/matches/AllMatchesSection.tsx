@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Match } from '@/types/match';
 import MatchItem from './MatchItem';
 import SmartMatchCalendar from './SmartMatchCalendar';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/utils/cn';
 
 interface AllMatchesSectionProps {
   matches: Match[];

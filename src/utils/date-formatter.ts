@@ -1,38 +1,24 @@
 import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { ja } from 'date-fns/locale';
 
-// 日本のタイムゾーンは UTC+9
-const TOKYO_TIMEZONE_OFFSET = 9;
+// 日本のタイムゾーン
+const TOKYO_TIMEZONE = 'Asia/Tokyo';
 
 /**
  * 日付文字列を日本時間に変換して返す
- * date-fns-tzを使わずに実装
+ * date-fns-tzライブラリを使用してタイムゾーン変換を行う
  */
 function toJapanTime(dateString: string): Date {
   const date = new Date(dateString);
-  // 現在のUTCとローカルの差分を無視して強制的にUTC+9で解釈する
-  // このアプローチはサーバー・クライアント間で一貫した結果を生成する
-  const utcDate = new Date(
-    Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate(),
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds()
-    )
-  );
-
-  // 日本時間（UTC+9）に調整
-  utcDate.setUTCHours(utcDate.getUTCHours() + TOKYO_TIMEZONE_OFFSET);
-  return utcDate;
+  return toZonedTime(date, TOKYO_TIMEZONE);
 }
 
 export function formatMatchDate(
   dateString: string,
   type: 'display' | 'group' = 'display'
 ) {
-  // 日本時間に変換
+  // date-fns-tzを使用して日本時間に変換
   const date = toJapanTime(dateString);
 
   if (type === 'group') {
@@ -52,7 +38,7 @@ export function formatMatchDate(
 }
 
 export function formatMatchTime(dateString: string) {
-  // 日本時間に変換
+  // date-fns-tzを使用して日本時間に変換
   const date = toJapanTime(dateString);
   return format(date, 'HH:mm');
 }

@@ -2,24 +2,24 @@ import {
   UEFA_LEAGUES,
   LEGEND_LABELS,
   LEGEND_ORDER,
-} from '@/lib/constants/standings';
-import type { Standing } from '@/lib/types/football';
+} from '@/features/standings/standings';
+import type { FormattedStanding } from '@/lib/api-football/types/standings';
 
 type Info = { color: string; label: string };
 
 // 各種判定ロジックを小関数に分割
-const uefaNew = (rank?: number): Info => {
-  if (rank && rank <= 8)
+const uefaNew = (position?: number): Info => {
+  if (position && position <= 8)
     return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
-  if (rank && rank <= 24)
+  if (position && position <= 24)
     return { color: 'bg-purple-500', label: LEGEND_LABELS.PLAYOFF };
   return { color: 'bg-gray-400', label: LEGEND_LABELS.ELIMINATION };
 };
 
-const uefaOld = (rank?: number, slug?: string): Info => {
-  if (rank && rank <= 2)
+const uefaOld = (position?: number, slug?: string): Info => {
+  if (position && position <= 2)
     return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
-  if (rank === 3) {
+  if (position === 3) {
     if (slug === 'champions-league')
       return { color: 'bg-orange-500', label: LEGEND_LABELS.EL_RELEGATION };
     if (slug === 'europa-league')
@@ -140,10 +140,12 @@ const domestic = (desc: string): Info => {
  * position 情報を一元取得
  */
 export function getPositionInfo(
-  { description, rank }: Standing,
+  standing: FormattedStanding,
   leagueSlug?: string,
   season: number = 2024
 ): Info {
+  const { description, position } = standing;
+
   if (!description) return { color: 'bg-gray-400', label: '' };
 
   const isUefa =
@@ -152,7 +154,7 @@ export function getPositionInfo(
       leagueSlug as 'champions-league' | 'europa-league' | 'conference-league'
     );
   if (isUefa) {
-    return season >= 2024 ? uefaNew(rank) : uefaOld(rank, leagueSlug);
+    return season >= 2024 ? uefaNew(position) : uefaOld(position, leagueSlug);
   }
 
   return domestic(description);
@@ -162,7 +164,7 @@ export function getPositionInfo(
  * 凡例アイテムを取得（重複なく、順序も保証）
  */
 export function getLegendItems(
-  standings: Standing[],
+  standings: FormattedStanding[],
   leagueSlug?: string,
   season: number = 2024
 ): Info[] {

@@ -1,7 +1,7 @@
 // src/components/matches/MatchList.tsx
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatMatchTime, formatMatchDate } from '@/lib/utils/date-formatter';
+import { formatMatchTime, formatMatchDate } from '@/utils/date-formatter';
 
 type MatchListProps = {
   matches: any[];

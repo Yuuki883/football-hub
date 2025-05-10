@@ -1,7 +1,7 @@
 'use client';
 
 import NewsCard from './NewsCard';
-import { NewsItem } from '@/lib/services/news-service';
+import { NewsItem } from '../types/type';
 
 interface NewsGridProps {
   initialNews: NewsItem[];
