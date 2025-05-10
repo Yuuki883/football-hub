@@ -12,7 +12,7 @@ import { FormattedPlayer } from '@/lib/api-football/types/players';
 import { TeamPlayer, PlayerGroup } from '../types/types';
 
 /**
- * チームの現在のスクワッド（選手一覧）を取得する
+ * チームの選手一覧を取得する
  *
  * @param teamId チームID
  * @param forceRefresh キャッシュを強制更新するかどうか

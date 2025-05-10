@@ -1,6 +1,8 @@
 import { FormattedStandingGroup } from '@/lib/api-football/types';
 import { withCache } from '@/lib/api-football/cache';
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
+import { getTeamDomesticLeague } from './team-leagues';
+import { TeamStandingInfo, TeamStandingsResult } from '../types/types';
 
 /**
  * チームが所属するリーグの順位表を取得
@@ -17,17 +19,7 @@ export async function getTeamStandings(
   teamId: string | number,
   season: string | number,
   forceRefresh: boolean = false
-): Promise<{
-  standings: FormattedStandingGroup[] | null;
-  leagueId?: string;
-  teamInLeagueData?: {
-    teamId: string;
-    teamName: string;
-    leagueName: string;
-    leagueLogo: string;
-    position: number;
-  };
-}> {
+): Promise<TeamStandingsResult> {
   // キャッシュキー
   const cacheKey = `team-standings-${teamId}-${season}`;
 
@@ -35,53 +27,19 @@ export async function getTeamStandings(
     cacheKey,
     async () => {
       try {
-        // 1. チームが参加している大会一覧を取得
-        console.log(`チームの大会一覧取得: teamId=${teamId}, season=${season}`);
-        const leaguesUrl = createUrl('/leagues', { team: teamId, season });
-        const leaguesData = await fetchFromAPI(leaguesUrl);
+        // チームが所属する国内リーグを特定
+        const { leagueId, leagueName, leagueLogo } =
+          await getTeamDomesticLeague(teamId, season, forceRefresh);
 
-        if (!leaguesData.response || leaguesData.response.length === 0) {
+        if (!leagueId) {
           console.error(
-            `チームの参加大会データがありません: teamId=${teamId}, season=${season}`
+            `チームの所属リーグが特定できません: teamId=${teamId}, season=${season}`
           );
           return { standings: null };
         }
-
-        // 2. リーグタイプの大会を優先して選択
-        let selectedLeague = null;
-
-        // まず "League" タイプの大会を探す
-        for (const leagueData of leaguesData.response) {
-          if (leagueData.league && leagueData.league.type === 'League') {
-            selectedLeague = leagueData.league;
-            console.log(
-              `国内リーグを選択: ${selectedLeague.name} (${selectedLeague.id})`
-            );
-            break;
-          }
-        }
-
-        // "League" タイプがない場合は最初の大会を使用
-        if (!selectedLeague && leaguesData.response.length > 0) {
-          selectedLeague = leaguesData.response[0].league;
-          console.log(
-            `国内リーグが見つからないため他の大会を選択: ${selectedLeague.name} (${selectedLeague.id})`
-          );
-        }
-
-        if (!selectedLeague) {
-          console.error(
-            `有効な大会が見つかりません: teamId=${teamId}, season=${season}`
-          );
-          return { standings: null };
-        }
-
-        const leagueId = selectedLeague.id;
-        const leagueLogo = selectedLeague.logo;
 
         try {
-          // 3. 選択したリーグIDで順位表を取得
-          console.log(`順位表取得: leagueId=${leagueId}, season=${season}`);
+          // 選択したリーグIDで順位表を取得
           const standingsUrl = createUrl('/standings', {
             league: leagueId,
             season,
@@ -92,7 +50,7 @@ export async function getTeamStandings(
             console.error(
               `順位表データがありません: leagueId=${leagueId}, season=${season}`
             );
-            return { standings: null, leagueId: leagueId.toString() };
+            return { standings: null, leagueId };
           }
 
           const leagueStandingsData = standingsData.response[0]?.league;
@@ -100,12 +58,12 @@ export async function getTeamStandings(
             console.error(
               `リーグ順位表が見つかりません: leagueId=${leagueId}, season=${season}`
             );
-            return { standings: null, leagueId: leagueId.toString() };
+            return { standings: null, leagueId };
           }
 
-          // 4. 順位表データをフォーマット
+          // 順位表データをフォーマット
           let formattedStandings: FormattedStandingGroup[] = [];
-          let teamInLeagueData = undefined;
+          let teamInLeagueData: TeamStandingInfo | undefined = undefined;
 
           // グループ化された順位表か判断
           const isMultiGroup = Array.isArray(leagueStandingsData.standings[0]);
@@ -131,8 +89,10 @@ export async function getTeamStandings(
                       teamInLeagueData = {
                         teamId: teamId.toString(),
                         teamName: standing.team.name,
-                        leagueName: leagueStandingsData.name,
-                        leagueLogo: leagueStandingsData.logo || leagueLogo,
+                        leagueName:
+                          leagueStandingsData.name || leagueName || '',
+                        leagueLogo:
+                          leagueStandingsData.logo || leagueLogo || '',
                         position: standing.rank,
                       };
                     }
@@ -148,7 +108,8 @@ export async function getTeamStandings(
             // 単一グループの場合（通常のリーグ）
             formattedStandings = [
               {
-                groupName: leagueStandingsData.name || 'League Table',
+                groupName:
+                  leagueStandingsData.name || leagueName || 'League Table',
                 standings: leagueStandingsData.standings.map(
                   (standing: any) => {
                     const formatted = formatStanding(standing);
@@ -158,8 +119,10 @@ export async function getTeamStandings(
                       teamInLeagueData = {
                         teamId: teamId.toString(),
                         teamName: standing.team.name,
-                        leagueName: leagueStandingsData.name,
-                        leagueLogo: leagueStandingsData.logo || leagueLogo,
+                        leagueName:
+                          leagueStandingsData.name || leagueName || '',
+                        leagueLogo:
+                          leagueStandingsData.logo || leagueLogo || '',
                         position: standing.rank,
                       };
                     }
@@ -173,7 +136,7 @@ export async function getTeamStandings(
 
           return {
             standings: formattedStandings,
-            leagueId: leagueId.toString(),
+            leagueId,
             teamInLeagueData,
           };
         } catch (leagueError) {
@@ -183,7 +146,7 @@ export async function getTeamStandings(
           );
           return {
             standings: null,
-            leagueId: leagueId.toString(),
+            leagueId,
           };
         }
       } catch (error) {

@@ -8,6 +8,7 @@
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { CACHE_TTL } from '@/config/api';
+import { TeamInfo } from '../types/types';
 
 /**
  * チームの基本情報を取得する
@@ -19,7 +20,7 @@ import { CACHE_TTL } from '@/config/api';
 export async function getTeamById(
   teamId: number | string,
   forceRefresh: boolean = false
-) {
+): Promise<TeamInfo | null> {
   if (!teamId) {
     throw new Error('チームIDが指定されていません');
   }
@@ -39,7 +40,7 @@ export async function getTeamById(
         return null;
       }
 
-      return data.response[0];
+      return data.response[0] as TeamInfo;
     },
     cacheTTL,
     forceRefresh

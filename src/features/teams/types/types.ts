@@ -6,6 +6,7 @@
  */
 
 import { Team } from '@/types/football';
+import { FormattedStandingGroup } from '@/lib/api-football/types';
 
 // チーム詳細情報の型
 export interface TeamDetails extends Team {
@@ -23,6 +24,28 @@ export interface TeamInfoParams {
   includeSquad?: boolean;
 }
 
+// チーム基本情報の戻り値型
+export interface TeamInfo {
+  team: {
+    id: number;
+    name: string;
+    code?: string;
+    country: string;
+    founded: number;
+    national: boolean;
+    logo: string;
+  };
+  venue: {
+    id: number;
+    name: string;
+    address: string;
+    city: string;
+    capacity: number;
+    surface: string;
+    image: string;
+  };
+}
+
 // チーム試合取得パラメータの型
 export interface TeamFixturesParams {
   season?: number | string;
@@ -36,6 +59,37 @@ export interface TeamFixturesParams {
 export interface TeamPlayersParams {
   season?: number | string;
   forceRefresh?: boolean;
+}
+
+/**
+ * チーム所属リーグ情報の型
+ */
+export interface TeamLeagueInfo {
+  leagueId?: string;
+  leagueName?: string;
+  leagueLogo?: string;
+  leagueType?: string;
+  leagueCountry?: string;
+}
+
+/**
+ * チーム順位情報の型
+ */
+export interface TeamStandingInfo {
+  teamId: string;
+  teamName: string;
+  leagueName: string;
+  leagueLogo: string;
+  position: number;
+}
+
+/**
+ * 順位表取得結果の型
+ */
+export interface TeamStandingsResult {
+  standings: FormattedStandingGroup[] | null;
+  leagueId?: string;
+  teamInLeagueData?: TeamStandingInfo;
 }
 
 /**
