@@ -7,11 +7,7 @@
 import { fetchFromAPI, createUrl } from './index';
 import { withCache, createCacheKey } from './cache';
 import { CACHE_TTL, LEAGUE_SLUG_MAPPING } from '@/config/api';
-import {
-  PlayerWithStats,
-  FormattedPlayerStats,
-  ApiFootballPlayer,
-} from './types/players';
+import { PlayerWithStats, FormattedPlayerStats, ApiFootballPlayer } from './types/players';
 
 /**
  * 選手統計データをアプリ内で統一された形式に変換
@@ -127,9 +123,7 @@ export async function getPlayerStats(
         const formattedPlayers = data.response
           .map((player: PlayerWithStats) => formatPlayerStats(player))
           .filter(
-            (
-              player: FormattedPlayerStats | null
-            ): player is FormattedPlayerStats => player !== null
+            (player: FormattedPlayerStats | null): player is FormattedPlayerStats => player !== null
           );
 
         return formattedPlayers;

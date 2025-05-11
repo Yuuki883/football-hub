@@ -14,10 +14,7 @@ function toJapanTime(dateString: string): Date {
   return toZonedTime(date, TOKYO_TIMEZONE);
 }
 
-export function formatMatchDate(
-  dateString: string,
-  type: 'display' | 'group' = 'display'
-) {
+export function formatMatchDate(dateString: string, type: 'display' | 'group' = 'display') {
   // date-fns-tzを使用して日本時間に変換
   const date = toJapanTime(dateString);
 

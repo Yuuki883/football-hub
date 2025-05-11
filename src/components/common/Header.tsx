@@ -58,9 +58,7 @@ export default function Header() {
                 sizes="32px"
               />
             </div>
-            <span className="font-bold text-xl tracking-tight">
-              FootballHub
-            </span>
+            <span className="font-bold text-xl tracking-tight">FootballHub</span>
           </Link>
 
           {/* PCナビゲーション */}
@@ -70,9 +68,7 @@ export default function Header() {
                 key={item.path}
                 href={item.path}
                 className={`font-medium text-sm uppercase tracking-wide transition-colors hover:text-blue-200 flex items-center py-5 ${
-                  isActive(item.path)
-                    ? 'text-white border-b-2 border-white'
-                    : 'text-blue-100'
+                  isActive(item.path) ? 'text-white border-b-2 border-white' : 'text-blue-100'
                 }`}
               >
                 {item.name}

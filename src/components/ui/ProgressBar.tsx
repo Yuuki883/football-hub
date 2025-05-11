@@ -51,12 +51,7 @@ export function ProgressBar({
 
   return (
     <div
-      className={clsx(
-        styles.base,
-        styles.container,
-        styles.sizes[size],
-        className
-      )}
+      className={clsx(styles.base, styles.container, styles.sizes[size], className)}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={max}
@@ -121,10 +116,7 @@ export function ComparisonBar({
       {...props}
     >
       <div
-        className={clsx(
-          styles.indicator,
-          'text-xs flex items-center justify-center text-white'
-        )}
+        className={clsx(styles.indicator, 'text-xs flex items-center justify-center text-white')}
         style={{
           width: `${percent1}%`,
           backgroundColor: color1,
@@ -133,10 +125,7 @@ export function ComparisonBar({
         {value1 > 0 && percent1 > effectiveMinPercent ? `${value1}` : ''}
       </div>
       <div
-        className={clsx(
-          styles.indicator,
-          'text-xs flex items-center justify-center text-white'
-        )}
+        className={clsx(styles.indicator, 'text-xs flex items-center justify-center text-white')}
         style={{
           width: `${percent2}%`,
           backgroundColor: color2,

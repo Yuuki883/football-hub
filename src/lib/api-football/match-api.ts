@@ -110,12 +110,10 @@ export async function getAllMatchesByDate(
 
     // 並列処理で全リーグの試合を取得
     const matchPromises = leagueCodes.map((code) =>
-      getMatchesByDateRange(code, date, date, forceRefresh, season).catch(
-        (error) => {
-          console.error(`Error fetching matches for league ${code}:`, error);
-          return []; // エラー時は空配列を返してプロセスを継続
-        }
-      )
+      getMatchesByDateRange(code, date, date, forceRefresh, season).catch((error) => {
+        console.error(`Error fetching matches for league ${code}:`, error);
+        return []; // エラー時は空配列を返してプロセスを継続
+      })
     );
 
     const results = await Promise.all(matchPromises);
@@ -128,9 +126,7 @@ export async function getAllMatchesByDate(
     });
 
     // 試合開始時間順にソート
-    allMatches.sort(
-      (a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()
-    );
+    allMatches.sort((a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime());
 
     return allMatches;
   } catch (error) {

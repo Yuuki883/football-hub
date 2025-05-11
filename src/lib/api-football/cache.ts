@@ -32,10 +32,7 @@ export async function withCache<T>(
         try {
           return JSON.parse(cached);
         } catch (parseError) {
-          console.error(
-            `キャッシュデータのパースエラー: ${cacheKey}`,
-            parseError
-          );
+          console.error(`キャッシュデータのパースエラー: ${cacheKey}`, parseError);
           // パースエラー時は通常のフェッチを続行
         }
       }
@@ -71,10 +68,7 @@ export async function withCache<T>(
  * @param params キャッシュパラメータ
  * @returns フォーマット済みキャッシュキー
  */
-export function createCacheKey(
-  prefix: string,
-  params: Record<string, any>
-): string {
+export function createCacheKey(prefix: string, params: Record<string, any>): string {
   const filteredParams = Object.entries(params)
     .filter(([_, value]) => value !== undefined)
     .map(([key, value]) => `${key}:${value}`)

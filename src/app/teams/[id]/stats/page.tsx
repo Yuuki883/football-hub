@@ -34,10 +34,7 @@ export async function generateMetadata({
     }
 
     // チームの所属リーグを取得
-    const { leagueId, leagueName } = await getTeamDomesticLeague(
-      teamId,
-      season
-    );
+    const { leagueId, leagueName } = await getTeamDomesticLeague(teamId, season);
 
     if (!leagueId) {
       return {
@@ -65,10 +62,7 @@ export async function generateMetadata({
 }
 
 // ページコンポーネント
-export default async function TeamStatsPage({
-  params,
-  searchParams,
-}: TeamStatsPageProps) {
+export default async function TeamStatsPage({ params, searchParams }: TeamStatsPageProps) {
   const teamId = parseInt(params.id);
   const season = parseInt(searchParams.season || '2024');
 
@@ -81,10 +75,7 @@ export default async function TeamStatsPage({
     }
 
     // チームの所属リーグを取得
-    const { leagueId, leagueName } = await getTeamDomesticLeague(
-      teamId,
-      season
-    );
+    const { leagueId, leagueName } = await getTeamDomesticLeague(teamId, season);
 
     if (!leagueId) {
       // 所属リーグが見つからない場合はデフォルトリーグを使用
@@ -98,12 +89,8 @@ export default async function TeamStatsPage({
               <TeamHeader team={teamData.team} season={season} />
             </div>
             <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
-              <h2 className="text-xl font-bold mb-4">
-                統計データを取得できませんでした
-              </h2>
-              <p className="mb-4">
-                このチームの統計データは現在利用できません。
-              </p>
+              <h2 className="text-xl font-bold mb-4">統計データを取得できませんでした</h2>
+              <p className="mb-4">このチームの統計データは現在利用できません。</p>
             </div>
           </PageLayout>
         );
@@ -115,9 +102,7 @@ export default async function TeamStatsPage({
             <TeamHeader team={teamData.team} season={season} />
           </div>
 
-          <Suspense
-            fallback={<div className="text-center py-4">読み込み中...</div>}
-          >
+          <Suspense fallback={<div className="text-center py-4">読み込み中...</div>}>
             <TeamStatsView stats={stats} />
           </Suspense>
         </PageLayout>
@@ -134,12 +119,8 @@ export default async function TeamStatsPage({
             <TeamHeader team={teamData.team} season={season} />
           </div>
           <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
-            <h2 className="text-xl font-bold mb-4">
-              統計データを取得できませんでした
-            </h2>
-            <p className="mb-4">
-              {leagueName || '所属リーグ'}の統計データは現在利用できません。
-            </p>
+            <h2 className="text-xl font-bold mb-4">統計データを取得できませんでした</h2>
+            <p className="mb-4">{leagueName || '所属リーグ'}の統計データは現在利用できません。</p>
           </div>
         </PageLayout>
       );
@@ -157,9 +138,7 @@ export default async function TeamStatsPage({
           </h2>
         </div>
 
-        <Suspense
-          fallback={<div className="text-center py-4">読み込み中...</div>}
-        >
+        <Suspense fallback={<div className="text-center py-4">読み込み中...</div>}>
           <TeamStatsView stats={stats} />
         </Suspense>
       </PageLayout>

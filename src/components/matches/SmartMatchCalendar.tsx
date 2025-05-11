@@ -19,17 +19,13 @@ export default function SmartMatchCalendar({
 }: SmartMatchCalendarProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    propSelectedDate || new Date()
-  );
+  const [selectedDate, setSelectedDate] = useState<Date>(propSelectedDate || new Date());
 
   // 試合がある日付一覧を取得
   const { data: availableDates = [], isLoading } = useQuery({
     queryKey: ['match-dates', selectedLeague],
     queryFn: async () => {
-      const response = await fetch(
-        `/api/matches?leagueCode=${selectedLeague}&datesOnly=true`
-      );
+      const response = await fetch(`/api/matches?leagueCode=${selectedLeague}&datesOnly=true`);
       if (!response.ok) throw new Error('Failed to fetch available dates');
       const dates = await response.json();
       return dates.map((dateStr: string) => parseISO(dateStr));
@@ -55,19 +51,13 @@ export default function SmartMatchCalendar({
     // 試合日ナビゲーション
     if (!availableDates.length) return;
 
-    const sortedDates = [...availableDates].sort(
-      (a, b) => a.getTime() - b.getTime()
-    );
+    const sortedDates = [...availableDates].sort((a, b) => a.getTime() - b.getTime());
     let targetDate;
 
     if (direction === 'next') {
-      targetDate =
-        sortedDates.find((d) => d.getTime() > selectedDate.getTime()) ||
-        sortedDates[0];
+      targetDate = sortedDates.find((d) => d.getTime() > selectedDate.getTime()) || sortedDates[0];
     } else {
-      const prevDates = sortedDates.filter(
-        (d) => d.getTime() < selectedDate.getTime()
-      );
+      const prevDates = sortedDates.filter((d) => d.getTime() < selectedDate.getTime());
       targetDate = prevDates.length
         ? prevDates[prevDates.length - 1]
         : sortedDates[sortedDates.length - 1];
@@ -90,9 +80,7 @@ export default function SmartMatchCalendar({
 
   // サーバーサイドレンダリング時のスケルトン表示
   if (!isMounted) {
-    return (
-      <div className="mb-6 h-10 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>
-    );
+    return <div className="mb-6 h-10 bg-gray-100 dark:bg-gray-800 rounded animate-pulse"></div>;
   }
 
   return (
@@ -117,9 +105,7 @@ export default function SmartMatchCalendar({
             disabled={isLoading}
           >
             <Calendar className="w-4 h-4 mr-1" />
-            {isLoading
-              ? '読み込み中...'
-              : format(selectedDate, 'yyyy年M月d日(E)', { locale: ja })}
+            {isLoading ? '読み込み中...' : format(selectedDate, 'yyyy年M月d日(E)', { locale: ja })}
           </button>
           <button
             onClick={() => navigateDate('next', 'day')}
@@ -179,24 +165,18 @@ export default function SmartMatchCalendar({
               <div className="grid grid-cols-7 gap-1">
                 {/* 曜日ヘッダー */}
                 {['日', '月', '火', '水', '木', '金', '土'].map((day) => (
-                  <div
-                    key={day}
-                    className="text-center text-sm font-medium p-2"
-                  >
+                  <div key={day} className="text-center text-sm font-medium p-2">
                     {day}
                   </div>
                 ))}
 
                 {/* カレンダー日付 */}
-                {generateCalendar(selectedDate, availableDates).map(
-                  (calDay, index) => (
-                    <button
-                      key={index}
-                      onClick={() =>
-                        calDay.hasMatch ? handleDateSelect(calDay.date) : null
-                      }
-                      disabled={!calDay.hasMatch}
-                      className={`
+                {generateCalendar(selectedDate, availableDates).map((calDay, index) => (
+                  <button
+                    key={index}
+                    onClick={() => (calDay.hasMatch ? handleDateSelect(calDay.date) : null)}
+                    disabled={!calDay.hasMatch}
+                    className={`
                       text-center p-2 rounded
                       ${calDay.isCurrentMonth ? '' : 'text-gray-400'}
                       ${
@@ -211,12 +191,11 @@ export default function SmartMatchCalendar({
                       }
                       ${isToday(calDay.date) ? 'border border-blue-500' : ''}
                     `}
-                      title={calDay.hasMatch ? '試合あり' : '試合なし'}
-                    >
-                      {format(calDay.date, 'd')}
-                    </button>
-                  )
-                )}
+                    title={calDay.hasMatch ? '試合あり' : '試合なし'}
+                  >
+                    {format(calDay.date, 'd')}
+                  </button>
+                ))}
               </div>
             )}
           </div>

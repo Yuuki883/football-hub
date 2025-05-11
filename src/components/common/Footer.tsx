@@ -33,16 +33,11 @@ export default function Footer() {
 
           {/* メインリンク */}
           <div>
-            <h3 className="text-lg font-medium mb-4 text-white">
-              サイトマップ
-            </h3>
+            <h3 className="text-lg font-medium mb-4 text-white">サイトマップ</h3>
             <ul className="space-y-2">
               {footerLinks.map((link) => (
                 <li key={link.path}>
-                  <Link
-                    href={link.path}
-                    className="text-sm hover:text-white transition-colors"
-                  >
+                  <Link href={link.path} className="text-sm hover:text-white transition-colors">
                     {link.name}
                   </Link>
                 </li>

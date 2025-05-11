@@ -48,9 +48,7 @@ export async function fetchNews(limit: number = 6): Promise<NewsItem[]> {
 
     // 日付でソートして指定された件数を返す
     const sortedNews = allNews
-      .sort(
-        (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-      )
+      .sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime())
       .slice(0, limit);
 
     return sortedNews;

@@ -18,16 +18,13 @@ interface TeamStandingsPageProps {
 }
 
 // 動的メタデータ生成
-export async function generateMetadata({
-  params,
-}: TeamStandingsPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: TeamStandingsPageProps): Promise<Metadata> {
   const { id } = params;
 
   try {
     const teamData = await getTeamById(id);
 
     if (!teamData) {
-      console.log(`メタデータ生成: チームID ${id} のデータが見つかりません`);
       return {
         title: '順位表 | チームが見つかりません',
       };
@@ -48,12 +45,8 @@ export async function generateMetadata({
 // ISR - 1時間ごとに再検証
 export const revalidate = 3600;
 
-export default async function TeamStandingsPage({
-  params,
-  searchParams,
-}: TeamStandingsPageProps) {
+export default async function TeamStandingsPage({ params, searchParams }: TeamStandingsPageProps) {
   const { id } = params;
-  console.log(`順位表ページ: チームID ${id} のデータを取得します`);
 
   const season = parseInt(searchParams.season || '2024');
 
@@ -67,16 +60,11 @@ export default async function TeamStandingsPage({
     }
 
     // チームの所属リーグの順位表を取得
-    const { standings, leagueId, teamInLeagueData } = await getTeamStandings(
-      id,
-      season
-    );
+    const { standings, leagueId, teamInLeagueData } = await getTeamStandings(id, season);
 
     if (!standings) {
       console.error(
-        `チームID ${id} の順位表データが見つかりません (リーグID: ${
-          leagueId || 'unknown'
-        })`
+        `チームID ${id} の順位表データが見つかりません (リーグID: ${leagueId || 'unknown'})`
       );
       // notFoundではなくエラーメッセージを表示する
       return (
@@ -86,12 +74,8 @@ export default async function TeamStandingsPage({
           </div>
 
           <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 text-center">
-            <h2 className="text-xl font-bold mb-4">
-              順位表データを取得できませんでした
-            </h2>
-            <p className="mb-4">
-              このチームの順位表データは現在利用できません。
-            </p>
+            <h2 className="text-xl font-bold mb-4">順位表データを取得できませんでした</h2>
+            <p className="mb-4">このチームの順位表データは現在利用できません。</p>
           </div>
         </PageLayout>
       );
@@ -104,9 +88,7 @@ export default async function TeamStandingsPage({
         </div>
 
         <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-          <Suspense
-            fallback={<div className="text-center py-4">読み込み中...</div>}
-          >
+          <Suspense fallback={<div className="text-center py-4">読み込み中...</div>}>
             <div className="flex items-center gap-3 mb-5">
               {teamInLeagueData?.leagueLogo && (
                 <div className="relative w-8 h-8 flex-shrink-0">
@@ -123,24 +105,15 @@ export default async function TeamStandingsPage({
                   />
                 </div>
               )}
-              <h1 className="text-xl font-bold">
-                {teamInLeagueData?.leagueName || ''}
-              </h1>
+              <h1 className="text-xl font-bold">{teamInLeagueData?.leagueName || ''}</h1>
             </div>
-            <StandingsTable
-              standings={standings}
-              season={season}
-              highlightTeamId={id}
-            />
+            <StandingsTable standings={standings} season={season} highlightTeamId={id} />
           </Suspense>
         </div>
       </PageLayout>
     );
   } catch (error) {
-    console.error(
-      `チームID ${id} の順位表ページでエラーが発生しました:`,
-      error
-    );
+    console.error(`チームID ${id} の順位表ページでエラーが発生しました:`, error);
     notFound();
   }
 }

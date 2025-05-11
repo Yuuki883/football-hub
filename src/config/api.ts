@@ -9,9 +9,7 @@
 export const API_FOOTBALL = {
   KEY: process.env.API_FOOTBALL_KEY || '',
   HOST: process.env.API_FOOTBALL_HOST || '',
-  BASE_URL:
-    process.env.API_FOOTBALL_BASE_URL ||
-    `https://${process.env.API_FOOTBALL_HOST}/v3`,
+  BASE_URL: process.env.API_FOOTBALL_BASE_URL || `https://${process.env.API_FOOTBALL_HOST}/v3`,
 };
 
 // リーグID (API-Football)のマッピング

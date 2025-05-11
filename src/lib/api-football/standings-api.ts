@@ -81,35 +81,30 @@ export async function getStandings(
 
       // 複数グループかどうかを判断
       const isMultiGroup =
-        MULTI_GROUP_LEAGUES.includes(Number(leagueId)) ||
-        Array.isArray(responseData.standings[0]);
+        MULTI_GROUP_LEAGUES.includes(Number(leagueId)) || Array.isArray(responseData.standings[0]);
 
       if (isMultiGroup) {
         // 複数グループの場合（Champions Leagueなど）
-        return responseData.standings.map(
-          (group: TeamStanding[], index: number) => {
-            let groupName = `Group ${String.fromCharCode(65 + index)}`; // Group A, B, C...
+        return responseData.standings.map((group: TeamStanding[], index: number) => {
+          let groupName = `Group ${String.fromCharCode(65 + index)}`; // Group A, B, C...
 
-            // グループ名がデータに含まれている場合はそれを使用
-            if (group.length > 0 && group[0].group) {
-              groupName = group[0].group;
-            }
-
-            return {
-              groupName,
-              standings: group.map((teamStanding) =>
-                formatStanding(teamStanding)
-              ),
-            };
+          // グループ名がデータに含まれている場合はそれを使用
+          if (group.length > 0 && group[0].group) {
+            groupName = group[0].group;
           }
-        );
+
+          return {
+            groupName,
+            standings: group.map((teamStanding) => formatStanding(teamStanding)),
+          };
+        });
       } else {
         // 単一グループの場合（通常のリーグ）
         return [
           {
             groupName: responseData.name || 'League Table',
-            standings: responseData.standings.map(
-              (teamStanding: TeamStanding) => formatStanding(teamStanding)
+            standings: responseData.standings.map((teamStanding: TeamStanding) =>
+              formatStanding(teamStanding)
             ),
           },
         ];

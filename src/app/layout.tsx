@@ -30,9 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body
-        className={`${inter.variable} antialiased min-h-screen flex flex-col`}
-      >
+      <body className={`${inter.variable} antialiased min-h-screen flex flex-col`}>
         <QueryProvider>
           <Header />
           <div className="flex-grow">{children}</div>

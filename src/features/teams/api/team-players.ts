@@ -78,14 +78,13 @@ export async function getTeamPlayers(
  */
 export function groupPlayersByPosition(players: TeamPlayer[]): PlayerGroup[] {
   // ポジションの表示順序とその表示名
-  const positionOrder: Record<string, { order: number; displayName: string }> =
-    {
-      Goalkeeper: { order: 1, displayName: 'ゴールキーパー' },
-      Defender: { order: 2, displayName: 'ディフェンダー' },
-      Midfielder: { order: 3, displayName: 'ミッドフィールダー' },
-      Attacker: { order: 4, displayName: 'アタッカー' },
-      Unknown: { order: 999, displayName: 'その他' },
-    };
+  const positionOrder: Record<string, { order: number; displayName: string }> = {
+    Goalkeeper: { order: 1, displayName: 'ゴールキーパー' },
+    Defender: { order: 2, displayName: 'ディフェンダー' },
+    Midfielder: { order: 3, displayName: 'ミッドフィールダー' },
+    Attacker: { order: 4, displayName: 'アタッカー' },
+    Unknown: { order: 999, displayName: 'その他' },
+  };
 
   // ポジション名を標準化する関数
   const normalizePosition = (pos: string): string => {
@@ -131,7 +130,6 @@ export function groupPlayersByPosition(players: TeamPlayer[]): PlayerGroup[] {
     }))
     .sort(
       (a, b) =>
-        (positionOrder[a.position]?.order || 999) -
-        (positionOrder[b.position]?.order || 999)
+        (positionOrder[a.position]?.order || 999) - (positionOrder[b.position]?.order || 999)
     );
 }

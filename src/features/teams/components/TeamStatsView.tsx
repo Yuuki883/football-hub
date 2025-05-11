@@ -5,17 +5,9 @@ import { TeamStats } from '../types/types';
 import { ProgressBar, ComparisonBar } from '@/components/ui/ProgressBar';
 import { MIN_LABEL_PCT } from '../constants/stats';
 
-const StatCard = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => (
+const StatCard = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <section className="bg-white p-4 rounded-lg shadow-md">
-    <h3 className="text-lg font-semibold mb-3 pb-2 border-b border-gray-200">
-      {title}
-    </h3>
+    <h3 className="text-lg font-semibold mb-3 pb-2 border-b border-gray-200">{title}</h3>
     {children}
   </section>
 );
@@ -39,9 +31,7 @@ const ResultRow = ({
       <span>{label}</span>
       <div className="flex items-center gap-1">
         <span className="font-bold">{value}</span>
-        {pct !== undefined && (
-          <span className="text-xs text-gray-500">({pct}%)</span>
-        )}
+        {pct !== undefined && <span className="text-xs text-gray-500">({pct}%)</span>}
       </div>
     </div>
     {subtitle && <div className="text-sm text-gray-600">{subtitle}</div>}
@@ -64,10 +54,7 @@ export default function TeamStatsView({ stats }: { stats: TeamStats }) {
   const { fixtures, goals } = stats;
 
   const topFormations = useMemo(
-    () =>
-      [...(stats.lineups ?? [])]
-        .sort((a, b) => b.played - a.played)
-        .slice(0, 3),
+    () => [...(stats.lineups ?? [])].sort((a, b) => b.played - a.played).slice(0, 3),
     [stats.lineups]
   );
 
@@ -105,11 +92,7 @@ export default function TeamStatsView({ stats }: { stats: TeamStats }) {
               </div>
             </ResultRow>
 
-            <ResultRow
-              label="引き分け"
-              value={fixtures.draws.total}
-              pct={rates.draw}
-            >
+            <ResultRow label="引き分け" value={fixtures.draws.total} pct={rates.draw}>
               <ComparisonBar
                 value1={fixtures.draws.home}
                 value2={fixtures.draws.away}
@@ -123,11 +106,7 @@ export default function TeamStatsView({ stats }: { stats: TeamStats }) {
               </div>
             </ResultRow>
 
-            <ResultRow
-              label="敗北"
-              value={fixtures.loses.total}
-              pct={rates.lose}
-            >
+            <ResultRow label="敗北" value={fixtures.loses.total} pct={rates.lose}>
               <ComparisonBar
                 value1={fixtures.loses.home}
                 value2={fixtures.loses.away}
@@ -183,14 +162,8 @@ export default function TeamStatsView({ stats }: { stats: TeamStats }) {
             </ResultRow>
 
             <div className="grid grid-cols-2 gap-4 mt-4">
-              <StatBox
-                label="クリーンシート"
-                value={stats.clean_sheet?.total || 0}
-              />
-              <StatBox
-                label="無得点試合"
-                value={stats.failed_to_score?.total || 0}
-              />
+              <StatBox label="クリーンシート" value={stats.clean_sheet?.total || 0} />
+              <StatBox label="無得点試合" value={stats.failed_to_score?.total || 0} />
             </div>
           </div>
         </StatCard>
@@ -206,12 +179,7 @@ export default function TeamStatsView({ stats }: { stats: TeamStats }) {
                   <span className="font-medium">{f.formation}</span>
                   <span className="text-sm">{f.played}試合</span>
                 </div>
-                <ProgressBar
-                  value={f.played}
-                  max={total}
-                  size="sm"
-                  color="#0000cd"
-                />
+                <ProgressBar value={f.played} max={total} size="sm" color="#0000cd" />
               </div>
             ))}
           </div>

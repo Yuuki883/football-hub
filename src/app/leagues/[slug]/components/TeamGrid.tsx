@@ -29,9 +29,7 @@ interface TeamGridProps {
 const TeamGrid: React.FC<TeamGridProps> = ({ teams }) => {
   if (!teams || teams.length === 0) {
     return (
-      <div className="p-4 bg-gray-50 rounded-lg text-center">
-        チームデータが見つかりません
-      </div>
+      <div className="p-4 bg-gray-50 rounded-lg text-center">チームデータが見つかりません</div>
     );
   }
 
@@ -44,20 +42,10 @@ const TeamGrid: React.FC<TeamGridProps> = ({ teams }) => {
           className="flex flex-col items-center p-4 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow"
         >
           <div className="relative w-20 h-20 mb-3">
-            <Image
-              src={team.logo}
-              alt={team.name}
-              fill
-              sizes="80px"
-              className="object-contain"
-            />
+            <Image src={team.logo} alt={team.name} fill sizes="80px" className="object-contain" />
           </div>
           <h3 className="text-sm font-medium text-center">{team.name}</h3>
-          {team.founded && (
-            <div className="text-xs text-gray-500 mt-1">
-              創立: {team.founded}年
-            </div>
-          )}
+          {team.founded && <div className="text-xs text-gray-500 mt-1">創立: {team.founded}年</div>}
         </Link>
       ))}
     </div>

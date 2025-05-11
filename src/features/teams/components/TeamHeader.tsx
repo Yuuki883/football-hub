@@ -18,11 +18,7 @@ interface TeamHeaderProps {
   children?: React.ReactNode;
 }
 
-export default function TeamHeader({
-  team,
-  season = 2024,
-  children,
-}: TeamHeaderProps) {
+export default function TeamHeader({ team, season = 2024, children }: TeamHeaderProps) {
   const pathname = usePathname();
   const teamId = team.id.toString();
   const basePath = `/teams/${teamId}`;
@@ -45,9 +41,7 @@ export default function TeamHeader({
   }
 
   // ナビゲーション生成
-  const navigation = (
-    <TabNavigation tabs={tabs} basePath={basePath}></TabNavigation>
-  );
+  const navigation = <TabNavigation tabs={tabs} basePath={basePath}></TabNavigation>;
 
   return (
     <EntityHeader

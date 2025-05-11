@@ -1,8 +1,4 @@
-export const UEFA_LEAGUES = [
-  'champions-league',
-  'europa-league',
-  'conference-league',
-] as const;
+export const UEFA_LEAGUES = ['champions-league', 'europa-league', 'conference-league'] as const;
 
 export const LEGEND_LABELS = {
   KNOCKOUT: '決勝T',

@@ -105,9 +105,7 @@ export default function AllMatchesSection() {
   const handleRefresh = useCallback(async () => {
     try {
       // forceRefreshパラメータを追加して直接フェッチ
-      const response = await fetch(
-        `/api/matches?date=${dateStr}&forceRefresh=true`
-      );
+      const response = await fetch(`/api/matches?date=${dateStr}&forceRefresh=true`);
 
       if (!response.ok) {
         throw new Error('更新に失敗しました');
@@ -150,9 +148,7 @@ export default function AllMatchesSection() {
 
     // 各リーグ内で試合開始時間でソート
     Object.values(result).forEach((league) => {
-      league.matches.sort(
-        (a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()
-      );
+      league.matches.sort((a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime());
     });
 
     return result;
@@ -163,9 +159,7 @@ export default function AllMatchesSection() {
       {/* ヘッダー部分: タイトルのみ表示 */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-            試合一覧
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">試合一覧</h2>
         </div>
       </div>
 
@@ -191,11 +185,7 @@ export default function AllMatchesSection() {
             {/* リーグごとの表示 */}
             <div className="px-2 py-1 sm:px-4 sm:py-2 space-y-4">
               {Object.values(matchesByLeague).map((league) => (
-                <LeagueMatchesCard
-                  key={league.id}
-                  league={league}
-                  isExpanded={true}
-                />
+                <LeagueMatchesCard key={league.id} league={league} isExpanded={true} />
               ))}
             </div>
           </div>
@@ -218,9 +208,7 @@ function LeagueMatchesCard({ league }: LeagueMatchesCardProps) {
       (m) => m.status === 'IN_PLAY' || m.status === 'PAUSED'
     ).length;
 
-    const finishedCount = league.matches.filter(
-      (m) => m.status === 'FINISHED'
-    ).length;
+    const finishedCount = league.matches.filter((m) => m.status === 'FINISHED').length;
 
     return { liveCount, finishedCount, totalCount: league.matches.length };
   }, [league.matches]);
@@ -246,9 +234,7 @@ function LeagueMatchesCard({ league }: LeagueMatchesCardProps) {
                 Live {statusSummary.liveCount}
               </span>
             )}
-            <span className="text-sm text-gray-500">
-              ({league.matches.length}試合)
-            </span>
+            <span className="text-sm text-gray-500">({league.matches.length}試合)</span>
           </div>
         </div>
       </div>
@@ -284,11 +270,7 @@ function MatchRow({ match }: { match: Match }) {
   // スコア表示用のテキスト
   const getScoreDisplay = () => {
     // 試合終了またはLIVE中の場合は実際のスコアを表示
-    if (
-      match.status === 'FINISHED' ||
-      match.status === 'IN_PLAY' ||
-      match.status === 'PAUSED'
-    ) {
+    if (match.status === 'FINISHED' || match.status === 'IN_PLAY' || match.status === 'PAUSED') {
       return `${match.score?.home ?? '0'}-${match.score?.away ?? '0'}`;
     }
     // 予定試合の場合はVSを表示
@@ -330,9 +312,7 @@ function MatchRow({ match }: { match: Match }) {
           </div>
         ) : (
           <div className="text-xs px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-            {match.score
-              ? `${match.score.home ?? '0'}-${match.score.away ?? '0'}`
-              : 'VS'}
+            {match.score ? `${match.score.home ?? '0'}-${match.score.away ?? '0'}` : 'VS'}
           </div>
         )}
       </div>
@@ -373,10 +353,7 @@ function MatchesSkeleton() {
           <div className="bg-gray-200 dark:bg-gray-700 h-10 rounded mb-3" />
           {/* 試合行スケルトン */}
           {[...Array(3)].map((_, j) => (
-            <div
-              key={j}
-              className="bg-gray-200 dark:bg-gray-700 h-16 rounded mb-2"
-            />
+            <div key={j} className="bg-gray-200 dark:bg-gray-700 h-16 rounded mb-2" />
           ))}
         </div>
       ))}
@@ -389,9 +366,7 @@ function ErrorDisplay({ error, onRetry }: { error: any; onRetry: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
       <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4 max-w-md">
-        <p className="text-red-700 dark:text-red-400 mb-2">
-          データの取得中にエラーが発生しました
-        </p>
+        <p className="text-red-700 dark:text-red-400 mb-2">データの取得中にエラーが発生しました</p>
         <p className="text-sm text-red-600 dark:text-red-300 mb-4">
           {error instanceof Error ? error.message : '不明なエラー'}
         </p>
@@ -413,9 +388,7 @@ function EmptyMatchesDisplay({ date }: { date: Date }) {
       <p className="text-lg text-gray-600 dark:text-gray-300 mb-2">
         {format(date, 'yyyy年M月d日(E)', { locale: ja })}の試合はありません
       </p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        別の日付を選択してください
-      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-400">別の日付を選択してください</p>
     </div>
   );
 }

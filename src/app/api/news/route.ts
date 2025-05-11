@@ -35,9 +35,6 @@ export async function GET(request: Request) {
     return NextResponse.json(newsItems);
   } catch (error) {
     console.error('Failed to fetch news:', error);
-    return NextResponse.json(
-      { error: 'ニュースの取得に失敗しました' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'ニュースの取得に失敗しました' }, { status: 500 });
   }
 }

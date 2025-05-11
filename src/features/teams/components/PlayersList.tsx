@@ -16,10 +16,7 @@ export default function PlayersList({ playerGroups }: PlayersListProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {group.players.map((player) => (
-              <div
-                key={player.id}
-                className="bg-gray-50 rounded-lg p-4 flex flex-col"
-              >
+              <div key={player.id} className="bg-gray-50 rounded-lg p-4 flex flex-col">
                 <div className="relative h-48 mb-3 bg-gray-200 rounded-md overflow-hidden">
                   {player.photo ? (
                     <Image
@@ -43,9 +40,7 @@ export default function PlayersList({ playerGroups }: PlayersListProps) {
                       {player.number}
                     </span>
                   )}
-                  <h3 className="font-bold text-gray-800 truncate">
-                    {player.name}
-                  </h3>
+                  <h3 className="font-bold text-gray-800 truncate">{player.name}</h3>
                 </div>
 
                 <div className="text-sm text-gray-600 space-y-1 mt-auto">

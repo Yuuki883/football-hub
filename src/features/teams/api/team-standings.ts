@@ -28,13 +28,14 @@ export async function getTeamStandings(
     async () => {
       try {
         // チームが所属する国内リーグを特定
-        const { leagueId, leagueName, leagueLogo } =
-          await getTeamDomesticLeague(teamId, season, forceRefresh);
+        const { leagueId, leagueName, leagueLogo } = await getTeamDomesticLeague(
+          teamId,
+          season,
+          forceRefresh
+        );
 
         if (!leagueId) {
-          console.error(
-            `チームの所属リーグが特定できません: teamId=${teamId}, season=${season}`
-          );
+          console.error(`チームの所属リーグが特定できません: teamId=${teamId}, season=${season}`);
           return { standings: null };
         }
 
@@ -47,17 +48,13 @@ export async function getTeamStandings(
           const standingsData = await fetchFromAPI(standingsUrl);
 
           if (!standingsData.response || standingsData.response.length === 0) {
-            console.error(
-              `順位表データがありません: leagueId=${leagueId}, season=${season}`
-            );
+            console.error(`順位表データがありません: leagueId=${leagueId}, season=${season}`);
             return { standings: null, leagueId };
           }
 
           const leagueStandingsData = standingsData.response[0]?.league;
           if (!leagueStandingsData?.standings) {
-            console.error(
-              `リーグ順位表が見つかりません: leagueId=${leagueId}, season=${season}`
-            );
+            console.error(`リーグ順位表が見つかりません: leagueId=${leagueId}, season=${season}`);
             return { standings: null, leagueId };
           }
 
@@ -89,10 +86,8 @@ export async function getTeamStandings(
                       teamInLeagueData = {
                         teamId: teamId.toString(),
                         teamName: standing.team.name,
-                        leagueName:
-                          leagueStandingsData.name || leagueName || '',
-                        leagueLogo:
-                          leagueStandingsData.logo || leagueLogo || '',
+                        leagueName: leagueStandingsData.name || leagueName || '',
+                        leagueLogo: leagueStandingsData.logo || leagueLogo || '',
                         position: standing.rank,
                       };
                     }
@@ -108,28 +103,23 @@ export async function getTeamStandings(
             // 単一グループの場合（通常のリーグ）
             formattedStandings = [
               {
-                groupName:
-                  leagueStandingsData.name || leagueName || 'League Table',
-                standings: leagueStandingsData.standings.map(
-                  (standing: any) => {
-                    const formatted = formatStanding(standing);
+                groupName: leagueStandingsData.name || leagueName || 'League Table',
+                standings: leagueStandingsData.standings.map((standing: any) => {
+                  const formatted = formatStanding(standing);
 
-                    // チームの順位情報を記録
-                    if (standing.team.id.toString() === teamId.toString()) {
-                      teamInLeagueData = {
-                        teamId: teamId.toString(),
-                        teamName: standing.team.name,
-                        leagueName:
-                          leagueStandingsData.name || leagueName || '',
-                        leagueLogo:
-                          leagueStandingsData.logo || leagueLogo || '',
-                        position: standing.rank,
-                      };
-                    }
-
-                    return formatted;
+                  // チームの順位情報を記録
+                  if (standing.team.id.toString() === teamId.toString()) {
+                    teamInLeagueData = {
+                      teamId: teamId.toString(),
+                      teamName: standing.team.name,
+                      leagueName: leagueStandingsData.name || leagueName || '',
+                      leagueLogo: leagueStandingsData.logo || leagueLogo || '',
+                      position: standing.rank,
+                    };
                   }
-                ),
+
+                  return formatted;
+                }),
               },
             ];
           }
@@ -140,20 +130,14 @@ export async function getTeamStandings(
             teamInLeagueData,
           };
         } catch (leagueError) {
-          console.error(
-            `リーグ順位表の取得に失敗しました: leagueId=${leagueId}`,
-            leagueError
-          );
+          console.error(`リーグ順位表の取得に失敗しました: leagueId=${leagueId}`, leagueError);
           return {
             standings: null,
             leagueId,
           };
         }
       } catch (error) {
-        console.error(
-          `チーム順位表の取得に失敗しました: teamId=${teamId}`,
-          error
-        );
+        console.error(`チーム順位表の取得に失敗しました: teamId=${teamId}`, error);
         return { standings: null };
       }
     },

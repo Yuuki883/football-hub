@@ -10,10 +10,7 @@ export default async function NewsHighlightsSection() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <Link
-          href="/news"
-          className="text-blue-600 dark:text-blue-400 hover:underline"
-        >
+        <Link href="/news" className="text-blue-600 dark:text-blue-400 hover:underline">
           すべてのニュースを見る
         </Link>
       </div>

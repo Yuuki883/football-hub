@@ -34,10 +34,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function MatchesPage({
-  params,
-  searchParams,
-}: MatchesPageProps) {
+export default async function MatchesPage({ params, searchParams }: MatchesPageProps) {
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
 
