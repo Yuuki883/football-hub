@@ -5,37 +5,10 @@
  */
 import { API_FOOTBALL } from '@/config/api';
 import { PlayerDetail } from '../types/types';
-import { Team } from '@/types/football';
-import { isNationalTeam } from './countries-helper';
-
-// APIから返される統計情報の型
-interface PlayerStats {
-  team?: {
-    id: number;
-    name: string;
-    logo: string;
-  };
-  league?: {
-    id: number;
-    name: string;
-    logo: string;
-    season: string;
-  };
-  games?: {
-    appearences?: number;
-    minutes?: number;
-    position?: string;
-    rating?: string;
-  };
-  goals?: {
-    total?: number;
-    assists?: number;
-  };
-  cards?: {
-    yellow?: number;
-    red?: number;
-  };
-}
+import { transformPlayerBasicInfo, transformPlayerStats } from './player-transformer';
+import { processTeamHistory } from './player-team-history';
+import { extractTransferHistory } from './player-transfers';
+import { transformTransferHistory } from './player-transformer';
 
 /**
  * 選手詳細情報を取得
@@ -99,153 +72,28 @@ export async function getPlayerDetails(
     const playerData = playerInfoData.response[0];
     const player = playerData.player;
 
-    // 有効な統計データを探す
-    let currentStats: PlayerStats = {};
-    if (playerData.statistics && playerData.statistics.length > 0) {
-      // 統計データを順番に確認し、有効なものを採用
-      for (const stats of playerData.statistics) {
-        if (
-          stats.games?.appearences ||
-          stats.goals?.total ||
-          stats.goals?.assists ||
-          stats.games?.rating
-        ) {
-          currentStats = stats;
-          break;
-        }
-      }
+    // 選手の基本情報を変換
+    const playerInfo = transformPlayerBasicInfo(player);
 
-      // 有効なデータが見つからなければ最初のエントリを使用
-      if (Object.keys(currentStats).length === 0) {
-        currentStats = playerData.statistics[0] || {};
-      }
-    }
+    // 統計情報を変換し、現在のチーム情報も取得
+    const { stats, currentTeam } = transformPlayerStats(playerData.statistics || []);
 
-    // リーグ情報の抽出
-    const leagueInfo = currentStats.league
-      ? {
-          id: currentStats.league.id,
-          name: currentStats.league.name,
-          logo: currentStats.league.logo,
-          season: currentStats.league.season,
-        }
-      : undefined;
+    // チーム履歴データを処理
+    const teamHistoryEntries = await processTeamHistory(teamsHistoryData);
 
-    // 現在のチーム情報
-    const currentTeam: Team | undefined = currentStats.team
-      ? {
-          id: currentStats.team.id,
-          name: currentStats.team.name,
-          logo: currentStats.team.logo,
-        }
-      : undefined;
-
-    // 代表チーム履歴の作成
-    const nationalTeamHistoryPromises =
-      teamsHistoryData.response?.map(async (entry: any) => {
-        // API-Football v3では直接seasonsが提供されているのでそれを使用
-        const seasons = entry.seasons || [];
-        // 数値を文字列に変換して昇順ソート
-        const sortedSeasons = [...seasons].map((s) => String(s)).sort();
-
-        // 開始と終了のシーズンを設定
-        const startSeason = sortedSeasons.length > 0 ? sortedSeasons[0] : '';
-        const endSeason =
-          sortedSeasons.length > 1 && sortedSeasons[sortedSeasons.length - 1] !== startSeason
-            ? sortedSeasons[sortedSeasons.length - 1]
-            : undefined;
-
-        // 非同期で代表チーム判定を実行
-        const nationalTeamStatus = await isNationalTeam(entry.team.name);
-
-        // 代表チームの場合のみ返す
-        if (nationalTeamStatus) {
-          return {
-            team: {
-              id: entry.team.id,
-              name: entry.team.name,
-              logo: entry.team.logo,
-            },
-            startSeason,
-            endSeason,
-            isNationalTeam: true,
-          };
-        }
-        return null;
-      }) || [];
-
-    // 代表チームデータのみをフィルタリング（nullを除外）
-    const nationalTeamHistory = (await Promise.all(nationalTeamHistoryPromises)).filter(
-      (item) => item !== null
-    );
-
-    // 移籍履歴データの作成
-    let clubTransferHistory: any[] = [];
-
-    if (transfersData.response?.length > 0 && transfersData.response[0].transfers?.length > 0) {
-      // 移籍データが存在する場合
-      const transfers = transfersData.response[0].transfers;
-
-      // 最新の移籍から順に表示するため逆順にする
-      clubTransferHistory = transfers.map((transfer: any) => {
-        return {
-          team: {
-            id: transfer.teams.in.id,
-            name: transfer.teams.in.name,
-            logo: transfer.teams.in.logo,
-          },
-          transferDate: transfer.date,
-          transferType: transfer.type,
-          fromTeam: {
-            id: transfer.teams.out.id,
-            name: transfer.teams.out.name,
-            logo: transfer.teams.out.logo,
-          },
-          isNationalTeam: false,
-        };
-      });
-    }
-
-    // 移籍履歴と代表チーム履歴を結合
-    const transferHistory = [...clubTransferHistory, ...nationalTeamHistory];
-
-    // レーティングの整形（"7.866666" -> "7.9"）
-    const formatRating = (rating?: string) => {
-      if (!rating) return undefined;
-      const ratingNum = parseFloat(rating);
-      return ratingNum ? ratingNum.toFixed(1) : undefined;
-    };
+    // 移籍履歴を処理
+    const transferHistory = transformTransferHistory(transfersData, teamHistoryEntries);
 
     // 選手詳細情報を統合
     const playerDetail: PlayerDetail = {
       // 基本情報
-      id: player.id,
-      name: player.name,
-      firstName: player.firstname,
-      lastName: player.lastname,
-      age: player.age,
-      birthDate: player.birth?.date,
-      nationality: player.nationality,
-      height: player.height,
-      weight: player.weight,
-      photo: player.photo,
-      // API-Footballのレスポンス構造に合わせて修正
-      position: player.position || currentStats.games?.position || '不明',
+      ...playerInfo,
 
       // 所属チーム
       team: currentTeam,
 
       // 今シーズンの統計
-      stats: {
-        appearances: currentStats.games?.appearences,
-        minutes: currentStats.games?.minutes,
-        goals: currentStats.goals?.total,
-        assists: currentStats.goals?.assists,
-        yellowCards: currentStats.cards?.yellow,
-        redCards: currentStats.cards?.red,
-        rating: formatRating(currentStats.games?.rating),
-        league: leagueInfo,
-      },
+      stats,
 
       // 移籍履歴
       transferHistory,

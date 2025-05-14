@@ -16,6 +16,16 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
   // 国籍表示用のクラス名（国旗emoji表示のため）
   const countryClass = player.nationality ? `fi fi-${getNationalityCode(player.nationality)}` : '';
 
+  // フルネームを生成
+  const getFullName = () => {
+    // 姓名が両方ある場合は姓名を表示
+    if (player.firstName && player.lastName) {
+      return `${player.firstName} ${player.lastName}`;
+    }
+    // 通常の表示名を使用
+    return player.name;
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden sticky top-24">
       {/* 選手写真 */}
@@ -40,7 +50,7 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
       <div className="p-6">
         {/* 選手名とチーム */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">{player.name}</h1>
+          <h1 className="text-2xl font-bold text-slate-800">{getFullName()}</h1>
 
           {player.team && (
             <div className="flex items-center mt-2">

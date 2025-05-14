@@ -11,6 +11,7 @@ import { DEFAULT_SEASON } from '@/config/api';
 import PlayerProfileSection from '@/features/players/components/PlayerProfileSection';
 import PlayerStatsSection from '@/features/players/components/PlayerStatsSection';
 import PlayerTeamHistory from '@/features/players/components/PlayerTeamHistory';
+import PlayerTransferHistory from '@/features/players/components/PlayerTransferHistory';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import PageLayout from '@/components/layout/PageLayout';
@@ -68,6 +69,7 @@ async function PlayerContent({ playerId }: { playerId: string }) {
         {/* 選手成績と移籍履歴（右カラム） */}
         <div className="lg:col-span-8">
           <PlayerStatsSection stats={playerData.stats} />
+          <PlayerTransferHistory transfers={playerData.transferHistory} />
           <PlayerTeamHistory transfers={playerData.transferHistory} />
         </div>
       </div>

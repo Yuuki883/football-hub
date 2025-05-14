@@ -19,9 +19,24 @@ export async function isNationalTeam(teamName: string): Promise<boolean> {
   // 代表チームの特徴的な名前パターン
   const nationalTeamKeywords = ['U17', 'U19', 'U20', 'U21', 'U23', 'Olympic', 'オリンピック'];
 
-  // APIから得られた情報でチーム名が国名と一致するか、または代表チームキーワードを含むかを判定
-  return (
-    countryNames.some((country) => teamName === country) ||
-    nationalTeamKeywords.some((keyword) => teamName.includes(keyword))
-  );
+  // 国名を含み、かつ代表チームキーワードのいずれかを含む場合のみ代表チームと判定
+  for (const country of countryNames) {
+    if (teamName.includes(country)) {
+      for (const keyword of nationalTeamKeywords) {
+        if (teamName.includes(keyword)) {
+          console.log(`代表チームと判定: ${teamName} (国名: ${country}, キーワード: ${keyword})`);
+          return true;
+        }
+      }
+
+      // 国名が完全一致する場合は代表チーム（例："England", "Brazil"）
+      if (teamName === country) {
+        console.log(`代表チームと判定: ${teamName} (国名完全一致)`);
+        return true;
+      }
+    }
+  }
+
+  // 上記の条件に一致しなければ代表チームではない
+  return false;
 }

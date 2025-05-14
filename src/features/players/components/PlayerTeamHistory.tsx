@@ -29,9 +29,62 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
   // ユースチームに関連する単語パターン
   const youthTeamPattern = /\b(U\d+|U-\d+|Youth|Junior|Juvenil|Primavera|Jong|Young)\b/i;
 
-  // クラブチームをユースチームとトップチームに分類
-  const youthClubTeams = clubTeams.filter((team) => youthTeamPattern.test(team.team.name));
-  const topClubTeams = clubTeams.filter((team) => !youthTeamPattern.test(team.team.name));
+  // チームの重複を排除して統合する関数
+  const consolidateTeams = (teamEntries: TransferHistoryEntry[]) => {
+    // チームIDでグルーピング
+    const teamGroups: Record<string | number, TransferHistoryEntry[]> = {};
+
+    teamEntries.forEach((entry) => {
+      const teamId = entry.team.id;
+      if (!teamGroups[teamId]) {
+        teamGroups[teamId] = [];
+      }
+      teamGroups[teamId].push(entry);
+    });
+
+    // 各グループの中から最適なエントリを選択
+    return Object.values(teamGroups).map((group) => {
+      if (group.length === 1) {
+        // グループに1つしかエントリがない場合はそのまま返す
+        return group[0];
+      }
+
+      // 複数のエントリがある場合は、日付を統合する
+      // transferDateがある場合はその日付が最も新しいエントリを優先
+      const entriesWithDates = group
+        .filter((e) => e.transferDate)
+        .sort((a, b) => new Date(b.transferDate!).getTime() - new Date(a.transferDate!).getTime());
+
+      const primaryEntry = entriesWithDates.length > 0 ? entriesWithDates[0] : group[0];
+
+      // シーズン情報を統合（最初と最後を取得）
+      const allSeasons = group
+        .map((e) => [e.startSeason, e.endSeason])
+        .flat()
+        .filter(Boolean) as string[];
+
+      if (allSeasons.length > 0) {
+        // 数値としてソート
+        const sortedSeasons = [...allSeasons].sort((a, b) => Number(a) - Number(b));
+        primaryEntry.startSeason = sortedSeasons[0];
+        primaryEntry.endSeason = sortedSeasons[sortedSeasons.length - 1];
+      }
+
+      return primaryEntry;
+    });
+  };
+
+  // クラブチームをユースチームとトップチームに分類（重複排除後）
+  const consolidatedClubTeams = consolidateTeams(clubTeams);
+  const youthClubTeams = consolidatedClubTeams.filter((team) =>
+    youthTeamPattern.test(team.team.name)
+  );
+  const topClubTeams = consolidatedClubTeams.filter(
+    (team) => !youthTeamPattern.test(team.team.name)
+  );
+
+  // 代表チームも重複排除
+  const consolidatedNationalTeams = consolidateTeams(nationalTeams);
 
   // チーム履歴をソート（新しい順）
   const sortTeamsByDate = (transfersList: TransferHistoryEntry[]) => {
@@ -51,20 +104,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
   // 各カテゴリーをソート
   const sortedTopClubTeams = sortTeamsByDate(topClubTeams);
   const sortedYouthClubTeams = sortTeamsByDate(youthClubTeams);
-  const sortedNationalTeams = sortTeamsByDate(nationalTeams);
-
-  // 在籍期間を計算する関数
-  const calculateTenure = (start?: string, end?: string): string => {
-    if (!start) return '';
-
-    // 1年だけの場合
-    if (!end || start === end) {
-      return `${start}年`;
-    }
-
-    // 複数年の場合
-    return `${start}年〜${end}年`;
-  };
+  const sortedNationalTeams = sortTeamsByDate(consolidatedNationalTeams);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -73,7 +113,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
       {/* シニアクラブチーム */}
       {sortedTopClubTeams.length > 0 && (
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-slate-700 mb-4 border-b pb-2">クラブチーム</h3>
+          <h3 className="text-lg font-semibold text-slate-700 mb-4 border-b pb-2">シニアクラブ</h3>
           <div className="space-y-4">
             {sortedTopClubTeams.map((transfer, index) => (
               <TeamCard
@@ -82,8 +122,6 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
                 startSeason={transfer.startSeason}
                 endSeason={transfer.endSeason}
                 transferDate={transfer.transferDate}
-                transferType={transfer.transferType}
-                fromTeam={transfer.fromTeam}
                 isLatest={index === 0}
               />
             ))}
@@ -103,8 +141,6 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
                 startSeason={transfer.startSeason}
                 endSeason={transfer.endSeason}
                 transferDate={transfer.transferDate}
-                transferType={transfer.transferType}
-                fromTeam={transfer.fromTeam}
                 isLatest={false} // ユースチームには「現在」バッジを表示しない
               />
             ))}
@@ -134,7 +170,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
   );
 }
 
-// 移籍カードコンポーネント（クラブチーム用）
+// チームカードコンポーネント（クラブチーム用）
 interface TeamCardProps {
   team: {
     name: string;
@@ -143,23 +179,10 @@ interface TeamCardProps {
   startSeason?: string;
   endSeason?: string;
   transferDate?: string;
-  transferType?: string;
-  fromTeam?: {
-    name: string;
-    logo: string;
-  };
   isLatest?: boolean;
 }
 
-function TeamCard({
-  team,
-  startSeason,
-  endSeason,
-  transferDate,
-  transferType,
-  fromTeam,
-  isLatest,
-}: TeamCardProps) {
+function TeamCard({ team, startSeason, endSeason, transferDate, isLatest }: TeamCardProps) {
   // 日付をフォーマット
   const formatDate = (dateString?: string): string => {
     if (!dateString) return '';
@@ -191,7 +214,7 @@ function TeamCard({
     return `${start}年 - ${end}年`;
   };
 
-  // 在籍期間表示（移籍日付があればそれを表示、なければシーズン情報から生成）
+  // 在籍期間表示
   const tenureDisplay = calculateTenure(startSeason, endSeason);
 
   return (
@@ -210,27 +233,11 @@ function TeamCard({
         </div>
       </div>
 
-      {/* チーム名と移籍情報 */}
+      {/* チーム名と在籍期間 */}
       <div className="flex-grow min-w-0">
         <h3 className="font-medium text-slate-800 truncate">{team.name}</h3>
         <div className="text-sm text-slate-500 mt-1">
           {tenureDisplay && <span className="block">{tenureDisplay}</span>}
-          {transferType && <span className="block">移籍金: {transferType}</span>}
-          {fromTeam && (
-            <div className="flex items-center mt-1 flex-wrap">
-              <span className="mr-1">From:</span>
-              <div className="w-5 h-5 mr-1 relative flex-shrink-0">
-                <Image
-                  src={fromTeam.logo}
-                  alt={fromTeam.name}
-                  fill
-                  sizes="20px"
-                  className="object-contain"
-                />
-              </div>
-              <span className="truncate">{fromTeam.name}</span>
-            </div>
-          )}
         </div>
       </div>
 
