@@ -10,9 +10,10 @@ import { getPlayerDetails } from '@/features/players/api/player-details';
 import { DEFAULT_SEASON } from '@/config/api';
 import PlayerProfileSection from '@/features/players/components/PlayerProfileSection';
 import PlayerStatsSection from '@/features/players/components/PlayerStatsSection';
-import PlayerTransferHistory from '@/features/players/components/PlayerTransferHistory';
+import PlayerTeamHistory from '@/features/players/components/PlayerTeamHistory';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorMessage from '@/components/ui/ErrorMessage';
+import PageLayout from '@/components/layout/PageLayout';
 
 // ISRの設定（1時間ごとに再検証）
 export const revalidate = 3600;
@@ -67,7 +68,7 @@ async function PlayerContent({ playerId }: { playerId: string }) {
         {/* 選手成績と移籍履歴（右カラム） */}
         <div className="lg:col-span-8">
           <PlayerStatsSection stats={playerData.stats} />
-          <PlayerTransferHistory transfers={playerData.transferHistory} />
+          <PlayerTeamHistory transfers={playerData.transferHistory} />
         </div>
       </div>
     );
@@ -82,7 +83,7 @@ export default function PlayerDetailPage({ params }: PlayerDetailPageProps) {
   const { id } = params;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <PageLayout>
       <Suspense
         fallback={
           <LoadingSpinner
@@ -94,6 +95,6 @@ export default function PlayerDetailPage({ params }: PlayerDetailPageProps) {
       >
         <PlayerContent playerId={id} />
       </Suspense>
-    </div>
+    </PageLayout>
   );
 }

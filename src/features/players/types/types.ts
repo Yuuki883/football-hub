@@ -27,6 +27,14 @@ export interface PlayerTeam {
   current: boolean;
 }
 
+// リーグ情報
+export interface LeagueInfo {
+  id: number;
+  name: string;
+  logo: string;
+  season?: string;
+}
+
 // 選手の統計情報
 export interface PlayerStats {
   appearances?: number;
@@ -35,13 +43,24 @@ export interface PlayerStats {
   assists?: number;
   yellowCards?: number;
   redCards?: number;
+  rating?: string;
+  league?: LeagueInfo;
 }
 
 // 移籍履歴の各エントリ
 export interface TransferHistoryEntry {
   team: Team;
-  startSeason: string;
+  startSeason?: string; // optional化
   endSeason?: string;
+  isNationalTeam?: boolean; // 代表チームかどうかのフラグ
+  transferDate?: string; // 移籍日
+  transferType?: string; // 移籍タイプ（Free, Loan, €8.5Mなど）
+  fromTeam?: {
+    // 移籍元チーム情報
+    id: number | string;
+    name: string;
+    logo: string;
+  };
 }
 
 // 選手詳細ページのメインデータ構造

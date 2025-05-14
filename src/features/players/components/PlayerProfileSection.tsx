@@ -44,16 +44,16 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
 
           {player.team && (
             <div className="flex items-center mt-2">
-              <div className="relative h-6 w-6 mr-2 overflow-hidden">
+              <div className="flex-shrink-0 w-6 h-6 mr-2 flex items-center justify-center">
                 <Image
                   src={player.team.logo}
                   alt={player.team.name}
-                  width={24}
-                  height={24}
+                  width={20}
+                  height={20}
                   className="object-contain"
                 />
               </div>
-              <span className="text-slate-600">{player.team.name}</span>
+              <span className="text-slate-600 truncate">{player.team.name}</span>
             </div>
           )}
         </div>
