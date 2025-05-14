@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import type { PlayerGroup } from '../types/types';
 
 interface PlayersListProps {
@@ -16,7 +17,11 @@ export default function PlayersList({ playerGroups }: PlayersListProps) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {group.players.map((player) => (
-              <div key={player.id} className="bg-gray-50 rounded-lg p-4 flex flex-col">
+              <Link
+                key={player.id}
+                href={`/players/${player.id}`}
+                className="bg-gray-50 rounded-lg p-4 flex flex-col hover:shadow-lg transition-shadow"
+              >
                 <div className="relative h-48 mb-3 bg-gray-200 rounded-md overflow-hidden">
                   {player.photo ? (
                     <Image
@@ -55,7 +60,7 @@ export default function PlayersList({ playerGroups }: PlayersListProps) {
                     <span>{player.age}歳</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
