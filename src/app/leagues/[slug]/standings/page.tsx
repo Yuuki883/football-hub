@@ -34,10 +34,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function StandingsPage({
-  params,
-  searchParams,
-}: StandingsPageProps) {
+export default async function StandingsPage({ params, searchParams }: StandingsPageProps) {
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
 
@@ -47,11 +44,7 @@ export default async function StandingsPage({
     <>
       <div className="mb-8">
         <Suspense fallback={<div>読み込み中...</div>}>
-          <StandingsTable
-            standings={standings}
-            leagueSlug={slug}
-            season={season}
-          />
+          <StandingsTable standings={standings} leagueSlug={slug} season={season} />
         </Suspense>
       </div>
     </>

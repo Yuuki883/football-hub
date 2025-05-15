@@ -16,9 +16,7 @@ interface TeamPageProps {
   };
 }
 
-export async function generateMetadata({
-  params,
-}: TeamPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: TeamPageProps): Promise<Metadata> {
   const { id } = params;
 
   try {
@@ -42,10 +40,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function TeamPage({
-  params,
-  searchParams,
-}: TeamPageProps) {
+export default async function TeamPage({ params, searchParams }: TeamPageProps) {
   const { id } = params;
   const season = parseInt(searchParams.season || '2024');
 
@@ -84,11 +79,7 @@ export default async function TeamPage({
       </div>
 
       <div className="mb-8">
-        <Suspense
-          fallback={
-            <div className="p-4 text-center">試合データを読み込み中...</div>
-          }
-        >
+        <Suspense fallback={<div className="p-4 text-center">試合データを読み込み中...</div>}>
           <TeamSchedule
             pastFixtures={pastFixtures}
             futureFixtures={futureFixtures}

@@ -47,13 +47,7 @@ export async function getLeagueFixtures(
     }
   }
 
-  const {
-    season = DEFAULT_SEASON,
-    dateFrom,
-    dateTo,
-    limit,
-    forceRefresh = false,
-  } = params;
+  const { season = DEFAULT_SEASON, dateFrom, dateTo, limit, forceRefresh = false } = params;
 
   // 共通機能を使用して試合データを取得
   return getFixtures({
@@ -135,9 +129,7 @@ export async function getAllLeagueFixturesByDate(
     });
 
     // 試合開始時間順にソート
-    allMatches.sort(
-      (a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()
-    );
+    allMatches.sort((a, b) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime());
 
     return allMatches;
   } catch (error) {
@@ -215,8 +207,7 @@ export async function getMatchesByLeague(
   }
 
   // シーズン全体の日付範囲を設定（1年間）
-  const seasonStartYear =
-    typeof season === 'string' ? parseInt(season) : season;
+  const seasonStartYear = typeof season === 'string' ? parseInt(season) : season;
   const dateFrom = `${seasonStartYear - 1}-07-01`; // 前年7月から
   const dateTo = `${seasonStartYear}-06-30`; // 当年6月まで（シーズン1年分）
 

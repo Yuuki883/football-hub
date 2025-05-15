@@ -42,9 +42,6 @@ export async function GET() {
     return NextResponse.json(scores);
   } catch (error) {
     console.error('Failed to fetch live scores:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch live scores' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch live scores' }, { status: 500 });
   }
 }

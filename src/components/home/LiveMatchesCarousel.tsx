@@ -135,9 +135,7 @@ export default function LiveMatchesCarousel() {
               すべての試合を見る
             </Link>
           </div>
-          <p className="text-white/80 text-center py-8">
-            現在ライブで行われている試合はありません
-          </p>
+          <p className="text-white/80 text-center py-8">現在ライブで行われている試合はありません</p>
         </div>
       </div>
     );
@@ -184,9 +182,7 @@ export default function LiveMatchesCarousel() {
                         height={20}
                         className="mr-2"
                       />
-                      <span className="text-xs font-medium">
-                        {match.competition.name}
-                      </span>
+                      <span className="text-xs font-medium">{match.competition.name}</span>
                     </div>
                     <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full font-medium">
                       {match.minute}′
@@ -198,42 +194,30 @@ export default function LiveMatchesCarousel() {
                       <div className="flex items-center">
                         <div className="w-10 h-10 relative">
                           <Image
-                            src={
-                              match.homeTeam.crest || '/team-placeholder.png'
-                            }
+                            src={match.homeTeam.crest || '/team-placeholder.png'}
                             alt={match.homeTeam.name}
                             fill
                             className="object-contain"
                           />
                         </div>
-                        <span className="ml-3 font-medium">
-                          {match.homeTeam.name}
-                        </span>
+                        <span className="ml-3 font-medium">{match.homeTeam.name}</span>
                       </div>
-                      <span className="font-bold text-xl">
-                        {match.score.home}
-                      </span>
+                      <span className="font-bold text-xl">{match.score.home}</span>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <div className="w-10 h-10 relative">
                           <Image
-                            src={
-                              match.awayTeam.crest || '/team-placeholder.png'
-                            }
+                            src={match.awayTeam.crest || '/team-placeholder.png'}
                             alt={match.awayTeam.name}
                             fill
                             className="object-contain"
                           />
                         </div>
-                        <span className="ml-3 font-medium">
-                          {match.awayTeam.name}
-                        </span>
+                        <span className="ml-3 font-medium">{match.awayTeam.name}</span>
                       </div>
-                      <span className="font-bold text-xl">
-                        {match.score.away}
-                      </span>
+                      <span className="font-bold text-xl">{match.score.away}</span>
                     </div>
                   </div>
                 </Link>

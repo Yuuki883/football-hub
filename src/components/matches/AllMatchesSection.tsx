@@ -11,10 +11,7 @@ interface AllMatchesSectionProps {
 }
 
 // 日付ごとの試合を表示するセクション
-const AllMatchesSection: React.FC<AllMatchesSectionProps> = ({
-  matches,
-  allDates,
-}) => {
+const AllMatchesSection: React.FC<AllMatchesSectionProps> = ({ matches, allDates }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     // デフォルト値は今日
     return new Date();
@@ -41,17 +38,14 @@ const AllMatchesSection: React.FC<AllMatchesSectionProps> = ({
   }, [selectedDate, matches]);
 
   // リーグでグループ化
-  const matchesByLeague = filteredMatches.reduce<Record<string, Match[]>>(
-    (groups, match) => {
-      const league = match.competition.name;
-      if (!groups[league]) {
-        groups[league] = [];
-      }
-      groups[league].push(match);
-      return groups;
-    },
-    {}
-  );
+  const matchesByLeague = filteredMatches.reduce<Record<string, Match[]>>((groups, match) => {
+    const league = match.competition.name;
+    if (!groups[league]) {
+      groups[league] = [];
+    }
+    groups[league].push(match);
+    return groups;
+  }, {});
 
   // 日付が選択された時のハンドラ
   const handleDateSelect = (date: Date) => {
@@ -71,9 +65,7 @@ const AllMatchesSection: React.FC<AllMatchesSectionProps> = ({
           Object.entries(matchesByLeague).map(([league, matches]) => (
             <div
               key={league}
-              className={cn(
-                'border border-gray-200 rounded-lg shadow-sm overflow-hidden'
-              )}
+              className={cn('border border-gray-200 rounded-lg shadow-sm overflow-hidden')}
             >
               <div
                 className={cn(
@@ -90,9 +82,7 @@ const AllMatchesSection: React.FC<AllMatchesSectionProps> = ({
             </div>
           ))
         ) : (
-          <div className="text-center py-8 text-gray-500">
-            選択された日付の試合はありません
-          </div>
+          <div className="text-center py-8 text-gray-500">選択された日付の試合はありません</div>
         )}
       </div>
     </div>

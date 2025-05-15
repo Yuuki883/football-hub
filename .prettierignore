@@ -1,0 +1,19 @@
+# ビルド生成物
+.next
+out
+build
+dist
+
+# 依存関係
+node_modules
+
+# ロックファイル
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# その他
+.git
+.gitignore
+.DS_Store
+*.log 

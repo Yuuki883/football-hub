@@ -21,14 +21,9 @@ export async function getRedisClient(): Promise<any> {
 
   try {
     // 環境変数に基づいてRedisクライアントを選択
-    const useUpstash =
-      process.env.USE_UPSTASH_REDIS === 'true' || process.env.VERCEL === 'true';
+    const useUpstash = process.env.USE_UPSTASH_REDIS === 'true' || process.env.VERCEL === 'true';
 
-    if (
-      useUpstash &&
-      process.env.UPSTASH_REDIS_URL &&
-      process.env.UPSTASH_REDIS_TOKEN
-    ) {
+    if (useUpstash && process.env.UPSTASH_REDIS_URL && process.env.UPSTASH_REDIS_TOKEN) {
       // Upstash Redis (Vercel環境用)
       redisClient = new Redis({
         url: process.env.UPSTASH_REDIS_URL,
@@ -81,11 +76,7 @@ export async function isRedisAvailable(): Promise<boolean> {
 /**
  * キャッシュにデータを保存する
  */
-export async function cacheSet(
-  key: string,
-  value: any,
-  ttlSeconds?: number
-): Promise<void> {
+export async function cacheSet(key: string, value: any, ttlSeconds?: number): Promise<void> {
   try {
     const redis = await getRedisClient();
     if (!redis) return;

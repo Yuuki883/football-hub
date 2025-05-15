@@ -9,10 +9,7 @@ interface ScorersRankingProps {
   limit?: number;
 }
 
-const ScorersRanking: React.FC<ScorersRankingProps> = ({
-  players,
-  limit = 10,
-}) => {
+const ScorersRanking: React.FC<ScorersRankingProps> = ({ players, limit = 10 }) => {
   if (!players || players.length === 0) {
     return (
       <div className="p-4 bg-gray-50 rounded-lg text-center">
@@ -37,9 +34,7 @@ const ScorersRanking: React.FC<ScorersRankingProps> = ({
               <div className="flex items-center">
                 <div className="flex-shrink-0 w-8 text-center">
                   <span
-                    className={`font-semibold ${
-                      index < 3 ? 'text-yellow-600' : 'text-gray-600'
-                    }`}
+                    className={`font-semibold ${index < 3 ? 'text-yellow-600' : 'text-gray-600'}`}
                   >
                     {index + 1}
                   </span>
@@ -72,26 +67,20 @@ const ScorersRanking: React.FC<ScorersRankingProps> = ({
                     <div className="flex items-center mt-1">
                       <div className="relative h-4 w-4 mr-1">
                         <Image
-                          src={
-                            player.team.logo || '/images/team-placeholder.png'
-                          }
+                          src={player.team.logo || '/images/team-placeholder.png'}
                           alt={player.team.name}
                           fill
                           sizes="16px"
                           className="object-contain"
                         />
                       </div>
-                      <span className="text-xs text-gray-500">
-                        {player.team.name}
-                      </span>
+                      <span className="text-xs text-gray-500">{player.team.name}</span>
                     </div>
                   )}
                 </div>
 
                 <div className="flex-shrink-0 text-center">
-                  <span className="text-lg font-bold text-blue-600">
-                    {player.goals}
-                  </span>
+                  <span className="text-lg font-bold text-blue-600">{player.goals}</span>
                   <div className="text-xs text-gray-500">ゴール</div>
                 </div>
               </div>

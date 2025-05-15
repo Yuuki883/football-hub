@@ -40,15 +40,11 @@ export default function LeagueNavigation() {
         // 各リーグIDごとに、APIレスポンスから該当するリーグを見つけるか、
         // 見つからない場合はフォールバックデータを使用
         const orderedLeagues = LEAGUE_ORDER.map((leagueId) => {
-          const leagueFromApi = apiLeagues.find(
-            (l: League) => l.id === leagueId
-          );
+          const leagueFromApi = apiLeagues.find((l: League) => l.id === leagueId);
           if (leagueFromApi) return leagueFromApi;
 
           // APIにリーグが見つからない場合はフォールバックから取得
-          const fallbackLeague = getFallbackLeagues().find(
-            (l) => l.id === leagueId
-          );
+          const fallbackLeague = getFallbackLeagues().find((l) => l.id === leagueId);
           return fallbackLeague;
         }).filter(Boolean); // undefinedを除外
 

@@ -127,7 +127,6 @@ export interface FormattedPlayer {
   position?: string;
   nationality?: string;
   photo?: string;
-  number?: number;
   team?: {
     id: string;
     name: string;

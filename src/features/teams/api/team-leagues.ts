@@ -61,10 +61,7 @@ export async function getTeamDomesticLeague(
     async () => {
       try {
         // チーム情報とリーグ情報を並行して取得（API呼び出しを最適化）
-        const { teamData, leaguesData } = await fetchTeamWithLeagues(
-          teamId,
-          season
-        );
+        const { teamData, leaguesData } = await fetchTeamWithLeagues(teamId, season);
 
         // チーム情報の検証
         if (!teamData.response || teamData.response.length === 0) {
@@ -74,9 +71,7 @@ export async function getTeamDomesticLeague(
 
         // リーグ情報の検証
         if (!leaguesData.response || leaguesData.response.length === 0) {
-          console.error(
-            `チームの参加大会データがありません: teamId=${teamId}, season=${season}`
-          );
+          console.error(`チームの参加大会データがありません: teamId=${teamId}, season=${season}`);
           return {};
         }
 
@@ -96,9 +91,6 @@ export async function getTeamDomesticLeague(
               leagueData.country.name === teamCountry
             ) {
               selectedLeague = leagueData.league;
-              console.log(
-                `国内リーグを選択: ${selectedLeague.name} (${selectedLeague.id}) - 国: ${teamCountry}`
-              );
               break;
             }
           }
@@ -109,9 +101,6 @@ export async function getTeamDomesticLeague(
           for (const leagueData of leaguesData.response) {
             if (leagueData.league && leagueData.league.type === 'League') {
               selectedLeague = leagueData.league;
-              console.log(
-                `国内リーグタイプを選択: ${selectedLeague.name} (${selectedLeague.id})`
-              );
               break;
             }
           }
@@ -120,15 +109,10 @@ export async function getTeamDomesticLeague(
         // 選択ロジック3: それでも見つからない場合は最初の大会を使用
         if (!selectedLeague && leaguesData.response.length > 0) {
           selectedLeague = leaguesData.response[0].league;
-          console.log(
-            `国内リーグが見つからないため他の大会を選択: ${selectedLeague.name} (${selectedLeague.id})`
-          );
         }
 
         if (!selectedLeague) {
-          console.error(
-            `有効な大会が見つかりません: teamId=${teamId}, season=${season}`
-          );
+          console.error(`有効な大会が見つかりません: teamId=${teamId}, season=${season}`);
           return {};
         }
 
@@ -140,10 +124,7 @@ export async function getTeamDomesticLeague(
           leagueCountry: teamCountry,
         };
       } catch (error) {
-        console.error(
-          `チーム所属リーグの取得に失敗しました: teamId=${teamId}`,
-          error
-        );
+        console.error(`チーム所属リーグの取得に失敗しました: teamId=${teamId}`, error);
         return {};
       }
     },

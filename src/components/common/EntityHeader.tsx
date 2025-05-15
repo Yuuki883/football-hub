@@ -67,24 +67,13 @@ export default function EntityHeader({
   const defaultFlagUrl = logo;
 
   return (
-    <div
-      className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden ${className}`}
-    >
+    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden ${className}`}>
       <div className="p-6 flex items-center">
         <div className="relative w-20 h-20 flex-shrink-0 mr-6">
-          <Image
-            src={logo}
-            alt={name}
-            fill
-            sizes="80px"
-            className="object-contain"
-            priority
-          />
+          <Image src={logo} alt={name} fill sizes="80px" className="object-contain" priority />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {name}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{name}</h1>
           <div className="flex flex-wrap items-center mt-1 text-sm text-gray-600 dark:text-gray-300">
             {country && (
               <div className="flex items-center mr-3">

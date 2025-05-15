@@ -1,24 +1,17 @@
-import {
-  UEFA_LEAGUES,
-  LEGEND_LABELS,
-  LEGEND_ORDER,
-} from '@/features/standings/standings';
+import { UEFA_LEAGUES, LEGEND_LABELS, LEGEND_ORDER } from '@/features/standings/standings';
 import type { FormattedStanding } from '@/lib/api-football/types/standings';
 
 type Info = { color: string; label: string };
 
 // 各種判定ロジックを小関数に分割
 const uefaNew = (position?: number): Info => {
-  if (position && position <= 8)
-    return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
-  if (position && position <= 24)
-    return { color: 'bg-purple-500', label: LEGEND_LABELS.PLAYOFF };
+  if (position && position <= 8) return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
+  if (position && position <= 24) return { color: 'bg-purple-500', label: LEGEND_LABELS.PLAYOFF };
   return { color: 'bg-gray-400', label: LEGEND_LABELS.ELIMINATION };
 };
 
 const uefaOld = (position?: number, slug?: string): Info => {
-  if (position && position <= 2)
-    return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
+  if (position && position <= 2) return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
   if (position === 3) {
     if (slug === 'champions-league')
       return { color: 'bg-orange-500', label: LEGEND_LABELS.EL_RELEGATION };
@@ -39,83 +32,47 @@ const domestic = (desc: string): Info => {
 
   // APIの実際のdescriptionパターンに基づく判定
   // 1. CL本戦確定 - "Champions League"
-  if (
-    d.includes('champions league') &&
-    !d.includes('qualification') &&
-    !d.includes('playoff')
-  ) {
+  if (d.includes('champions league') && !d.includes('qualification') && !d.includes('playoff')) {
     return { color: 'bg-blue-600', label: 'CL' };
   }
 
   // 2. CL予選 - "Champions League Qualification"
-  if (
-    d.includes('champions league') &&
-    d.includes('qualification') &&
-    !d.includes('playoff')
-  ) {
+  if (d.includes('champions league') && d.includes('qualification') && !d.includes('playoff')) {
     return { color: 'bg-blue-400', label: 'CL予選' };
   }
 
   // 3. CLプレーオフ - "Champions League Qualification Playoff"
-  if (
-    d.includes('champions league') &&
-    d.includes('qualification') &&
-    d.includes('playoff')
-  ) {
+  if (d.includes('champions league') && d.includes('qualification') && d.includes('playoff')) {
     return { color: 'bg-blue-300', label: 'CLプレーオフ' };
   }
 
   // 4. EL本戦確定 - "Europa League"
-  if (
-    d.includes('europa league') &&
-    !d.includes('qualification') &&
-    !d.includes('playoff')
-  ) {
+  if (d.includes('europa league') && !d.includes('qualification') && !d.includes('playoff')) {
     return { color: 'bg-orange-500', label: 'EL' };
   }
 
   // 5. EL予選 - "Europa League Qualification"
-  if (
-    d.includes('europa league') &&
-    d.includes('qualification') &&
-    !d.includes('playoff')
-  ) {
+  if (d.includes('europa league') && d.includes('qualification') && !d.includes('playoff')) {
     return { color: 'bg-orange-400', label: 'EL予選' };
   }
 
   // 6. ELプレーオフ - "Europa League Qualification Playoff"
-  if (
-    d.includes('europa league') &&
-    d.includes('qualification') &&
-    d.includes('playoff')
-  ) {
+  if (d.includes('europa league') && d.includes('qualification') && d.includes('playoff')) {
     return { color: 'bg-orange-300', label: 'ELプレーオフ' };
   }
 
   // 7. ECL本戦確定 - "Europa Conference League"
-  if (
-    d.includes('conference league') &&
-    !d.includes('qualification') &&
-    !d.includes('playoff')
-  ) {
+  if (d.includes('conference league') && !d.includes('qualification') && !d.includes('playoff')) {
     return { color: 'bg-green-500', label: 'ECL' };
   }
 
   // 8. ECL予選 - "Europa Conference League Qualification"
-  if (
-    d.includes('conference league') &&
-    d.includes('qualification') &&
-    !d.includes('playoff')
-  ) {
+  if (d.includes('conference league') && d.includes('qualification') && !d.includes('playoff')) {
     return { color: 'bg-green-400', label: 'ECL予選' };
   }
 
   // 9. ECLプレーオフ - "Europa Conference League Qualification Playoff"
-  if (
-    d.includes('conference league') &&
-    d.includes('qualification') &&
-    d.includes('playoff')
-  ) {
+  if (d.includes('conference league') && d.includes('qualification') && d.includes('playoff')) {
     return { color: 'bg-green-300', label: 'ECLプレーオフ' };
   }
 
@@ -150,9 +107,7 @@ export function getPositionInfo(
 
   const isUefa =
     leagueSlug &&
-    UEFA_LEAGUES.includes(
-      leagueSlug as 'champions-league' | 'europa-league' | 'conference-league'
-    );
+    UEFA_LEAGUES.includes(leagueSlug as 'champions-league' | 'europa-league' | 'conference-league');
   if (isUefa) {
     return season >= 2024 ? uefaNew(position) : uefaOld(position, leagueSlug);
   }

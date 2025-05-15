@@ -12,11 +12,7 @@ interface MatchesListProps {
 
 const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
   if (!matches || matches.length === 0) {
-    return (
-      <div className="p-4 bg-gray-50 rounded-lg text-center">
-        試合データが見つかりません
-      </div>
-    );
+    return <div className="p-4 bg-gray-50 rounded-lg text-center">試合データが見つかりません</div>;
   }
 
   // 試合の状態を日本語で表示
@@ -87,20 +83,13 @@ const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
         const dateMatches = groupedMatches[date];
 
         return (
-          <div
-            key={date}
-            className="rounded-lg overflow-hidden border border-gray-200"
-          >
-            <div className="bg-gray-100 px-4 py-2 font-medium">
-              {formatMatchDate(date)}
-            </div>
+          <div key={date} className="rounded-lg overflow-hidden border border-gray-200">
+            <div className="bg-gray-100 px-4 py-2 font-medium">{formatMatchDate(date)}</div>
             <div className="divide-y divide-gray-200">
               {dateMatches.map((match) => {
                 // チーム画像のフォールバック処理
-                const homeTeamCrest =
-                  match.homeTeam?.crest || '/images/team-placeholder.png';
-                const awayTeamCrest =
-                  match.awayTeam?.crest || '/images/team-placeholder.png';
+                const homeTeamCrest = match.homeTeam?.crest || '/images/team-placeholder.png';
+                const awayTeamCrest = match.awayTeam?.crest || '/images/team-placeholder.png';
                 const homeTeamName = match.homeTeam?.name || '不明';
                 const awayTeamName = match.awayTeam?.name || '不明';
 
@@ -133,9 +122,7 @@ const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
 
                         <div className="text-center min-w-[80px]">
                           {match.status === 'NS' ? (
-                            <span className="text-xs text-gray-500">
-                              {getMatchStatus(match)}
-                            </span>
+                            <span className="text-xs text-gray-500">{getMatchStatus(match)}</span>
                           ) : (
                             <div className="flex justify-center items-center space-x-1">
                               <span

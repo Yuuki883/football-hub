@@ -16,9 +16,7 @@ export default function Breadcrumb() {
   const breadcrumbs = [
     { name: PATH_DISPLAY_MAP[''], href: '/' },
     ...segments.map((segment, index) => ({
-      name:
-        PATH_DISPLAY_MAP[segment] ||
-        segment.charAt(0).toUpperCase() + segment.slice(1),
+      name: PATH_DISPLAY_MAP[segment] || segment.charAt(0).toUpperCase() + segment.slice(1),
       href: `/${segments.slice(0, index + 1).join('/')}`,
     })),
   ];
@@ -29,10 +27,7 @@ export default function Breadcrumb() {
         {breadcrumbs.map((breadcrumb, index) => (
           <li key={breadcrumb.href} className="flex items-center">
             {index > 0 && (
-              <ChevronRight
-                className="h-4 w-4 mx-1 text-gray-400"
-                aria-hidden="true"
-              />
+              <ChevronRight className="h-4 w-4 mx-1 text-gray-400" aria-hidden="true" />
             )}
 
             {index === breadcrumbs.length - 1 ? (

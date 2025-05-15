@@ -36,10 +36,7 @@ export async function fetchTeamStats(
 
     return data.response as TeamStats;
   } catch (error) {
-    console.error(
-      `チーム統計データの取得に失敗: teamId=${teamId}, leagueId=${leagueId}`,
-      error
-    );
+    console.error(`チーム統計データの取得に失敗: teamId=${teamId}, leagueId=${leagueId}`, error);
     return null;
   }
 }

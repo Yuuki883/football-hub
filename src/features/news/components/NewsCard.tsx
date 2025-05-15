@@ -62,9 +62,7 @@ export default function NewsCard({ news, priority = false }: NewsCardProps) {
           {formattedDate || '読み込み中...'}
         </div>
         <h3 className="font-semibold text-lg mb-2">{news.title}</h3>
-        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
-          {news.content}
-        </p>
+        <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">{news.content}</p>
       </div>
     </Link>
   );

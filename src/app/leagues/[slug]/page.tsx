@@ -7,10 +7,7 @@ import ScorersRanking from './components/ScorersRanking';
 import AssistsRanking from './components/AssistsRanking';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
-import {
-  getLeagueTopScorers,
-  getLeagueTopAssists,
-} from '@/features/leagues/api/league-stats';
+import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { Match } from '@/lib/api-football/types';
 
@@ -45,21 +42,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function LeaguePage({
-  params,
-  searchParams,
-}: LeaguePageProps) {
+export default async function LeaguePage({ params, searchParams }: LeaguePageProps) {
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
   const forceRefresh = searchParams.forceRefresh === 'true';
   const currentYear = new Date().getFullYear();
 
   // UEFA大会かどうかを判定
-  const isUefaCompetition = [
-    'champions-league',
-    'europa-league',
-    'conference-league',
-  ].includes(slug);
+  const isUefaCompetition = ['champions-league', 'europa-league', 'conference-league'].includes(
+    slug
+  );
 
   // 過去のシーズンかどうか（2023年以前を過去シーズンとする）
   // 注: 2025年は今のシステム上の現在年で、2024は現行シーズン
@@ -86,8 +78,7 @@ export default async function LeaguePage({
     if (matches && matches.length > 0) {
       // 試合の日付をもとにソート（最新の試合が先頭に）
       const sortedMatches = [...matches].sort(
-        (a: Match, b: Match) =>
-          new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime()
+        (a: Match, b: Match) => new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime()
       );
 
       // まず「Final」というラウンド名を含む試合を検索
@@ -109,19 +100,13 @@ export default async function LeaguePage({
     recentMatches =
       matches
         ?.filter((match: Match) => new Date(match.utcDate) < now)
-        .sort(
-          (a: Match, b: Match) =>
-            new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime()
-        )
+        .sort((a: Match, b: Match) => new Date(b.utcDate).getTime() - new Date(a.utcDate).getTime())
         .slice(0, 5) || [];
 
     upcomingMatches =
       matches
         ?.filter((match: Match) => new Date(match.utcDate) >= now)
-        .sort(
-          (a: Match, b: Match) =>
-            new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime()
-        )
+        .sort((a: Match, b: Match) => new Date(a.utcDate).getTime() - new Date(b.utcDate).getTime())
         .slice(0, 5) || [];
   }
 

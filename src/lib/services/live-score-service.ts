@@ -128,9 +128,7 @@ export async function getLeagueMatches(leagueId: string): Promise<Match[]> {
     // 後方互換性のために、この関数自体は残しておきますが、
     // 機能は新しい実装を直接使用することをお勧め
     // このメソッドは将来的に削除される可能性があります。
-    const { getLeagueFixtures } = await import(
-      '@/features/leagues/api/league-fixtures'
-    );
+    const { getLeagueFixtures } = await import('@/features/leagues/api/league-fixtures');
     return getLeagueFixtures(leagueId, {});
   } catch (error) {
     console.error(`Failed to fetch matches for league ${leagueId}:`, error);

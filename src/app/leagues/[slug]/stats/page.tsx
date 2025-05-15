@@ -2,10 +2,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import ScorersRanking from '../components/ScorersRanking';
 import AssistsRanking from '../components/AssistsRanking';
-import {
-  getLeagueTopScorers,
-  getLeagueTopAssists,
-} from '@/features/leagues/api/league-stats';
+import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface StatsPageProps {
@@ -38,10 +35,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function StatsPage({
-  params,
-  searchParams,
-}: StatsPageProps) {
+export default async function StatsPage({ params, searchParams }: StatsPageProps) {
   const { slug } = params;
   const season = parseInt(searchParams.season || '2024');
 

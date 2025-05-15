@@ -9,11 +9,7 @@ interface LeagueHeaderProps {
   children?: React.ReactNode; // ナビゲーション等の子要素
 }
 
-const LeagueHeader: React.FC<LeagueHeaderProps> = ({
-  league,
-  country,
-  children,
-}) => {
+const LeagueHeader: React.FC<LeagueHeaderProps> = ({ league, country, children }) => {
   // UEFAの大会かどうかを判定
   const isUefaCompetition = [2, 3, 848].includes(league.id);
 
@@ -23,12 +19,7 @@ const LeagueHeader: React.FC<LeagueHeaderProps> = ({
     : country.flag;
 
   return (
-    <EntityHeader
-      name={league.name}
-      logo={league.logo}
-      country={country.name}
-      flag={flagUrl}
-    >
+    <EntityHeader name={league.name} logo={league.logo} country={country.name} flag={flagUrl}>
       {children}
     </EntityHeader>
   );

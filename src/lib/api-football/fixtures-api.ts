@@ -7,12 +7,7 @@
 
 import { fetchFromAPI, createUrl } from './index';
 import { withCache, createCacheKey } from './cache';
-import {
-  formatMatches,
-  Match,
-  DEFAULT_SEASON,
-  calculateDateRange,
-} from './fixtures';
+import { formatMatches, Match, DEFAULT_SEASON, calculateDateRange } from './fixtures';
 import { CACHE_TTL } from '@/config/api';
 
 /**

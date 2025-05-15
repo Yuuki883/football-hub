@@ -1,4 +1,4 @@
-import { format, isToday, isTomorrow, isYesterday } from 'date-fns';
+import { format, isToday, isTomorrow, isYesterday, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { ja } from 'date-fns/locale';
 
@@ -10,14 +10,12 @@ const TOKYO_TIMEZONE = 'Asia/Tokyo';
  * date-fns-tzライブラリを使用してタイムゾーン変換を行う
  */
 function toJapanTime(dateString: string): Date {
-  const date = new Date(dateString);
+  // ISO形式の日付文字列をパース
+  const date = parseISO(dateString);
   return toZonedTime(date, TOKYO_TIMEZONE);
 }
 
-export function formatMatchDate(
-  dateString: string,
-  type: 'display' | 'group' = 'display'
-) {
+export function formatMatchDate(dateString: string, type: 'display' | 'group' = 'display') {
   // date-fns-tzを使用して日本時間に変換
   const date = toJapanTime(dateString);
 
@@ -43,6 +41,16 @@ export function formatMatchTime(dateString: string) {
   return format(date, 'HH:mm');
 }
 
-// 互換性のためのエイリアス
-export const formatDate = formatMatchDate;
+// シンプルな日付フォーマット関数（yyyy/MM/dd形式）
+export function formatDate(dateString: string): string {
+  try {
+    // ISO形式でない場合もあるのでtry-catchで囲む
+    const date = parseISO(dateString);
+    return format(date, 'yyyy/MM/dd');
+  } catch (e) {
+    // パースに失敗した場合は元の文字列を返す
+    return dateString;
+  }
+}
+
 export const formatTime = formatMatchTime;

@@ -33,9 +33,7 @@ export default function HomePage() {
       {/* リーグ一覧 */}
       <section className="py-8 bg-white dark:bg-gray-800 shadow-md mt-4">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
-            リーグ一覧
-          </h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">リーグ一覧</h2>
           <LeagueNavigation />
         </div>
       </section>
@@ -43,9 +41,7 @@ export default function HomePage() {
       {/* ニュース一覧 */}
       <section className="py-8 mt-4">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
-            最新ニュース
-          </h2>
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">最新ニュース</h2>
           <NewsHighlights />
         </div>
       </section>

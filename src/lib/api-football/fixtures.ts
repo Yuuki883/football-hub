@@ -23,9 +23,7 @@ export function formatMatch(fixture: any): Match {
     id: fixture.fixture.id.toString(),
     utcDate: fixture.fixture.date,
     status: fixture.fixture.status.short,
-    statusText:
-      MATCH_STATUS_MAPPING[fixture.fixture.status.short] ||
-      fixture.fixture.status.long,
+    statusText: MATCH_STATUS_MAPPING[fixture.fixture.status.short] || fixture.fixture.status.long,
     homeTeam: {
       id: fixture.teams.home.id.toString(),
       name: fixture.teams.home.name,

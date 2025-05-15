@@ -68,9 +68,7 @@ export default function TeamSchedule({
               className="block p-3 border rounded-lg hover:bg-gray-50 transition-colors"
             >
               <div className="flex justify-between items-center">
-                <div className="text-sm text-gray-500">
-                  {formatMatchDate(match.utcDate)}
-                </div>
+                <div className="text-sm text-gray-500">{formatMatchDate(match.utcDate)}</div>
                 <div className="px-2 py-1 text-xs rounded bg-gray-100 text-gray-700">
                   {match.competition.name}
                 </div>
@@ -103,9 +101,7 @@ export default function TeamSchedule({
                 {/* スコア・ステータス */}
                 <div className="flex flex-col items-center mx-3">
                   {match.status === 'NS' ? (
-                    <div className="text-xs text-gray-500">
-                      {getMatchStatus(match)}
-                    </div>
+                    <div className="text-xs text-gray-500">{getMatchStatus(match)}</div>
                   ) : (
                     <div className="flex items-center space-x-1">
                       <span className="font-bold">{match.score.home}</span>
@@ -114,9 +110,7 @@ export default function TeamSchedule({
                     </div>
                   )}
                   {match.status !== 'NS' && match.status !== 'FT' && (
-                    <div className="text-xs text-gray-500 mt-1">
-                      {getMatchStatus(match)}
-                    </div>
+                    <div className="text-xs text-gray-500 mt-1">{getMatchStatus(match)}</div>
                   )}
                 </div>
 

@@ -2,10 +2,7 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTeamById } from '@/features/teams/api/team-info';
-import {
-  getTeamPlayers,
-  groupPlayersByPosition,
-} from '@/features/teams/api/team-players';
+import { getTeamPlayers, groupPlayersByPosition } from '@/features/teams/api/team-players';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PlayersList from '@/features/teams/components/PlayersList';
 import PageLayout from '@/components/layout/PageLayout';
@@ -17,9 +14,7 @@ interface TeamPlayersPageProps {
 }
 
 // メタデータを動的に生成
-export async function generateMetadata({
-  params,
-}: TeamPlayersPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: TeamPlayersPageProps): Promise<Metadata> {
   const { id } = params;
 
   try {
@@ -52,9 +47,7 @@ async function PlayersContent({ teamId }: { teamId: string }) {
     if (players.length === 0) {
       return (
         <div className="p-6 bg-white rounded-lg shadow my-8">
-          <p className="text-center text-amber-500 font-bold">
-            選手データが見つかりませんでした
-          </p>
+          <p className="text-center text-amber-500 font-bold">選手データが見つかりませんでした</p>
         </div>
       );
     }
@@ -79,9 +72,7 @@ async function PlayersContent({ teamId }: { teamId: string }) {
 }
 
 // メインページコンポーネント
-export default async function TeamPlayersPage({
-  params,
-}: TeamPlayersPageProps) {
+export default async function TeamPlayersPage({ params }: TeamPlayersPageProps) {
   const { id } = params;
 
   // チーム基本情報を取得

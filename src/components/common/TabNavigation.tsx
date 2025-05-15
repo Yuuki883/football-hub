@@ -19,11 +19,7 @@ interface TabNavigationProps {
  * タブ付きナビゲーションコンポーネント
  * リーグページやチームページなど、様々な場所で再利用可能なタブナビゲーション
  */
-const TabNavigation: React.FC<TabNavigationProps> = ({
-  tabs,
-  basePath,
-  children,
-}) => {
+const TabNavigation: React.FC<TabNavigationProps> = ({ tabs, basePath, children }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -39,13 +35,10 @@ const TabNavigation: React.FC<TabNavigationProps> = ({
       <nav>
         <ul className="flex space-x-8">
           {tabs.map((tab) => {
-            const tabPath = tab.path.startsWith('/')
-              ? tab.path
-              : `${basePath}${tab.path}`;
+            const tabPath = tab.path.startsWith('/') ? tab.path : `${basePath}${tab.path}`;
 
             const isActive =
-              tabPath === pathname ||
-              (tabPath !== basePath && pathname.startsWith(tabPath));
+              tabPath === pathname || (tabPath !== basePath && pathname.startsWith(tabPath));
 
             return (
               <li key={tabPath}>

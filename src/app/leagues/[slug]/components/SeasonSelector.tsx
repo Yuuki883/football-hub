@@ -7,14 +7,11 @@ interface SeasonSelectorProps {
   currentSeason?: number;
 }
 
-const SeasonSelector: React.FC<SeasonSelectorProps> = ({
-  currentSeason = 2024,
-}) => {
+const SeasonSelector: React.FC<SeasonSelectorProps> = ({ currentSeason = 2024 }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const season = searchParams.get('season');
-  // console.log(season);
 
   // 内部の選択状態を管理
   const [selectedSeason, setSelectedSeason] = useState(season || 2024);

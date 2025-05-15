@@ -7,11 +7,7 @@
 import { fetchFromAPI, createUrl } from './index';
 import { withCache, createCacheKey } from './cache';
 import { CACHE_TTL, LEAGUE_SLUG_MAPPING } from '@/config/api';
-import {
-  PlayerWithStats,
-  FormattedPlayerStats,
-  ApiFootballPlayer,
-} from './types/players';
+import { PlayerWithStats, FormattedPlayerStats, ApiFootballPlayer } from './types/players';
 
 /**
  * 選手統計データをアプリ内で統一された形式に変換
@@ -127,9 +123,7 @@ export async function getPlayerStats(
         const formattedPlayers = data.response
           .map((player: PlayerWithStats) => formatPlayerStats(player))
           .filter(
-            (
-              player: FormattedPlayerStats | null
-            ): player is FormattedPlayerStats => player !== null
+            (player: FormattedPlayerStats | null): player is FormattedPlayerStats => player !== null
           );
 
         return formattedPlayers;
@@ -149,89 +143,55 @@ export async function getPlayerStats(
 /**
  * リーグの得点ランキングを取得
  *
- * @param leagueId リーグID
+ * @param leagueIdOrSlug リーグID または スラグ
  * @param season シーズン
  * @param forceRefresh キャッシュを強制更新するかどうか
  * @returns 得点ランキングデータ
  */
 export async function getTopScorers(
-  leagueId: number | string,
+  leagueIdOrSlug: number | string,
   season: number | string,
   forceRefresh: boolean = false
 ): Promise<FormattedPlayerStats[]> {
-  return getPlayerStats('scorers', leagueId, season, forceRefresh);
+  // スラグかどうかを判定（文字列で数値に変換できない場合はスラグとみなす）
+  if (typeof leagueIdOrSlug === 'string' && isNaN(Number(leagueIdOrSlug))) {
+    // スラグとして処理
+    const leagueId = LEAGUE_SLUG_MAPPING[leagueIdOrSlug];
+    if (!leagueId) {
+      console.error(`No league mapping found for slug: ${leagueIdOrSlug}`);
+      return [];
+    }
+    return getPlayerStats('scorers', leagueId, season, forceRefresh);
+  }
+
+  // IDとして処理
+  return getPlayerStats('scorers', leagueIdOrSlug, season, forceRefresh);
 }
 
 /**
  * リーグのアシストランキングを取得
  *
- * @param leagueId リーグID
+ * @param leagueIdOrSlug リーグID または スラグ
  * @param season シーズン
  * @param forceRefresh キャッシュを強制更新するかどうか
  * @returns アシストランキングデータ
  */
 export async function getTopAssists(
-  leagueId: number | string,
+  leagueIdOrSlug: number | string,
   season: number | string,
   forceRefresh: boolean = false
 ): Promise<FormattedPlayerStats[]> {
-  return getPlayerStats('assists', leagueId, season, forceRefresh);
-}
-
-/**
- * リーグのスラグから選手統計ランキングを取得する共通関数
- *
- * @param statsType 統計タイプ（'scorers' または 'assists'）
- * @param slug リーグスラグ（例: premier-league）
- * @param season シーズン
- * @param forceRefresh キャッシュを強制更新するかどうか
- * @returns 選手統計ランキングデータ
- */
-export async function getPlayerStatsBySlug(
-  statsType: StatsType,
-  slug: string,
-  season: number | string,
-  forceRefresh: boolean = false
-): Promise<FormattedPlayerStats[]> {
-  // スラグからリーグIDを検索
-  const leagueId = LEAGUE_SLUG_MAPPING[slug];
-
-  if (!leagueId) {
-    console.error(`No league mapping found for slug: ${slug}`);
-    return [];
+  // スラグかどうかを判定（文字列で数値に変換できない場合はスラグとみなす）
+  if (typeof leagueIdOrSlug === 'string' && isNaN(Number(leagueIdOrSlug))) {
+    // スラグとして処理
+    const leagueId = LEAGUE_SLUG_MAPPING[leagueIdOrSlug];
+    if (!leagueId) {
+      console.error(`No league mapping found for slug: ${leagueIdOrSlug}`);
+      return [];
+    }
+    return getPlayerStats('assists', leagueId, season, forceRefresh);
   }
 
-  return getPlayerStats(statsType, leagueId, season, forceRefresh);
-}
-
-/**
- * リーグのスラグから得点ランキングを取得
- *
- * @param slug リーグスラグ（例: premier-league）
- * @param season シーズン
- * @param forceRefresh キャッシュを強制更新するかどうか
- * @returns 得点ランキングデータ
- */
-export async function getTopScorersBySlug(
-  slug: string,
-  season: number | string,
-  forceRefresh: boolean = false
-): Promise<FormattedPlayerStats[]> {
-  return getPlayerStatsBySlug('scorers', slug, season, forceRefresh);
-}
-
-/**
- * リーグのスラグからアシストランキングを取得
- *
- * @param slug リーグスラグ（例: premier-league）
- * @param season シーズン
- * @param forceRefresh キャッシュを強制更新するかどうか
- * @returns アシストランキングデータ
- */
-export async function getTopAssistsBySlug(
-  slug: string,
-  season: number | string,
-  forceRefresh: boolean = false
-): Promise<FormattedPlayerStats[]> {
-  return getPlayerStatsBySlug('assists', slug, season, forceRefresh);
+  // IDとして処理
+  return getPlayerStats('assists', leagueIdOrSlug, season, forceRefresh);
 }

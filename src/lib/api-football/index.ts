@@ -43,10 +43,7 @@ export async function fetchFromAPI(url: string): Promise<any> {
  * @param params クエリパラメータ
  * @returns 完全なURL
  */
-export function createUrl(
-  endpoint: string,
-  params?: Record<string, any>
-): string {
+export function createUrl(endpoint: string, params?: Record<string, any>): string {
   const baseUrl = API_FOOTBALL.BASE_URL.endsWith('/')
     ? API_FOOTBALL.BASE_URL.slice(0, -1)
     : API_FOOTBALL.BASE_URL;

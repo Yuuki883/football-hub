@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server';
-import {
-  getAllLeagues,
-  getLeagueBySlug,
-} from '@/features/leagues/api/league-info';
+import { getAllLeagues, getLeagueBySlug } from '@/features/leagues/api/league-info';
 import { getLeagueTeams } from '@/features/leagues/api/league-teams';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
@@ -40,10 +37,7 @@ export async function GET(request: Request) {
       const league = await getLeagueBySlug(slug);
 
       if (!league) {
-        return NextResponse.json(
-          { success: false, error: 'League not found' },
-          { status: 404 }
-        );
+        return NextResponse.json({ success: false, error: 'League not found' }, { status: 404 });
       }
 
       // レスポンスデータの準備
@@ -83,10 +77,7 @@ export async function GET(request: Request) {
         const results = await Promise.all(
           promises.map((p) =>
             p.promise.catch((error) => {
-              console.error(
-                `Error fetching ${p.key} for league ${slug}:`,
-                error
-              );
+              console.error(`Error fetching ${p.key} for league ${slug}:`, error);
               return null; // エラーが発生した場合はnullを返して他のデータ取得を継続
             })
           )

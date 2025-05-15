@@ -9,10 +9,7 @@ interface LeagueNavigationProps {
   children?: React.ReactNode;
 }
 
-const LeagueNavigation: React.FC<LeagueNavigationProps> = ({
-  slug,
-  children,
-}) => {
+const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const season = searchParams.get('season') || '2024';
@@ -32,8 +29,7 @@ const LeagueNavigation: React.FC<LeagueNavigationProps> = ({
           {navItems.map((item) => {
             const isActive =
               item.path === pathname ||
-              (item.path !== `/leagues/${slug}` &&
-                pathname.startsWith(item.path));
+              (item.path !== `/leagues/${slug}` && pathname.startsWith(item.path));
 
             // シーズンパラメータを保持
             const href =
