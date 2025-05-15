@@ -46,3 +46,6 @@ docker-clear-cache.sh
 docker-restart-env.sh
 docker-restart-redis.sh
 
+# prisma
+prisma/db_migration_guide.md
+
