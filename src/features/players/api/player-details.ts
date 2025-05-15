@@ -5,10 +5,50 @@
  */
 import { API_FOOTBALL } from '@/config/api';
 import { PlayerDetail } from '../types/types';
-import { transformPlayerBasicInfo, transformPlayerStats } from './player-transformer';
+import { transformPlayerStats } from './player-transformer';
 import { processTeamHistory } from './player-team-history';
-import { extractTransferHistory } from './player-transfers';
 import { transformTransferHistory } from './player-transformer';
+
+/**
+ * 選手プロフィール情報を取得
+ *
+ * @param playerId - 選手ID
+ * @returns 選手プロフィール情報
+ */
+async function getPlayerProfile(playerId: string) {
+  const headers = {
+    'x-rapidapi-key': API_FOOTBALL.KEY,
+    'x-rapidapi-host': API_FOOTBALL.HOST,
+  };
+
+  try {
+    // 選手プロフィール情報の取得
+    const profileResponse = await fetch(
+      `${API_FOOTBALL.BASE_URL}/players/profiles?player=${playerId}`,
+      {
+        headers,
+        next: { revalidate: 3600 * 24 }, // 24時間キャッシュ
+      }
+    );
+
+    if (!profileResponse.ok) {
+      console.error('選手プロフィールAPI取得エラー:', profileResponse.status);
+      return null;
+    }
+
+    const profileData = await profileResponse.json();
+
+    if (!profileData.response?.length) {
+      console.error('選手プロフィールが見つかりません:', playerId);
+      return null;
+    }
+
+    return profileData.response[0];
+  } catch (error) {
+    console.error('選手プロフィール取得エラー:', error);
+    return null;
+  }
+}
 
 /**
  * 選手詳細情報を取得
@@ -28,7 +68,14 @@ export async function getPlayerDetails(
       'x-rapidapi-host': API_FOOTBALL.HOST,
     };
 
-    // 複数のAPIリクエストを並列実行
+    // プロフィール情報を取得
+    const profileData = await getPlayerProfile(playerId);
+
+    if (!profileData) {
+      return null;
+    }
+
+    // 複数のAPIリクエストを並列実行（プロフィール以外）
     const [playerInfoResponse, teamsHistoryResponse, transfersResponse] = await Promise.all([
       // 選手基本情報とシーズン統計
       fetch(`${API_FOOTBALL.BASE_URL}/players?id=${playerId}&season=${season}`, {
@@ -70,10 +117,9 @@ export async function getPlayerDetails(
 
     // 選手情報の抽出
     const playerData = playerInfoData.response[0];
-    const player = playerData.player;
 
-    // 選手の基本情報を変換
-    const playerInfo = transformPlayerBasicInfo(player);
+    // プロフィールからの詳細情報
+    const profilePlayer = profileData.player;
 
     // 統計情報を変換し、現在のチーム情報も取得
     const { stats, currentTeam } = transformPlayerStats(playerData.statistics || []);
@@ -86,8 +132,19 @@ export async function getPlayerDetails(
 
     // 選手詳細情報を統合
     const playerDetail: PlayerDetail = {
-      // 基本情報
-      ...playerInfo,
+      // プロフィールAPIからの基本情報
+      id: profilePlayer.id,
+      name: profilePlayer.name,
+      firstName: profilePlayer.firstname,
+      lastName: profilePlayer.lastname,
+      age: profilePlayer.age,
+      birthDate: profilePlayer.birth?.date,
+      nationality: profilePlayer.nationality,
+      height: profilePlayer.height,
+      weight: profilePlayer.weight,
+      photo: profilePlayer.photo,
+      position: profilePlayer.position,
+      number: profilePlayer.number,
 
       // 所属チーム
       team: currentTeam,

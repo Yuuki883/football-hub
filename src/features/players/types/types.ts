@@ -19,6 +19,7 @@ export interface PlayerInfo {
   weight?: string;
   photo: string;
   position: string;
+  number?: number;
 }
 
 // 所属チーム情報
@@ -77,6 +78,7 @@ export interface PlayerDetail {
   weight?: string;
   photo: string;
   position: string;
+  number?: number;
 
   // 所属チーム
   team?: Team;

@@ -19,28 +19,6 @@ function formatRating(rating?: string): string | undefined {
 }
 
 /**
- * 選手の基本情報を変換
- *
- * @param player - APIから取得した選手データ
- * @returns 整形された選手基本情報
- */
-export function transformPlayerBasicInfo(player: any): PlayerInfo {
-  return {
-    id: player.id,
-    name: player.name,
-    firstName: player.firstname,
-    lastName: player.lastname,
-    age: player.age,
-    birthDate: player.birth?.date,
-    nationality: player.nationality,
-    height: player.height,
-    weight: player.weight,
-    photo: player.photo,
-    position: player.position || '不明',
-  };
-}
-
-/**
  * 選手の統計情報を変換
  *
  * @param statistics - APIから取得した統計データ

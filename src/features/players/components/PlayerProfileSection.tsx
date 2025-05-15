@@ -13,9 +13,6 @@ interface PlayerProfileSectionProps {
 }
 
 export default function PlayerProfileSection({ player }: PlayerProfileSectionProps) {
-  // 国籍表示用のクラス名（国旗emoji表示のため）
-  const countryClass = player.nationality ? `fi fi-${getNationalityCode(player.nationality)}` : '';
-
   // フルネームを生成
   const getFullName = () => {
     // 姓名が両方ある場合は姓名を表示
@@ -74,16 +71,17 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
           <div className="py-3 grid grid-cols-2">
             <span className="text-slate-500">国籍</span>
             <span className="font-medium text-slate-800 flex items-center">
-              {player.nationality ? (
-                <>
-                  <span className={clsx('mr-2', countryClass)}></span>
-                  {player.nationality}
-                </>
-              ) : (
-                '–'
-              )}
+              {player.nationality ? <>{player.nationality}</> : '–'}
             </span>
           </div>
+
+          {/* 背番号 - 新しく追加 */}
+          {player.number && (
+            <div className="py-3 grid grid-cols-2">
+              <span className="text-slate-500">背番号</span>
+              <span className="font-medium text-slate-800">{player.number}</span>
+            </div>
+          )}
 
           {/* ポジション */}
           <div className="py-3 grid grid-cols-2">
@@ -115,32 +113,4 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
       </div>
     </div>
   );
-}
-
-/**
- * 国籍からflag-iconsで使用する国コードを取得
- *
- * @param nationality - 国籍
- * @returns 国コード（小文字2文字）
- */
-function getNationalityCode(nationality: string): string {
-  // 主要国のマッピング
-  const countryCodeMap: Record<string, string> = {
-    Argentina: 'ar',
-    Belgium: 'be',
-    Brazil: 'br',
-    England: 'gb-eng',
-    France: 'fr',
-    Germany: 'de',
-    Italy: 'it',
-    Japan: 'jp',
-    Netherlands: 'nl',
-    Portugal: 'pt',
-    Scotland: 'gb-sct',
-    Spain: 'es',
-    'United Kingdom': 'gb',
-    // 必要に応じて追加
-  };
-
-  return countryCodeMap[nationality] || '';
 }
