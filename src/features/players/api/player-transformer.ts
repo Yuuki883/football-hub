@@ -5,18 +5,7 @@
  */
 import { PlayerDetail, PlayerInfo, PlayerStats, TransferHistoryEntry } from '../types/types';
 import { Team } from '@/types/football';
-
-/**
- * レーティングの数値を整形する（"7.866666" -> "7.9"）
- *
- * @param rating - APIから取得した生のレーティング値
- * @returns 整形されたレーティング値
- */
-function formatRating(rating?: string): string | undefined {
-  if (!rating) return undefined;
-  const ratingNum = parseFloat(rating);
-  return ratingNum ? ratingNum.toFixed(1) : undefined;
-}
+import { formatRating } from '../utils/format-utils';
 
 /**
  * 選手の統計情報を変換

@@ -6,12 +6,7 @@
  */
 
 import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
-import {
-  getTopScorers,
-  getTopAssists,
-  getTopScorersBySlug,
-  getTopAssistsBySlug,
-} from '@/lib/api-football/players-api';
+import { getTopScorers, getTopAssists } from '@/lib/api-football/players-api';
 import type { FormattedPlayerStats } from '@/lib/api-football/types/players';
 
 /**
@@ -28,27 +23,13 @@ export async function getLeagueTopScorers(
   forceRefresh: boolean = false
 ): Promise<FormattedPlayerStats[]> {
   try {
-    // スラグの場合はIDに変換
-    let leagueId = leagueIdOrSlug;
-    let slug = '';
-
-    if (typeof leagueIdOrSlug === 'string' && isNaN(Number(leagueIdOrSlug))) {
-      // コード形式（PL, PDなど）の場合はマッピングを使用
-      if (LEAGUE_ID_MAPPING[leagueIdOrSlug]) {
-        leagueId = LEAGUE_ID_MAPPING[leagueIdOrSlug];
-      } else {
-        // スラグ形式の場合はスラグを使用
-        slug = leagueIdOrSlug;
-      }
+    // リーグ短縮コード（PL=プレミアリーグ、PD=ラ・リーガなど）を内部IDに変換
+    if (typeof leagueIdOrSlug === 'string' && LEAGUE_ID_MAPPING[leagueIdOrSlug]) {
+      leagueIdOrSlug = LEAGUE_ID_MAPPING[leagueIdOrSlug];
     }
 
-    // スラグが指定されている場合はスラグベースの関数を使用
-    if (slug) {
-      return getTopScorersBySlug(slug, season, forceRefresh);
-    }
-
-    // IDの場合は直接ID指定
-    return getTopScorers(leagueId, season, forceRefresh);
+    // リーグIDまたはスラグを使用して得点ランキングを取得
+    return getTopScorers(leagueIdOrSlug, season, forceRefresh);
   } catch (error) {
     console.error(
       `得点ランキングの取得中にエラーが発生しました - リーグ:${leagueIdOrSlug}, シーズン:${season}:`,
@@ -72,27 +53,13 @@ export async function getLeagueTopAssists(
   forceRefresh: boolean = false
 ): Promise<FormattedPlayerStats[]> {
   try {
-    // スラグの場合はIDに変換
-    let leagueId = leagueIdOrSlug;
-    let slug = '';
-
-    if (typeof leagueIdOrSlug === 'string' && isNaN(Number(leagueIdOrSlug))) {
-      // コード形式（PL, PDなど）の場合はマッピングを使用
-      if (LEAGUE_ID_MAPPING[leagueIdOrSlug]) {
-        leagueId = LEAGUE_ID_MAPPING[leagueIdOrSlug];
-      } else {
-        // スラグ形式の場合はスラグを使用
-        slug = leagueIdOrSlug;
-      }
+    // リーグ短縮コード（PL=プレミアリーグ、PD=ラ・リーガなど）を内部IDに変換
+    if (typeof leagueIdOrSlug === 'string' && LEAGUE_ID_MAPPING[leagueIdOrSlug]) {
+      leagueIdOrSlug = LEAGUE_ID_MAPPING[leagueIdOrSlug];
     }
 
-    // スラグが指定されている場合はスラグベースの関数を使用
-    if (slug) {
-      return getTopAssistsBySlug(slug, season, forceRefresh);
-    }
-
-    // IDの場合は直接ID指定
-    return getTopAssists(leagueId, season, forceRefresh);
+    // リーグIDまたはスラグを使用してアシストランキングを取得
+    return getTopAssists(leagueIdOrSlug, season, forceRefresh);
   } catch (error) {
     console.error(
       `アシストランキングの取得中にエラーが発生しました - リーグ:${leagueIdOrSlug}, シーズン:${season}:`,
