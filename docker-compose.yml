@@ -1,38 +1,53 @@
 version: '3.9'
 services:
+  # Next.jsアプリケーションのコンテナ設定
   app:
     container_name: football_hub_app
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/app # ローカルのソースコードをコンテナにマウント（開発用）
+      - /app/node_modules # node_modulesは除外（コンテナ内のファイルを使用）
+      - /app/.next/cache # Nextのキャッシュも除外
     ports:
-      - '4000:3000'
+      - '4000:3000' # ホストの4000番ポートをコンテナの3000番ポートにマッピング
     environment:
-      NODE_ENV: development
+      NODE_ENV: development # 開発環境として設定
     env_file:
-      - .env.development
-    command: npm run dev
+      - .env.development # 環境変数ファイルを指定
+    networks:
+      - default # デフォルトネットワークに接続
 
-  db:
+  # PostgreSQLデータベースのコンテナ設定
+  postgres:
     image: postgres:15
-    container_name: football_hub_db
+    container_name: football_hub_postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: football_hub
+      POSTGRES_USER: postgres # データベースのユーザー名
+      POSTGRES_PASSWORD: postgres # データベースのパスワード
+      POSTGRES_DB: football_hub # データベース名
     ports:
-      - '5433:5432'
+      - '5433:5432' # ホストの5433番ポートをコンテナの5432番ポートにマッピング
     volumes:
-      - football_hub_db_data:/var/lib/postgresql/data
+      - football_hub_postgres_data:/var/lib/postgresql/data # データを永続化するためのボリューム
+    networks:
+      - default # デフォルトネットワークに接続
 
+  # Redisキャッシュサーバーのコンテナ設定
   redis:
     image: redis:7
     container_name: football_hub_redis
     ports:
       - '6379:6379'
+    networks:
+      - default # デフォルトネットワークに接続
 
+# ネットワーク設定
+networks:
+  default:
+    name: football-hub_default # カスタムネットワーク名を設定
+
+# 永続化ボリューム設定
 volumes:
-  football_hub_db_data:
+  football_hub_postgres_data: # PostgreSQLデータを保存するボリューム

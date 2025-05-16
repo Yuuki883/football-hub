@@ -1,15 +1,29 @@
-# 開発用
-FROM node:20-alpine
+# ベースイメージとしてNode.js 20を使用
+FROM node:20-bullseye-slim
 
+# 作業ディレクトリを設定
 WORKDIR /app
 
-# package.json / yarn.lock / package-lock.json を先にコピー
+# libssl1.1をインストール（Prismaが必要とする依存関係）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssl \
+    libssl1.1 \
+    && rm -rf /var/lib/apt/lists/* # キャッシュを削除してイメージサイズを削減
+
+# 依存関係をインストールする前に、package.jsonとlockファイルをコピー
+# （レイヤーキャッシングを活用するため）
 COPY package*.json yarn.lock* ./
 
-# 開発用依存関係をインストール
+# 全ての依存関係をインストール
 RUN npm install
 
-# ソースコードは後で docker-compose.yml のボリュームマウントで反映
+# Prismaスキーマをコピーしてクライアントを生成
+COPY prisma ./prisma/
+RUN npx prisma generate
+
+# コンテナがリッスンするポートを指定
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+# コンテナ起動時に実行するコマンド
+# Prismaクライアントを再生成してから開発サーバーを起動
+CMD npx prisma generate && npm run dev
