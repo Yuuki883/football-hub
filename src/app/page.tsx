@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import LiveMatchesCarousel from '@/components/home/LiveMatchesCarousel';
 import NewsHighlights from '@/components/home/NewsHighlights';
 import AllMatchesSection from '@/components/home/AllMatchesSection';
 import LeagueNavigation from '@/components/home/LeagueNavigation';
@@ -16,11 +15,6 @@ export const revalidate = 1800;
 export default function HomePage() {
   return (
     <main className="pb-10 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 min-h-screen">
-      {/* ライブマッチ */}
-      <section className="pt-4 pb-6">
-        <LiveMatchesCarousel />
-      </section>
-
       {/* 試合一覧 */}
       <section className="py-8 bg-white dark:bg-gray-800 shadow-md">
         <div className="container mx-auto px-4">
