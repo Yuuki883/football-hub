@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
+import AuthProvider from '@/providers/AuthProvider';
 import Header from '@/components/common/Header';
 import Footer from '@/components/common/Footer';
 
@@ -32,9 +33,11 @@ export default function RootLayout({
     <html lang="ja">
       <body className={`${inter.variable} antialiased min-h-screen flex flex-col`}>
         <QueryProvider>
-          <Header />
-          <div className="flex-grow">{children}</div>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <div className="flex-grow">{children}</div>
+            <Footer />
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

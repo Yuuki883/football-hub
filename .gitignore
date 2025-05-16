@@ -32,7 +32,6 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-.env.development
 
 # vercel
 .vercel
@@ -45,4 +44,10 @@ next-env.d.ts
 docker-clear-cache.sh
 docker-restart-env.sh
 docker-restart-redis.sh
+
+# prisma
+prisma/db_migration_guide.md
+
+#doc
+docs/
 

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import AuthButtons from '@/features/auth/components/AuthButtons';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,19 +63,26 @@ export default function Header() {
           </Link>
 
           {/* PCナビゲーション */}
-          <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={`font-medium text-sm uppercase tracking-wide transition-colors hover:text-blue-200 flex items-center py-5 ${
-                  isActive(item.path) ? 'text-white border-b-2 border-white' : 'text-blue-100'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <div className="hidden md:flex items-center">
+            <nav className="flex space-x-8 mr-8">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className={`font-medium text-sm uppercase tracking-wide transition-colors hover:text-blue-200 flex items-center py-5 ${
+                    isActive(item.path) ? 'text-white border-b-2 border-white' : 'text-blue-100'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+
+            {/* 認証ボタン (PC) */}
+            <div className="hidden md:block">
+              <AuthButtons />
+            </div>
+          </div>
 
           {/* モバイルメニューボタン */}
           <button
@@ -106,7 +114,7 @@ export default function Header() {
       {/* モバイルメニュー */}
       <div
         className={`md:hidden bg-blue-800 overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+          isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <nav className="flex flex-col px-4 py-2 space-y-1">
@@ -123,6 +131,11 @@ export default function Header() {
               {item.name}
             </Link>
           ))}
+
+          {/* 認証ボタン (モバイル) */}
+          <div className="py-3 px-2 border-t border-blue-700 mt-2 pt-4">
+            <AuthButtons />
+          </div>
         </nav>
       </div>
     </header>
