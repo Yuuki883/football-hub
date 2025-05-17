@@ -49,7 +49,7 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* ロゴ */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 cursor-pointer">
             <div className="relative w-8 h-8">
               <Image
                 src="/webicon.png"
@@ -69,7 +69,7 @@ export default function Header() {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`font-medium text-sm uppercase tracking-wide transition-colors hover:text-blue-200 flex items-center py-5 ${
+                  className={`font-medium text-sm uppercase tracking-wide transition-colors hover:text-blue-200 flex items-center py-5 cursor-pointer ${
                     isActive(item.path) ? 'text-white border-b-2 border-white' : 'text-blue-100'
                   }`}
                 >
@@ -86,7 +86,7 @@ export default function Header() {
 
           {/* モバイルメニューボタン */}
           <button
-            className="md:hidden flex items-center p-1 rounded-md hover:bg-blue-800 transition-colors"
+            className="md:hidden flex items-center p-1 rounded-md hover:bg-blue-800 transition-colors cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="メニューを開く/閉じる"
             aria-expanded={isMenuOpen}
@@ -122,7 +122,7 @@ export default function Header() {
             <Link
               key={item.path}
               href={item.path}
-              className={`py-3 px-2 font-medium text-sm transition-colors rounded-md ${
+              className={`py-3 px-2 font-medium text-sm transition-colors rounded-md cursor-pointer ${
                 isActive(item.path)
                   ? 'bg-blue-700 text-white'
                   : 'text-blue-100 hover:bg-blue-700 hover:text-white'
