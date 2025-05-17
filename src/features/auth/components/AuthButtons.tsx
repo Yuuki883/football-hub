@@ -23,14 +23,14 @@ export default function AuthButtons() {
       <div className="flex items-center space-x-4">
         <Link
           href="/profile"
-          className="flex items-center text-blue-100 hover:text-white transition-colors"
+          className="flex items-center text-blue-100 hover:text-white transition-colors cursor-pointer"
         >
           <User size={18} className="mr-1" />
           <span className="text-sm">{user?.name || 'プロフィール'}</span>
         </Link>
         <button
           onClick={logout}
-          className="flex items-center text-blue-100 hover:text-white transition-colors"
+          className="flex items-center text-blue-100 hover:text-white transition-colors cursor-pointer"
           aria-label="ログアウト"
         >
           <LogOut size={18} className="mr-1" />
@@ -45,14 +45,14 @@ export default function AuthButtons() {
     <div className="flex items-center space-x-4">
       <Link
         href="/login"
-        className="flex items-center text-blue-100 hover:text-white transition-colors"
+        className="flex items-center text-blue-100 hover:text-white transition-colors cursor-pointer"
       >
         <LogIn size={18} className="mr-1" />
         <span className="text-sm">ログイン</span>
       </Link>
       <Link
         href="/register"
-        className="flex items-center px-3 py-1.5 rounded-md text-white bg-blue-600 hover:bg-blue-500 transition-colors text-sm"
+        className="flex items-center px-3 py-1.5 rounded-md text-white bg-blue-600 hover:bg-blue-500 transition-colors text-sm cursor-pointer"
       >
         登録
       </Link>

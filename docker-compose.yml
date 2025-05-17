@@ -7,17 +7,25 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/app # ローカルのソースコードをコンテナにマウント（開発用）
-      - /app/node_modules # node_modulesは除外（コンテナ内のファイルを使用）
-      - /app/.next/cache # Nextのキャッシュも除外
+      - ./:/app # ローカルのソースコードをコンテナにマウント（開発用）
+      - /app/node_modules # node_modulesをボリュームマウントから除外
+      - /app/.next # .nextをボリュームマウントから除外
+    stop_grace_period: 1m # 強制終了までの猶予時間を設定
+    stop_signal: SIGINT # 停止シグナルを指定
     ports:
       - '4000:3000' # ホストの4000番ポートをコンテナの3000番ポートにマッピング
     environment:
       NODE_ENV: development # 開発環境として設定
     env_file:
       - .env.development # 環境変数ファイルを指定
+    depends_on:
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
     networks:
       - default # デフォルトネットワークに接続
+    restart: unless-stopped # コンテナが異常終了した場合に再起動
 
   # PostgreSQLデータベースのコンテナ設定
   postgres:

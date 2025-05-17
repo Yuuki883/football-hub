@@ -9,13 +9,20 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/lib/prisma/client';
 import { compare } from 'bcrypt';
 import { Role } from '@prisma/client';
+import { Adapter } from 'next-auth/adapters';
+
+// カスタムアダプターを作成して型の互換性問題を解決
+const customPrismaAdapter = (): Adapter => {
+  const adapter = PrismaAdapter(prisma) as any;
+  return adapter;
+};
 
 /**
  * NextAuth.jsの設定オプション
  */
 export const authOptions: NextAuthOptions = {
-  // PrismaAdapterを使用してデータベースとの連携を行う
-  adapter: PrismaAdapter(prisma),
+  // カスタムPrismaAdapterを使用してデータベースとの連携を行う
+  adapter: customPrismaAdapter(),
   // 認証プロバイダーの設定
   providers: [
     // メール/パスワードによる認証
