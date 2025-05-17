@@ -25,5 +25,7 @@ RUN npx prisma generate
 EXPOSE 3000
 
 # コンテナ起動時に実行するコマンド
-# Prismaクライアントを再生成してから開発サーバーを起動
-CMD npx prisma generate && npm run dev
+# 1. Prismaマイグレーションを適用
+# 2. Prismaクライアントを再生成
+# 3. 開発サーバーを起動
+CMD npx prisma migrate deploy && npx prisma generate && npm run dev
