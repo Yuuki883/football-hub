@@ -4,7 +4,7 @@
  * 新規ユーザーをデータベースに登録する
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { prisma } from '@/lib/prisma/client';
 import { z } from 'zod';
 
