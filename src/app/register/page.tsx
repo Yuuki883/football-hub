@@ -15,7 +15,7 @@ export default function RegisterPage() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">FootballHub</h1>
         <p className="mt-2 text-center text-sm text-gray-600">
-          アカウントを作成して、お気に入りのチームやリーグを登録しよう
+          アカウントを作成して、お気に入りのチームやリーグを登録しよう。
         </p>
       </div>
 
