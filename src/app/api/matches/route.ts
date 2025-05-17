@@ -9,6 +9,9 @@ import { getTeamFixtures } from '@/features/teams/api/team-fixtures';
 import { format, parseISO, isBefore, isAfter, isToday } from 'date-fns';
 import { DEFAULT_SEASON } from '@/config/api';
 
+// APIルートが動的であることを明示
+export const dynamic = 'force-dynamic';
+
 /**
  * 試合情報を取得するAPIエンドポイント
  *
