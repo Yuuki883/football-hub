@@ -6,6 +6,9 @@ import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueStats } from '@/features/leagues/api/league-stats';
 import { DEFAULT_SEASON } from '@/config/api';
 
+// APIルートが動的であることを明示
+export const dynamic = 'force-dynamic';
+
 /**
  * リーグ情報を取得するAPIエンドポイント
  *

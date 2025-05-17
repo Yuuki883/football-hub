@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { fetchNews } from '@/features/news/api/news';
 import { getRedisClient } from '@/lib/redis';
 
+// APIルートが動的であることを明示
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     // クエリパラメータを解析
