@@ -6,7 +6,7 @@ import RegisterForm from '@/features/auth/components/RegisterForm';
 
 export const metadata: Metadata = {
   title: 'アカウント登録 | FootballHub',
-  description: 'FootballHubの新規アカウント登録ページです',
+  description: 'FootballHubのアカウント登録ページです',
 };
 
 export default function RegisterPage() {
