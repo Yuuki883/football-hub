@@ -1,15 +1,26 @@
-import { Suspense } from 'react';
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import PageLayout from '@/components/layout/PageLayout';
+/**
+ * 試合詳細ページ
+ * 試合の基本情報、統計、ラインナップ、イベントを表示する
+ */
 
-interface MatchDetailPageProps {
+import { notFound } from 'next/navigation';
+import { getFixture } from '@/features/matches/api/match-service';
+import { MatchLayout } from '@/features/matches/components/MatchLayout';
+import { Metadata } from 'next';
+
+// ページの再検証間隔（10分）
+export const revalidate = 600;
+
+interface MatchPageProps {
   params: {
     fixtureId: string;
   };
+  searchParams: {
+    tab?: string;
+  };
 }
 
-export async function generateMetadata({ params }: MatchDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: MatchPageProps): Promise<Metadata> {
   const { fixtureId } = params;
 
   try {
@@ -26,24 +37,26 @@ export async function generateMetadata({ params }: MatchDetailPageProps): Promis
   }
 }
 
-export default async function MatchDetailPage({ params }: MatchDetailPageProps) {
-  const { fixtureId } = params;
+/**
+ * 試合詳細ページコンポーネント
+ * @param params - ルートパラメータ
+ * @param searchParams - クエリパラメータ
+ * @returns 試合詳細ページ
+ */
+export default async function MatchPage({ params, searchParams }: MatchPageProps) {
+  try {
+    // 試合基本情報を取得
+    const fixture = await getFixture(params.fixtureId);
 
-  // 後で実装する: 試合データの取得
-  // const matchData = await getFixtureById(fixtureId);
+    // 試合が存在しない場合は404
+    if (!fixture) {
+      notFound();
+    }
 
-  // if (!matchData) {
-  //   notFound();
-  // }
-
-  return (
-    <PageLayout>
-      <div className="container mx-auto px-4 py-8">
-        <Suspense fallback={<div className="p-4 text-center">試合データを読み込み中...</div>}>
-          <h1 className="text-2xl font-bold mb-4">試合詳細 #{fixtureId}</h1>
-          <p>このページは開発中です。後ほど試合の詳細情報が表示されます。</p>
-        </Suspense>
-      </div>
-    </PageLayout>
-  );
+    return <MatchLayout fixture={fixture} initialTab={searchParams.tab || 'stats'} />;
+  } catch (error) {
+    // エラーが発生した場合は404
+    console.error('Failed to fetch fixture:', error);
+    notFound();
+  }
 }

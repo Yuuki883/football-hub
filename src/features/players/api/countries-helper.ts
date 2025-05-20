@@ -24,14 +24,12 @@ export async function isNationalTeam(teamName: string): Promise<boolean> {
     if (teamName.includes(country)) {
       for (const keyword of nationalTeamKeywords) {
         if (teamName.includes(keyword)) {
-          console.log(`代表チームと判定: ${teamName} (国名: ${country}, キーワード: ${keyword})`);
           return true;
         }
       }
 
       // 国名が完全一致する場合は代表チーム（例："England", "Brazil"）
       if (teamName === country) {
-        console.log(`代表チームと判定: ${teamName} (国名完全一致)`);
         return true;
       }
     }

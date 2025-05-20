@@ -5,11 +5,20 @@
  * プロジェクト全体で一貫した設定値を使用するために参照
  */
 
+// デフォルト値（環境変数が存在しない場合のフォールバック）
+const DEFAULT_API_HOST = 'v3.football.api-sports.io';
+const DEFAULT_API_BASE = 'https://v3.football.api-sports.io';
+
 // API-Football API設定
 export const API_FOOTBALL = {
-  KEY: process.env.API_FOOTBALL_KEY || '',
-  HOST: process.env.API_FOOTBALL_HOST || '',
-  BASE_URL: process.env.API_FOOTBALL_BASE_URL || `https://${process.env.API_FOOTBALL_HOST}/v3`,
+  KEY: process.env.API_FOOTBALL_KEY || process.env.NEXT_PUBLIC_API_FOOTBALL_KEY || '',
+  HOST:
+    process.env.API_FOOTBALL_HOST || process.env.NEXT_PUBLIC_API_FOOTBALL_HOST || DEFAULT_API_HOST,
+  // BASE_URLは他の環境変数に依存せず、独立して設定
+  BASE_URL:
+    process.env.API_FOOTBALL_BASE_URL ||
+    process.env.NEXT_PUBLIC_API_FOOTBALL_BASE_URL ||
+    DEFAULT_API_BASE,
 };
 
 // リーグID (API-Football)のマッピング

@@ -3,7 +3,6 @@
  *
  * 移籍履歴の処理と整形を行う機能
  */
-import { Team } from '@/types/football';
 import { TransferHistoryEntry } from '../types/types';
 
 /**

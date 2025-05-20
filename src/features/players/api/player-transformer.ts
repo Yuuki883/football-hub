@@ -3,7 +3,7 @@
  *
  * API-Footballから取得した生データをアプリケーション内で使用しやすい形式に変換する
  */
-import { PlayerDetail, PlayerInfo, PlayerStats, TransferHistoryEntry } from '../types/types';
+import { PlayerStats, TransferHistoryEntry } from '../types/types';
 import { Team } from '@/types/football';
 import { formatRating } from '../utils/format-utils';
 
