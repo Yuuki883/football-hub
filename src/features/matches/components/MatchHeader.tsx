@@ -7,6 +7,7 @@
 
 import { useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Fixture } from '../types/match.types';
 import { getStatusText, getStatusClass, formatMatchDate } from '../utils/match-utils';
 
@@ -121,8 +122,8 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
       <div className="p-6">
         <div className="flex items-center justify-between">
           {/* ホームチーム */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-20 h-20">
+          <div className="flex flex-col items-center flex-1 min-w-0">
+            <div className="relative w-20 h-20 mb-3 flex-shrink-0">
               <Image
                 src={safeFixture.teams.home.logo}
                 alt={safeFixture.teams.home.name}
@@ -131,11 +132,16 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
                 className="object-contain"
               />
             </div>
-            <h2 className="mt-3 text-lg font-bold text-center">{safeFixture.teams.home.name}</h2>
+            <Link
+              href={`/teams/${fixture.teams.home.id}`}
+              className="text-2xl font-extrabold truncate text-center hover:underline"
+            >
+              {safeFixture.teams.home.name}
+            </Link>
           </div>
 
           {/* スコア */}
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center flex-shrink-0 mx-4">
             <div className="text-4xl font-bold mb-2">{score}</div>
             <span
               className={`px-3 py-1 text-white text-sm font-medium rounded-full mb-2 ${statusInfo.className}`}
@@ -151,9 +157,9 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
             )}
           </div>
 
-          {/* アウェイチーム */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-20 h-20">
+          {/* アウェイチーム*/}
+          <div className="flex flex-col items-center flex-1 min-w-0">
+            <div className="relative w-20 h-20 mb-3 flex-shrink-0">
               <Image
                 src={safeFixture.teams.away.logo}
                 alt={safeFixture.teams.away.name}
@@ -162,7 +168,12 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
                 className="object-contain"
               />
             </div>
-            <h2 className="mt-3 text-lg font-bold text-center">{safeFixture.teams.away.name}</h2>
+            <Link
+              href={`/teams/${fixture.teams.away.id}`}
+              className="text-2xl font-extrabold truncate text-center hover:underline"
+            >
+              {safeFixture.teams.away.name}
+            </Link>
           </div>
         </div>
       </div>

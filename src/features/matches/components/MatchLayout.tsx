@@ -11,7 +11,7 @@ import { Fixture } from '../types/match.types';
 import { MatchHeader } from './MatchHeader';
 import PageLayout from '@/components/layout/PageLayout';
 import StatsPanel from './StatsPanel';
-import LineupPanel from './LineupPanel';
+import LineupPanel from './lineup';
 import EventsPanel from './EventsPanel';
 import { TABS } from '../constants/matches';
 

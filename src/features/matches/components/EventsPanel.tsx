@@ -121,10 +121,7 @@ function EventItem({ event, homeTeamId }: { event: Event; homeTeamId: number }) 
       <div className="flex items-center py-4 border-b border-gray-100 last:border-b-0">
         <div className="w-1/2 flex justify-end mr-3">{isHomeTeam && <SubstitutionContent />}</div>
         <div className={timeClass}>
-          <span className="text-sm font-medium">
-            {event.time.elapsed}
-            {event.time.extra ? `+${event.time.extra}` : ''}'
-          </span>
+          <span className="text-sm font-medium">{event.time.elapsed}&apos;</span>
         </div>
         <div className="w-1/2 flex ml-3">{!isHomeTeam && <SubstitutionContent />}</div>
       </div>
@@ -171,10 +168,7 @@ function EventItem({ event, homeTeamId }: { event: Event; homeTeamId: number }) 
         )}
       </div>
       <div className={timeClass}>
-        <span className="text-sm font-medium">
-          {event.time.elapsed}
-          {event.time.extra ? `+${event.time.extra}` : ''}'
-        </span>
+        <span className="text-sm font-medium">{event.time.elapsed}&apos;</span>
       </div>
       <div className="w-1/2 flex ml-3">
         {!isHomeTeam && (

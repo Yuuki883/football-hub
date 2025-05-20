@@ -170,7 +170,7 @@ export async function getLineups(id: string): Promise<Lineup[]> {
         }
 
         // gridプロパティの検証
-        const validatedLineups = response.response.map((lineup) => {
+        const validatedLineups = response.response.map((lineup: any) => {
           // startXIの各プレイヤーエントリーを検証
           if (lineup.startXI && Array.isArray(lineup.startXI)) {
             lineup.startXI.forEach((entry: PlayerEntry) => {
