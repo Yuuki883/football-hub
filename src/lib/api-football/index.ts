@@ -23,7 +23,7 @@ export async function fetchFromAPI(url: string): Promise<any> {
       throw new Error('API key is not configured');
     }
 
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'x-apisports-key': API_FOOTBALL.KEY,
       'Content-Type': 'application/json',
     };
