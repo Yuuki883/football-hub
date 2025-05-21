@@ -23,11 +23,13 @@ export async function fetchFromAPI(url: string): Promise<any> {
       throw new Error('API key is not configured');
     }
 
+    const headers: HeadersInit = {
+      'x-apisports-key': API_FOOTBALL.KEY,
+      'Content-Type': 'application/json',
+    };
+
     const response = await fetch(url, {
-      headers: {
-        'x-apisports-key': API_FOOTBALL.KEY,
-        'Content-Type': 'application/json',
-      },
+      headers,
       mode: 'cors',
       credentials: 'omit',
     });
