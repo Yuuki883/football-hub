@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['upload.wikimedia.org', 'tmssl.akamaized.net', 'media.api-sports.io'],
+    domains: [
+      'upload.wikimedia.org',
+      'tmssl.akamaized.net',
+      'media.api-sports.io',
+      'via.placeholder.com',
+    ],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
