@@ -24,10 +24,14 @@ export async function getCountryNames(forceRefresh: boolean = false): Promise<st
   }
 
   try {
+    if (!API_FOOTBALL.KEY) {
+      throw new Error('API key is not configured');
+    }
+
     // API呼び出しのためのヘッダー
-    const headers = {
-      'x-rapidapi-key': API_FOOTBALL.KEY,
-      'x-rapidapi-host': API_FOOTBALL.HOST,
+    const headers: Record<string, string> = {
+      'x-apisports-key': API_FOOTBALL.KEY,
+      'Content-Type': 'application/json',
     };
 
     const response = await fetch(`${API_FOOTBALL.BASE_URL}/countries`, {

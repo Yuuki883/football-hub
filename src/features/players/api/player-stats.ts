@@ -19,10 +19,14 @@ export async function getPlayerStats(
   season: string
 ): Promise<PlayerStats | null> {
   try {
+    if (!API_FOOTBALL.KEY) {
+      throw new Error('API key is not configured');
+    }
+
     // API呼び出しのためのヘッダー
-    const headers = {
-      'x-rapidapi-key': API_FOOTBALL.KEY,
-      'x-rapidapi-host': API_FOOTBALL.HOST,
+    const headers: Record<string, string> = {
+      'x-apisports-key': API_FOOTBALL.KEY,
+      'Content-Type': 'application/json',
     };
 
     // 選手統計情報を取得
