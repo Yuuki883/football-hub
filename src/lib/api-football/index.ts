@@ -19,14 +19,24 @@ export { LEAGUE_ID_MAPPING } from '@/config/api';
  */
 export async function fetchFromAPI(url: string): Promise<any> {
   try {
+    if (!API_FOOTBALL.KEY) {
+      throw new Error('API key is not configured');
+    }
+
     const response = await fetch(url, {
       headers: {
         'x-apisports-key': API_FOOTBALL.KEY,
+        'Content-Type': 'application/json',
       },
+      mode: 'cors',
+      credentials: 'omit',
     });
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      const errorData = await response.json().catch(() => null);
+      throw new Error(
+        `API error: ${response.status} - ${errorData?.message || response.statusText}`
+      );
     }
 
     return response.json();
@@ -44,9 +54,9 @@ export async function fetchFromAPI(url: string): Promise<any> {
  * @returns 完全なURL
  */
 export function createUrl(endpoint: string, params?: Record<string, any>): string {
-  const baseUrl = API_FOOTBALL.BASE_URL.endsWith('/')
+  const baseUrl = API_FOOTBALL.BASE_URL?.endsWith('/')
     ? API_FOOTBALL.BASE_URL.slice(0, -1)
-    : API_FOOTBALL.BASE_URL;
+    : API_FOOTBALL.BASE_URL || '';
 
   const url = new URL(`${baseUrl}${endpoint}`);
 
