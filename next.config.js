@@ -7,6 +7,7 @@ const nextConfig = {
       'tmssl.akamaized.net',
       'media.api-sports.io',
       'via.placeholder.com',
+      'xpnextgtxaozdjqombiz.supabase.co',
     ],
   },
   webpack: (config, { isServer }) => {
