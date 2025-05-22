@@ -41,9 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # docker scripts
-docker-clear-cache.sh
-docker-restart-env.sh
-docker-restart-redis.sh
+clear_redis_cache.sh
 
 # prisma
 prisma/db_migration_guide.md
