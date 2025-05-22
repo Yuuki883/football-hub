@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn, signOut } from 'next-auth/react';
 import { RegisterFormData, LoginFormData } from '../types/auth-types';
-import { useAuth as useNextAuthSession } from '@/lib/auth-client';
+import { useAuth as useNextAuthSession } from '@/lib/auth';
 
 /**
  * NextAuth.jsのセッション情報と認証機能を提供するカスタムフック

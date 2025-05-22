@@ -16,7 +16,10 @@ import { getToken } from 'next-auth/jwt';
  */
 export async function middleware(request: NextRequest) {
   // JWTトークンを取得
-  const token = await getToken({ req: request });
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
   // 現在のパスを取得
   const path = request.nextUrl.pathname;

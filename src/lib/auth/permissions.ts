@@ -3,7 +3,7 @@
  * 特定のロールや認証状態を要求する関数を提供
  */
 
-import { getCurrentUser } from './auth-server';
+import { getCurrentUser } from './server';
 import { redirect } from 'next/navigation';
 import { Role } from '@prisma/client';
 

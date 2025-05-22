@@ -4,7 +4,7 @@
  */
 
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from './auth';
+import { authOptions } from './config';
 import { Role } from '@prisma/client';
 
 /**

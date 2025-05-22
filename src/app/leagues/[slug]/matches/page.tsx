@@ -4,15 +4,6 @@ import MatchesList from '../components/MatchesList';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
-interface MatchesPageProps {
-  params: {
-    slug: string;
-  };
-  searchParams: {
-    season?: string;
-  };
-}
-
 // 動的メタデータ生成
 export async function generateMetadata({
   params,
@@ -34,9 +25,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function MatchesPage({ params, searchParams }: MatchesPageProps) {
+export default async function MatchesPage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { season?: string };
+}) {
   const { slug } = params;
-  const season = parseInt(searchParams.season || '2024');
+  const season = parseInt(searchParams?.season || '2024');
 
   const matches = await getLeagueFixtures(slug, { season });
 

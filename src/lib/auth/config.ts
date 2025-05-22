@@ -59,7 +59,6 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.image,
           role: user.role,
         };
       },
@@ -68,6 +67,7 @@ export const authOptions: NextAuthOptions = {
   // セッション管理方法の設定（JWTを使用）
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30日間
   },
   // コールバック関数の設定
   callbacks: {
@@ -84,6 +84,24 @@ export const authOptions: NextAuthOptions = {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as Role;
+
+        // 必要な場合はDBから画像URLのみを取得
+        if (session.user.id) {
+          const userProfile = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            select: { image: true },
+          });
+
+          // 画像があればセッションに追加（Base64全体ではなくURLまたは参照のみ）
+          if (userProfile?.image) {
+            // Base64データが大きい場合は、先頭部分だけを使用する
+            // または、画像ストレージへの参照URLだけを入れる考え方もある
+            const isBase64 = userProfile.image.startsWith('data:');
+            session.user.image = isBase64
+              ? userProfile.image.substring(0, 100) + '...' // Base64文字列を短く切る
+              : userProfile.image; // URLの場合はそのまま
+          }
+        }
       }
       return session;
     },
@@ -95,4 +113,17 @@ export const authOptions: NextAuthOptions = {
   },
   // JWTの署名に使用するシークレット
   secret: process.env.NEXTAUTH_SECRET,
+  // Cookieの設定
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 30 * 24 * 60 * 60, // 30日間
+      },
+    },
+  },
 };
