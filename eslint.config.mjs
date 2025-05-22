@@ -9,7 +9,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-// 使用可能な設定のみを含める
+// Next.jsの推奨設定のみを有効化
 const eslintConfig = [...compat.extends('next/core-web-vitals')];
 
 export default eslintConfig;

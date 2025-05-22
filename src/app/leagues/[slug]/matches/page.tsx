@@ -8,7 +8,7 @@ interface MatchesPageProps {
   params: {
     slug: string;
   };
-  searchParams: {
+  searchParams?: {
     season?: string;
   };
 }
@@ -36,7 +36,7 @@ export async function generateMetadata({
 
 export default async function MatchesPage({ params, searchParams }: MatchesPageProps) {
   const { slug } = params;
-  const season = parseInt(searchParams.season || '2024');
+  const season = parseInt(searchParams?.season || '2024');
 
   const matches = await getLeagueFixtures(slug, { season });
 
