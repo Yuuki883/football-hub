@@ -65,7 +65,9 @@ const SubPlayerItem = memo(
     const goals = events.filter(
       (e) =>
         e.player.id === player.id &&
-        (e.type === 'Goal' || e.detail === 'Normal Goal' || e.detail?.includes('Goal'))
+        (e.type === 'Goal' ||
+          e.detail === 'Normal Goal' ||
+          (e.detail?.includes('Goal') && e.type !== 'Var'))
     );
 
     // アシスト数カウント
@@ -129,7 +131,7 @@ const SubPlayerItem = memo(
             {/* アシスト */}
             {assists.length > 0 && (
               <div className="bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
-                {assists.length > 1 ? `A${assists.length}` : 'A'}
+                {assists.length > 1 ? assists.length : 'A'}
               </div>
             )}
 

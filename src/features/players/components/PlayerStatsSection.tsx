@@ -222,10 +222,11 @@ interface StatCardProps {
 function StatCard({ label, value, unit, icon, isRating }: StatCardProps) {
   // レーティングの背景色を値に応じて変更
   const getRatingBackground = (rating: number) => {
-    if (rating >= 8.0) return 'bg-green-50 border border-green-200';
-    if (rating >= 7.0) return 'bg-blue-50 border border-blue-200';
-    if (rating >= 6.0) return 'bg-yellow-50 border border-yellow-200';
-    return 'bg-red-50 border border-red-200';
+    if (rating >= 8.5) return 'bg-blue-500';
+    if (rating >= 7.5) return 'bg-green-500';
+    if (rating >= 6.5) return 'bg-orange-500';
+    if (rating >= 5.5) return 'bg-gray-500';
+    return 'bg-red-500';
   };
 
   return (

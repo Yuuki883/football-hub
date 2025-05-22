@@ -5,9 +5,10 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Fixture, Event } from '../types/match.types';
-import { getEvents } from '../api/match-service';
+import { useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
+import { Fixture, Event, TeamPlayers, PlayerPerformance } from '../types/match.types';
+import { getEvents, getFixturesPlayers } from '../api/match-service';
 import { Goal, AlertTriangle, ArrowRightLeft, Clock, RefreshCw, Flag } from 'lucide-react';
 import { EVENT_FILTERS, EVENT_TEXT_MAP } from '../constants/matches';
 
@@ -66,12 +67,24 @@ function getEventText(event: Event): string {
 /**
  * イベントリストアイテムコンポーネント
  */
-function EventItem({ event, homeTeamId }: { event: Event; homeTeamId: number }) {
+function EventItem({
+  event,
+  homeTeamId,
+  playerPhotos,
+}: {
+  event: Event;
+  homeTeamId: number;
+  playerPhotos: Map<number, string>;
+}) {
   const isHomeTeam = event.team.id === homeTeamId;
   const icon = getEventIcon(event.type, event.detail);
   const eventText = getEventText(event);
 
   const timeClass = 'flex items-center justify-center w-12 h-12 rounded-full bg-gray-100';
+
+  // 選手の写真を取得
+  const playerPhoto = event.player?.id ? playerPhotos.get(event.player.id) : null;
+  const assistPhoto = event.assist?.id ? playerPhotos.get(event.assist.id) : null;
 
   // 選手交代の表示
   if (event.type === 'subst') {
@@ -82,7 +95,19 @@ function EventItem({ event, homeTeamId }: { event: Event; homeTeamId: number }) 
     // 交代表示コンポーネント
     const SubstitutionContent = () => (
       <div className="flex flex-col items-center">
-        <div className="font-medium text-sm text-green-600">{incomingPlayer.name}</div>
+        <div className="flex items-center">
+          {assistPhoto && (
+            <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
+              <Image
+                src={assistPhoto}
+                alt={incomingPlayer.name || ''}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div className="font-medium text-sm text-green-600">{incomingPlayer.name}</div>
+        </div>
         <div className="flex items-center my-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +138,19 @@ function EventItem({ event, homeTeamId }: { event: Event; homeTeamId: number }) 
             />
           </svg>
         </div>
-        <div className="font-medium text-sm text-red-600">{outgoingPlayer.name}</div>
+        <div className="flex items-center">
+          {playerPhoto && (
+            <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
+              <Image
+                src={playerPhoto}
+                alt={outgoingPlayer.name || ''}
+                fill
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div className="font-medium text-sm text-red-600">{outgoingPlayer.name}</div>
+        </div>
       </div>
     );
 
@@ -130,22 +167,62 @@ function EventItem({ event, homeTeamId }: { event: Event; homeTeamId: number }) 
 
   // ホームチームとアウェイチームで表示位置を変える
   const homeContent = isHomeTeam ? (
-    <div className="flex flex-col items-start">
-      <div className="font-medium text-sm">{event.player.name}</div>
-      <div className="text-gray-600 text-xs">{eventText}</div>
-      {event.assist && event.assist.name && event.type === 'Goal' && (
-        <div className="text-gray-500 text-xs">アシスト: {event.assist.name}</div>
+    <div className="flex items-center">
+      {playerPhoto && (
+        <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 border border-gray-200">
+          <Image src={playerPhoto} alt={event.player.name || ''} fill className="object-cover" />
+        </div>
       )}
+      <div className="flex flex-col">
+        <div className="font-medium text-sm">{event.player.name}</div>
+        <div className="text-gray-600 text-xs">{eventText}</div>
+        {event.assist && event.assist.name && event.type === 'Goal' && (
+          <div className="text-gray-500 text-xs flex items-center">
+            アシスト:
+            {assistPhoto && (
+              <div className="relative w-4 h-4 rounded-full overflow-hidden mx-1">
+                <Image
+                  src={assistPhoto}
+                  alt={event.assist.name || ''}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {event.assist.name}
+          </div>
+        )}
+      </div>
     </div>
   ) : null;
 
   const awayContent = !isHomeTeam ? (
-    <div className="flex flex-col items-start">
-      <div className="font-medium text-sm">{event.player.name}</div>
-      <div className="text-gray-600 text-xs">{eventText}</div>
-      {event.assist && event.assist.name && event.type === 'Goal' && (
-        <div className="text-gray-500 text-xs">アシスト: {event.assist.name}</div>
+    <div className="flex items-center">
+      {playerPhoto && (
+        <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 border border-gray-200">
+          <Image src={playerPhoto} alt={event.player.name || ''} fill className="object-cover" />
+        </div>
       )}
+      <div className="flex flex-col">
+        <div className="font-medium text-sm">{event.player.name}</div>
+        <div className="text-gray-600 text-xs">{eventText}</div>
+        {event.assist && event.assist.name && event.type === 'Goal' && (
+          <div className="text-gray-500 text-xs flex items-center">
+            アシスト:
+            {assistPhoto && (
+              <div className="relative w-4 h-4 rounded-full overflow-hidden mx-1">
+                <Image
+                  src={assistPhoto}
+                  alt={event.assist.name || ''}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+            {event.assist.name}
+          </div>
+        )}
+      </div>
     </div>
   ) : null;
 
@@ -277,16 +354,35 @@ type CustomEvent =
  */
 export default function EventsPanel({ fixture }: EventsPanelProps) {
   const [events, setEvents] = useState<Event[]>([]);
+  const [playerData, setPlayerData] = useState<TeamPlayers[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<string>('all');
 
+  // 選手の写真をIDごとにマップ
+  const playerPhotosMap = useMemo(() => {
+    const map = new Map<number, string>();
+
+    playerData.forEach((teamData) => {
+      teamData.players.forEach((player) => {
+        if (player.player.id && player.player.photo) {
+          map.set(player.player.id, player.player.photo);
+        }
+      });
+    });
+
+    return map;
+  }, [playerData]);
+
   // イベントデータを取得
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const eventsData = await getEvents(fixture.id.toString());
+        const [eventsData, playersData] = await Promise.all([
+          getEvents(fixture.id.toString()),
+          getFixturesPlayers(fixture.id.toString()),
+        ]);
 
         // 時間順にソート
         const sortedEvents = [...eventsData].sort((a, b) => {
@@ -297,15 +393,16 @@ export default function EventsPanel({ fixture }: EventsPanelProps) {
         });
 
         setEvents(sortedEvents);
+        setPlayerData(playersData);
       } catch (err) {
-        console.error('イベントデータ取得エラー:', err);
-        setError('イベントデータの取得中にエラーが発生しました');
+        console.error('データ取得エラー:', err);
+        setError('データの取得中にエラーが発生しました');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEvents();
+    fetchData();
   }, [fixture.id]);
 
   // 表示するイベントをフィルタリング
@@ -447,7 +544,12 @@ export default function EventsPanel({ fixture }: EventsPanelProps) {
 
           if ('player' in item && 'team' in item) {
             return (
-              <EventItem key={`event-${index}`} event={item} homeTeamId={fixture.teams.home.id} />
+              <EventItem
+                key={`event-${index}`}
+                event={item}
+                homeTeamId={fixture.teams.home.id}
+                playerPhotos={playerPhotosMap}
+              />
             );
           }
 

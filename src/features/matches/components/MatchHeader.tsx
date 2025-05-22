@@ -123,20 +123,22 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
         <div className="flex items-center justify-between">
           {/* ホームチーム */}
           <div className="flex flex-col items-center flex-1 min-w-0">
-            <div className="relative w-20 h-20 mb-3 flex-shrink-0">
-              <Image
-                src={safeFixture.teams.home.logo}
-                alt={safeFixture.teams.home.name}
-                fill
-                sizes="80px"
-                className="object-contain"
-              />
-            </div>
             <Link
               href={`/teams/${fixture.teams.home.id}`}
-              className="text-2xl font-extrabold truncate text-center hover:underline"
+              className="flex flex-col items-center hover:opacity-90 transition-opacity"
             >
-              {safeFixture.teams.home.name}
+              <div className="relative w-20 h-20 mb-3 flex-shrink-0 transition-transform hover:scale-105">
+                <Image
+                  src={safeFixture.teams.home.logo}
+                  alt={safeFixture.teams.home.name}
+                  fill
+                  sizes="80px"
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-2xl font-extrabold truncate text-center hover:underline">
+                {safeFixture.teams.home.name}
+              </span>
             </Link>
           </div>
 
@@ -159,20 +161,22 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
 
           {/* アウェイチーム*/}
           <div className="flex flex-col items-center flex-1 min-w-0">
-            <div className="relative w-20 h-20 mb-3 flex-shrink-0">
-              <Image
-                src={safeFixture.teams.away.logo}
-                alt={safeFixture.teams.away.name}
-                fill
-                sizes="80px"
-                className="object-contain"
-              />
-            </div>
             <Link
               href={`/teams/${fixture.teams.away.id}`}
-              className="text-2xl font-extrabold truncate text-center hover:underline"
+              className="flex flex-col items-center hover:opacity-90 transition-opacity"
             >
-              {safeFixture.teams.away.name}
+              <div className="relative w-20 h-20 mb-3 flex-shrink-0 transition-transform hover:scale-105">
+                <Image
+                  src={safeFixture.teams.away.logo}
+                  alt={safeFixture.teams.away.name}
+                  fill
+                  sizes="80px"
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-2xl font-extrabold truncate text-center hover:underline">
+                {safeFixture.teams.away.name}
+              </span>
             </Link>
           </div>
         </div>

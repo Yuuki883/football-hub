@@ -10,8 +10,8 @@ import { Event, PlayerEntry, PlayerStatistics } from '../../types/match.types';
  * @returns 対応するTailwindクラス名
  */
 const getRatingBackground = (rating: number) => {
-  if (rating >= 8.5) return 'bg-green-500';
-  if (rating >= 7.5) return 'bg-blue-500';
+  if (rating >= 8.5) return 'bg-blue-500';
+  if (rating >= 7.5) return 'bg-green-500';
   if (rating >= 6.5) return 'bg-orange-500';
   if (rating >= 5.5) return 'bg-gray-500';
   return 'bg-red-500';
@@ -23,8 +23,8 @@ const getRatingBackground = (rating: number) => {
  * @returns 対応するTailwindクラス名
  */
 const getRatingTextColor = (rating: number) => {
-  if (rating >= 8.5) return 'text-green-500';
-  if (rating >= 7.5) return 'text-blue-500';
+  if (rating >= 8.5) return 'text-blue-500';
+  if (rating >= 7.5) return 'text-green-500';
   if (rating >= 6.5) return 'text-orange-500';
   if (rating >= 5.5) return 'text-gray-500';
   return 'text-red-500';
@@ -37,7 +37,9 @@ const EventBadges = ({ events, playerId }: { events: Event[]; playerId: number }
   const goalEvents = events.filter(
     (e) =>
       e.player.id === playerId &&
-      (e.type === 'Goal' || e.detail === 'Normal Goal' || e.detail?.includes('Goal'))
+      (e.type === 'Goal' ||
+        e.detail === 'Normal Goal' ||
+        (e.detail?.includes('Goal') && e.type !== 'Var'))
   );
   const ownGoalEvents = events.filter((e) => e.player.id === playerId && e.detail === 'Own Goal');
   const assistEvents = events.filter((e) => e.assist?.id === playerId && e.type !== 'subst');
@@ -93,7 +95,7 @@ const EventBadges = ({ events, playerId }: { events: Event[]; playerId: number }
       <div className="absolute -bottom-2 -left-2 flex flex-col items-start gap-0.5 z-20">
         {assistEvents.length > 0 && (
           <div className="bg-green-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
-            {assistEvents.length > 1 ? `A${assistEvents.length}` : 'A'}
+            {assistEvents.length > 1 ? assistEvents.length : 'A'}
           </div>
         )}
       </div>

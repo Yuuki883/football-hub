@@ -19,6 +19,9 @@ export default function PlayerPerformanceModal({
   const stats = player.statistics[0];
   if (!stats) return null;
 
+  //GK判定
+  const isGoalkeeper = stats.games.position === 'G';
+
   return (
     <div
       className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
@@ -72,6 +75,33 @@ export default function PlayerPerformanceModal({
               <span className="font-semibold">{stats.games.minutes || 0}分</span>
             </div>
           </div>
+
+          {/* ゴールキーパー専用スタッツ */}
+          {isGoalkeeper && (
+            <div className="border-t pt-3 mb-4">
+              <h4 className="font-medium mb-2">ゴールキーパー</h4>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-gray-50 p-2 rounded">
+                  <div className="text-xs text-gray-500">セーブ数</div>
+                  <div className="font-semibold">{stats.goals.saves || 0}</div>
+                </div>
+                <div className="bg-gray-50 p-2 rounded">
+                  <div className="text-xs text-gray-500">失点</div>
+                  <div className="font-semibold">{stats.goals.conceded || 0}</div>
+                </div>
+                <div className="bg-gray-50 p-2 rounded">
+                  <div className="text-xs text-gray-500">クリーンシート</div>
+                  <div className="font-semibold">
+                    {stats.goals.conceded === 0 ? 'あり' : 'なし'}
+                  </div>
+                </div>
+                <div className="bg-gray-50 p-2 rounded">
+                  <div className="text-xs text-gray-500">PKセーブ</div>
+                  <div className="font-semibold">{stats.penalty.saved || 0}</div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* 攻撃スタッツ */}
           <div className="border-t pt-3 mb-4">
