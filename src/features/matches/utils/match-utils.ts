@@ -2,7 +2,9 @@
  * 試合関連のユーティリティ関数
  */
 
-import { formatMatchDate as formatDateUtil } from '@/utils/date-formatter';
+import { formatMatchDate as formatDateUtil, formatMatchTime } from '@/utils/date-formatter';
+import { MatchDisplay, MatchStatus, MatchStatusType } from '../types/match.types';
+import { format } from 'date-fns';
 
 /**
  * 試合ステータスを表示用テキストに変換
@@ -58,4 +60,42 @@ export function formatMatchDate(dateString: string): string {
     // エラー時はそのまま日付文字列を返す
     return dateString || '日付不明';
   }
+}
+
+/**
+ * 試合がすでに開始している（試合中または終了）かどうかを判定
+ * @param status - 試合ステータス
+ * @returns 開始済みならtrue
+ */
+export function isMatchStarted(status: MatchStatusType | string): boolean {
+  // スケジュール済み(SCHEDULED)以外は全て試合開始済みと見なす
+  return status !== MatchStatus.SCHEDULED && status !== 'NS' && status !== 'POSTPONED';
+}
+
+/**
+ * 試合スコア表示用クラスを取得
+ * @param status - 試合ステータス
+ * @returns CSSクラス名
+ */
+export function getScoreDisplayClass(status: MatchStatusType | string): string {
+  if (status === MatchStatus.LIVE || status === MatchStatus.PAUSED) {
+    return 'text-green-700 dark:text-green-400 font-semibold';
+  }
+  return '';
+}
+
+/**
+ * 日付ごとに試合をグループ化
+ * @param matches - 試合配列
+ * @returns 日付をキーとする試合グループオブジェクト
+ */
+export function groupMatchesByDate(matches: MatchDisplay[]): Record<string, MatchDisplay[]> {
+  return matches.reduce((acc: Record<string, MatchDisplay[]>, match) => {
+    const dateKey = formatDateUtil(match.utcDate, 'group');
+    if (!acc[dateKey]) {
+      acc[dateKey] = [];
+    }
+    acc[dateKey].push(match);
+    return acc;
+  }, {});
 }

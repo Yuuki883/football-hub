@@ -227,3 +227,57 @@ export interface TeamPlayers {
   };
   players: PlayerPerformance[];
 }
+
+/**
+ * Football-Data APIの試合表示用の型定義
+ */
+export interface MatchDisplay {
+  id: string;
+  utcDate: string;
+  status: string;
+  competition: {
+    id: string;
+    code: string;
+    name: string;
+    emblem: string;
+  };
+  homeTeam: {
+    id: string;
+    name: string;
+    shortName?: string;
+    crest: string;
+  };
+  awayTeam: {
+    id: string;
+    name: string;
+    shortName?: string;
+    crest: string;
+  };
+  score?: {
+    home: number | null;
+    away: number | null;
+  };
+}
+
+/**
+ * 試合カレンダー用のリーグデータ型定義
+ */
+export interface LeagueData {
+  id: string;
+  code: string;
+  name: string;
+  emblem: string;
+  matches: MatchDisplay[];
+}
+
+/**
+ * 試合ステータスの型定義（定数）
+ */
+export const MatchStatus = {
+  SCHEDULED: 'SCHEDULED',
+  LIVE: 'IN_PLAY',
+  PAUSED: 'PAUSED',
+  FINISHED: 'FINISHED',
+} as const;
+
+export type MatchStatusType = (typeof MatchStatus)[keyof typeof MatchStatus];

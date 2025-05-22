@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import NewsHighlights from '@/components/home/NewsHighlights';
-import AllMatchesSection from '@/components/home/AllMatchesSection';
+import AllMatchesSection from '@/features/matches/components/AllMatchesSection';
 import LeagueNavigation from '@/components/home/LeagueNavigation';
 
 export const metadata: Metadata = {
