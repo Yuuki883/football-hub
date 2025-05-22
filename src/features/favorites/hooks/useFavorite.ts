@@ -50,13 +50,11 @@ export function useLeagueFavorite(leagueId: string, initialIsFavorite: boolean =
 
       // 既に登録済みの場合も成功扱い
       if (result.exists) {
-        console.log('既にお気に入りに登録されています');
         setIsFavorite(true);
         return;
       }
 
       setIsFavorite(!isFavorite);
-      console.log(isFavorite ? 'お気に入りから削除しました' : 'お気に入りに追加しました');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'エラーが発生しました';
       console.error('お気に入り処理エラー:', errorMessage);
@@ -89,7 +87,6 @@ export function useTeamFavorite(teamId: string, initialIsFavorite: boolean = fal
 
     try {
       const method = isFavorite ? 'DELETE' : 'POST';
-      console.log(`${method} リクエスト送信: /api/favorites/league`, { teamId });
 
       // リーグと同じAPIエンドポイント形式を使用
       const response = await fetch(`${API_BASE_URL}/api/favorites/team`, {
@@ -116,13 +113,11 @@ export function useTeamFavorite(teamId: string, initialIsFavorite: boolean = fal
 
       // 既に登録済みの場合も成功扱い
       if (result.exists) {
-        console.log('既にお気に入りに登録されています');
         setIsFavorite(true);
         return;
       }
 
       setIsFavorite(!isFavorite);
-      console.log(isFavorite ? 'お気に入りから削除しました' : 'お気に入りに追加しました');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'エラーが発生しました';
       console.error('お気に入り処理エラー:', errorMessage);
