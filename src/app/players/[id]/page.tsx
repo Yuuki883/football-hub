@@ -70,7 +70,7 @@ async function PlayerContent({ playerId }: { playerId: string }) {
         <div className="lg:col-span-8">
           <PlayerStatsSection stats={playerData.stats} />
           <PlayerTransferHistory transfers={playerData.transferHistory} />
-          <PlayerTeamHistory transfers={playerData.transferHistory} />
+          <PlayerTeamHistory transfers={playerData.teamHistory} />
         </div>
       </div>
     );

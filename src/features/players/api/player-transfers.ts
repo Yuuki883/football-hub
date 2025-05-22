@@ -6,12 +6,12 @@
 import { TransferHistoryEntry } from '../types/types';
 
 /**
- * 移籍データから移籍履歴を抽出
+ * 選手の移籍履歴を変換
  *
- * @param transfersData - APIから取得した移籍データ
- * @returns 移籍履歴エントリの配列
+ * @param transfersData - 移籍データ
+ * @returns 整形された移籍履歴
  */
-export function extractTransferHistory(transfersData: any): TransferHistoryEntry[] {
+export function transformTransferHistory(transfersData: any): TransferHistoryEntry[] {
   // 移籍履歴データの作成
   let clubTransferHistory: TransferHistoryEntry[] = [];
 
@@ -19,7 +19,7 @@ export function extractTransferHistory(transfersData: any): TransferHistoryEntry
     // 移籍データが存在する場合
     const transfers = transfersData.response[0].transfers;
 
-    // 最新の移籍から順に表示するため逆順にする
+    // 移籍情報を変換
     clubTransferHistory = transfers.map((transfer: any) => {
       return {
         team: {
@@ -39,6 +39,7 @@ export function extractTransferHistory(transfersData: any): TransferHistoryEntry
     });
   }
 
+  // 移籍履歴のみを返す
   return clubTransferHistory;
 }
 

@@ -39,8 +39,19 @@ export function classifyTeam(
     };
   }
 
-  // ユースチーム判定（U19, Youth, Junior, Juvenil, Primaveraなどを含む）
-  const isYouthTeam = /\b(U\d+|Youth|Junior|Juvenil|Primavera)\b/i.test(teamName);
+  // ユースチーム判定（U17, U19などを含むが、代表チームと区別）
+  // 代表チームのU17などはisNationalTeam=trueで既に判定済み
+  const youthKeywords = ['Youth', 'Junior', 'Juvenil', 'Primavera', 'Jong', 'Young'];
+
+  // U数字パターンの判定（複数のパターンをサポート）
+  const hasUPattern = /\b(U\d+|U-\d+|Under-\d+)\b/i.test(teamName);
+
+  // Youth, Junior等のキーワードを含む
+  const hasYouthKeyword = youthKeywords.some((keyword) =>
+    teamName.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  const isYouthTeam = hasUPattern || hasYouthKeyword;
 
   return {
     type: isYouthTeam ? 'youth' : 'senior',

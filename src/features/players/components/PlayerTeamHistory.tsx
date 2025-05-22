@@ -163,7 +163,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
             ))}
           </div>
         ) : (
-          <p className="text-slate-500 italic">代表チーム経験はありません</p>
+          <p className="text-slate-500 italic">代表チームの経歴はありません</p>
         )}
       </div>
     </div>

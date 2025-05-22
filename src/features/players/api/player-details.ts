@@ -5,9 +5,9 @@
  */
 import { API_FOOTBALL } from '@/config/api';
 import { PlayerDetail } from '../types/types';
-import { transformPlayerStats } from './player-transformer';
 import { processTeamHistory } from './player-team-history';
-import { transformTransferHistory } from './player-transformer';
+import { transformTransferHistory } from './player-transfers';
+import { transformPlayerStats } from './stats-helper';
 
 /**
  * 選手プロフィール情報を取得
@@ -133,10 +133,10 @@ export async function getPlayerDetails(
     const { stats, currentTeam } = transformPlayerStats(playerData.statistics || []);
 
     // チーム履歴データを処理
-    const teamHistoryEntries = await processTeamHistory(teamsHistoryData);
+    const teamHistory = await processTeamHistory(teamsHistoryData);
 
     // 移籍履歴を処理
-    const transferHistory = transformTransferHistory(transfersData, teamHistoryEntries);
+    const transferHistory = transformTransferHistory(transfersData);
 
     // 選手詳細情報を統合
     const playerDetail: PlayerDetail = {
@@ -162,6 +162,9 @@ export async function getPlayerDetails(
 
       // 移籍履歴
       transferHistory,
+
+      // 所属チーム履歴
+      teamHistory,
     };
 
     return playerDetail;

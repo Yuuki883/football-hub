@@ -88,4 +88,7 @@ export interface PlayerDetail {
 
   // 移籍履歴
   transferHistory: TransferHistoryEntry[];
+
+  // 所属チーム履歴
+  teamHistory: TransferHistoryEntry[];
 }

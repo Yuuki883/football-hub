@@ -5,7 +5,7 @@
  */
 import { PlayerStats } from '../types/types';
 import { API_FOOTBALL } from '@/config/api';
-import { formatRating } from '../utils/format-utils';
+import { transformPlayerStats } from './stats-helper';
 
 /**
  * 選手の統計情報を取得
@@ -55,50 +55,8 @@ export async function getPlayerStats(
     const playerData = data.response[0];
     const statistics = playerData.statistics;
 
-    // 有効な統計データを探す
-    let currentStats: any = {};
-
-    if (statistics && statistics.length > 0) {
-      // 統計データを順番に確認し、有効なものを採用
-      for (const stats of statistics) {
-        if (
-          stats.games?.appearences ||
-          stats.goals?.total ||
-          stats.goals?.assists ||
-          stats.games?.rating
-        ) {
-          currentStats = stats;
-          break;
-        }
-      }
-
-      // 有効なデータが見つからなければ最初のエントリを使用
-      if (Object.keys(currentStats).length === 0) {
-        currentStats = statistics[0] || {};
-      }
-    }
-
-    // リーグ情報の抽出
-    const leagueInfo = currentStats.league
-      ? {
-          id: currentStats.league.id,
-          name: currentStats.league.name,
-          logo: currentStats.league.logo,
-          season: currentStats.league.season,
-        }
-      : undefined;
-
-    // 統計情報の構築
-    const stats: PlayerStats = {
-      appearances: currentStats.games?.appearences,
-      minutes: currentStats.games?.minutes,
-      goals: currentStats.goals?.total,
-      assists: currentStats.goals?.assists,
-      yellowCards: currentStats.cards?.yellow,
-      redCards: currentStats.cards?.red,
-      rating: formatRating(currentStats.games?.rating),
-      league: leagueInfo,
-    };
+    // 統計情報を変換（stats-helperの関数を使用）
+    const { stats } = transformPlayerStats(statistics);
 
     return stats;
   } catch (error) {

@@ -5,7 +5,6 @@
  */
 import Image from 'next/image';
 import { PlayerDetail } from '../types/types';
-import clsx from 'clsx';
 import { formatDate } from '@/utils/date-formatter';
 
 interface PlayerProfileSectionProps {
