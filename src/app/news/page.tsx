@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 export const revalidate = 1800;
 
 export default async function NewsPage() {
-  // サーバー側でデータを直接取得（より多くのニュースを表示）
-  const news = await fetchNews(24);
+  // サーバー側でデータを直接取得
+  const news = await fetchNews(18);
 
   return (
     <PageLayout>
