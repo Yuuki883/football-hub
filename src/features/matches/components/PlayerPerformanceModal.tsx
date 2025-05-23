@@ -7,13 +7,13 @@
 
 import Image from 'next/image';
 import React from 'react';
-import { PlayerPerformance } from '../types/match.types';
+import { MatchPlayerPerformance } from '../types/match.types';
 
 export default function PlayerPerformanceModal({
   player,
   onClose,
 }: {
-  player: PlayerPerformance;
+  player: MatchPlayerPerformance;
   onClose: () => void;
 }) {
   const stats = player.statistics[0];

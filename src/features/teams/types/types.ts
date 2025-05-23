@@ -7,6 +7,7 @@
 
 import { Team } from '@/types/type';
 import { FormattedStandingGroup } from '@/lib/api-football/types';
+import { PlayerProfile } from '@/types/type';
 
 // チーム詳細情報の型
 export interface TeamDetails extends Team {
@@ -96,24 +97,20 @@ export interface TeamStandingsResult {
  * チーム関連の型定義
  */
 
-// 選手情報の型
-export interface TeamPlayer {
-  id: number;
-  name: string;
-  age: number;
-  number: number | null;
-  position: string;
-  photo: string;
-  nationality: string;
-  height: string | null;
-  weight: string | null;
+/**
+ * チーム所属選手情報
+ */
+export interface TeamPlayer extends PlayerProfile {
+  number: number | undefined;
   injured: boolean;
   rating: number | null;
   marketValue: number | null;
 }
 
-// ポジション別グループの型
-export interface PlayerGroup {
+/**
+ * チーム選手のポジション別グループ
+ */
+export interface TeamPlayerGroup {
   position: string;
   displayName: string;
   players: TeamPlayer[];

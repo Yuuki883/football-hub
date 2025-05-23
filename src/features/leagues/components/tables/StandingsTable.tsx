@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import type { FormattedStandingGroup, FormattedStanding } from '@/lib/api-football/types/standing';
+import type { FormattedStandingGroup, FormattedStanding } from '@/lib/api-football/types';
 import { getPositionInfo, getLegendItems } from '@/features/leagues/utils/standing';
 import { UEFA_LEAGUE_SLUGS } from '@/features/leagues/constants/standings';
 import { Badge } from '@/components/common/Badge';
@@ -15,6 +15,27 @@ interface Props {
   season?: number;
   isOverview?: boolean; // 概要ページ用の表示フラグ
   highlightTeamId?: string; // ハイライト表示するチームID
+}
+
+/**
+ * 統計データのデフォルト値
+ */
+const defaultStats = {
+  played: 0,
+  won: 0,
+  draw: 0,
+  lost: 0,
+  points: 0,
+  goalsFor: 0,
+  goalsAgainst: 0,
+  goalDifference: 0,
+};
+
+/**
+ * 統計データの安全な取得
+ */
+function getSafeStats(stats: FormattedStanding['stats'] | undefined) {
+  return stats ? { ...defaultStats, ...stats } : defaultStats;
 }
 
 export default function StandingsTable({
@@ -148,6 +169,9 @@ export default function StandingsTable({
                 const headers = getHeaders();
                 const isHighlighted = highlightTeamId && s.team.id === highlightTeamId;
 
+                // 統計データの安全な取得
+                const safeStats = getSafeStats(s.stats);
+
                 return (
                   <tr
                     key={s.team.id}
@@ -181,29 +205,29 @@ export default function StandingsTable({
                         </Link>
                       </div>
                     </td>
-                    <td className={getCellClass(headers[2])}>{s.stats.played}</td>
+                    <td className={getCellClass(headers[2])}>{safeStats.played}</td>
                     {!isOverview && (
                       <>
-                        <td className={getCellClass(headers[3])}>{s.stats.won}</td>
-                        <td className={getCellClass(headers[4])}>{s.stats.draw}</td>
-                        <td className={getCellClass(headers[5])}>{s.stats.lost}</td>
+                        <td className={getCellClass(headers[3])}>{safeStats.won}</td>
+                        <td className={getCellClass(headers[4])}>{safeStats.draw}</td>
+                        <td className={getCellClass(headers[5])}>{safeStats.lost}</td>
                       </>
                     )}
                     <td className={getCellClass(isOverview ? headers[3] : headers[6])}>
-                      {s.stats.goalsFor}
+                      {safeStats.goalsFor}
                     </td>
                     <td className={getCellClass(isOverview ? headers[4] : headers[7])}>
-                      {s.stats.goalsAgainst}
+                      {safeStats.goalsAgainst}
                     </td>
                     <td className={getCellClass(isOverview ? headers[5] : headers[8])}>
-                      {s.stats.goalDifference > 0
-                        ? `+${s.stats.goalDifference}`
-                        : s.stats.goalDifference}
+                      {safeStats.goalDifference > 0
+                        ? `+${safeStats.goalDifference}`
+                        : safeStats.goalDifference}
                     </td>
                     <td
                       className={`font-bold ${getCellClass(isOverview ? headers[6] : headers[9])}`}
                     >
-                      {s.stats.points}
+                      {safeStats.points}
                     </td>
                     <td className={getCellClass(isOverview ? headers[7] : headers[10])}>
                       {renderForm(s.form)}

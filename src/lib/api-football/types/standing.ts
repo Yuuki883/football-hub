@@ -62,7 +62,7 @@ export interface FormattedStanding {
     shortName: string;
     crest: string;
   };
-  stats: {
+  stats?: {
     played: number;
     won: number;
     draw: number;

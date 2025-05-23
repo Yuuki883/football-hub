@@ -1,7 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Fixture, Lineup, Event, TeamPlayers, PlayerPerformance } from '../../types/match.types';
+import {
+  Fixture,
+  Lineup,
+  Event,
+  TeamPlayers,
+  MatchPlayerPerformance,
+} from '../../types/match.types';
 import { getLineups, getEvents, getFixturesPlayers } from '../../api/match-service';
 import PitchView from './PitchView';
 import CoachInfo from './CoachInfo';
@@ -19,7 +25,7 @@ export default function LineupPanel({ fixture }: { fixture: Fixture }) {
   const [teamsPlayers, setTeamsPlayers] = useState<TeamPlayers[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string>();
-  const [selected, setSelected] = useState<PlayerPerformance | null>(null);
+  const [selected, setSelected] = useState<MatchPlayerPerformance | null>(null);
 
   /* -------------------------- データ取得 -------------------------- */
   useEffect(() => {
@@ -45,7 +51,7 @@ export default function LineupPanel({ fixture }: { fixture: Fixture }) {
 
   /* ------------------- 選手パフォーマンスデータのマップ作成 ------------------ */
   const perfMap = useMemo(() => {
-    const m = new Map<number, PlayerPerformance>();
+    const m = new Map<number, MatchPlayerPerformance>();
     teamsPlayers.forEach((t) => t.players.forEach((p) => m.set(p.player.id, p)));
     return m;
   }, [teamsPlayers]);

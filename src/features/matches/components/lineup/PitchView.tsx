@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback } from 'react';
-import { Event, Lineup, PlayerPerformance, PlayerEntry } from '../../types/match.types';
+import { Lineup, Event, MatchPlayerPerformance, MatchPlayerEntry } from '../../types/match.types';
 import { sortByGrid, posStyle } from '../../utils/grid-utils';
 import PlayerIcon from './PlayerIcon';
 import { TEAM_COLORS } from '../../constants/matches';
@@ -14,7 +14,7 @@ interface PitchViewProps {
   homeLineup: Lineup;
   awayLineup: Lineup;
   events: Event[];
-  perfMap: Map<number, PlayerPerformance>;
+  perfMap: Map<number, MatchPlayerPerformance>;
   onPlayerClick: (id: number) => void;
 }
 
@@ -51,11 +51,11 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
   const highestRatedPlayerId = findHighestRatedPlayer();
 
   // チーム（ホーム/アウェイ）の選手配置をレンダリング
-  const renderSide = (entries: PlayerEntry[], side: 'home' | 'away', color: string) =>
+  const renderSide = (entries: MatchPlayerEntry[], side: 'home' | 'away', color: string) =>
     entries
-      .filter((e: PlayerEntry) => e.player?.grid)
+      .filter((e: MatchPlayerEntry) => e.player?.grid)
       .sort(sortByGrid)
-      .map((entry: PlayerEntry) => {
+      .map((entry: MatchPlayerEntry) => {
         const p = entry.player;
         const perf = perfMap.get(p.id);
         return (

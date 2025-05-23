@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { memo } from 'react';
-import { Event, PlayerEntry, PlayerPerformance, Team } from '../../types/match.types';
+import { Event, MatchPlayerEntry, MatchPlayerPerformance, Team } from '../../types/match.types';
 
 /**
  * レーティングに応じた背景色を取得する関数
@@ -22,8 +22,8 @@ const getRatingBackground = (rating: number) => {
  * 選手情報と交代情報などを表示
  */
 interface SubPlayerItemProps {
-  entry: PlayerEntry;
-  perfMap: Map<number, PlayerPerformance>;
+  entry: MatchPlayerEntry;
+  perfMap: Map<number, MatchPlayerPerformance>;
   events: Event[];
   onClick: (id: number) => void;
   isSubbedIn?: boolean;
@@ -168,10 +168,10 @@ SubPlayerItem.displayName = 'SubPlayerItem';
  */
 interface SubstituteListProps {
   team: Team;
-  subs: PlayerEntry[];
+  subs: MatchPlayerEntry[];
   color: string;
   events: Event[];
-  perfMap: Map<number, PlayerPerformance>;
+  perfMap: Map<number, MatchPlayerPerformance>;
   onPlayerClick: (id: number) => void;
 }
 

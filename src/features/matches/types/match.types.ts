@@ -56,9 +56,14 @@ export interface Statistics {
 }
 
 /**
- * 選手情報の型定義
+ * 試合機能で使用する選手関連型定義
  */
-export interface PlayerInfo {
+import { Player, BasicPlayerStats } from '@/types/type';
+
+/**
+ * 試合での選手基本情報
+ */
+export interface MatchPlayer {
   id: number;
   name: string;
   number: number;
@@ -69,8 +74,8 @@ export interface PlayerInfo {
 /**
  * ラインナップ内の選手エントリー
  */
-export interface PlayerEntry {
-  player: PlayerInfo;
+export interface MatchPlayerEntry {
+  player: MatchPlayer;
 }
 
 /**
@@ -100,8 +105,8 @@ export interface Lineup {
     photo: string;
   };
   formation: string;
-  startXI: PlayerEntry[];
-  substitutes: PlayerEntry[];
+  startXI: MatchPlayerEntry[];
+  substitutes: MatchPlayerEntry[];
 }
 
 /**
@@ -145,9 +150,9 @@ export interface ApiResponse<T> {
 }
 
 /**
- * 選手の試合統計情報の型定義
+ * 試合での選手統計情報
  */
-export interface PlayerStatistics {
+export interface MatchPlayerStatistics {
   games: {
     minutes: number | null;
     number: number;
@@ -204,15 +209,15 @@ export interface PlayerStatistics {
 }
 
 /**
- * 選手のパフォーマンスデータの型定義
+ * 試合での選手パフォーマンス
  */
-export interface PlayerPerformance {
+export interface MatchPlayerPerformance {
   player: {
     id: number;
     name: string;
     photo: string;
   };
-  statistics: PlayerStatistics[];
+  statistics: MatchPlayerStatistics[];
 }
 
 /**
@@ -225,7 +230,7 @@ export interface TeamPlayers {
     logo: string;
     update: string;
   };
-  players: PlayerPerformance[];
+  players: MatchPlayerPerformance[];
 }
 
 /**

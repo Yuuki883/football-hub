@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { PlayerEntry } from '../types/match.types';
+import { MatchPlayerEntry } from '../types/match.types';
 
 /**
  * gridデータから選手の位置スタイルを計算する関数
@@ -11,7 +11,7 @@ import { PlayerEntry } from '../types/match.types';
 export const posStyle = (
   grid: string,
   side: 'home' | 'away',
-  entries: PlayerEntry[]
+  entries: MatchPlayerEntry[]
 ): CSSProperties => {
   // APIから提供されるgridのフォーマット: "X:Y"
   // X: ゴールラインからのライン（1=GK, 2=DF, 3=MF, 4=AMF, 5=FW）
@@ -90,7 +90,11 @@ export const posStyle = (
  * @param side - 'home'または'away'
  * @returns ソート順（数値）
  */
-export const sortByGrid = (a: PlayerEntry, b: PlayerEntry, side: 'home' | 'away' = 'home') => {
+export const sortByGrid = (
+  a: MatchPlayerEntry,
+  b: MatchPlayerEntry,
+  side: 'home' | 'away' = 'home'
+) => {
   if (!a.player?.grid) return 1;
   if (!b.player?.grid) return -1;
   const [rA, cA] = a.player.grid.split(':').map(Number);

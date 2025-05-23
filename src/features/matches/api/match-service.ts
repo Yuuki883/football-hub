@@ -8,7 +8,7 @@ import {
   Event,
   Fixture,
   Lineup,
-  PlayerEntry,
+  MatchPlayerEntry,
   Statistics,
   TeamPlayers,
 } from '../types/match.types';
@@ -173,7 +173,7 @@ export async function getLineups(id: string): Promise<Lineup[]> {
         const validatedLineups = response.response.map((lineup: any) => {
           // startXIの各プレイヤーエントリーを検証
           if (lineup.startXI && Array.isArray(lineup.startXI)) {
-            lineup.startXI.forEach((entry: PlayerEntry) => {
+            lineup.startXI.forEach((entry: MatchPlayerEntry) => {
               if (!entry.player || !entry.player.grid || entry.player.grid === 'null') {
                 console.warn(`先発選手のgridプロパティが無効: ${entry.player?.name || '不明'}`);
               }

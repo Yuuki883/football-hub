@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { Fixture, Event, TeamPlayers, PlayerPerformance } from '../types/match.types';
+import { Fixture, Event, TeamPlayers } from '../types/match.types';
 import { getEvents, getFixturesPlayers } from '../api/match-service';
 import { Goal, AlertTriangle, ArrowRightLeft, Clock, RefreshCw, Flag } from 'lucide-react';
 import { EVENT_FILTERS, EVENT_TEXT_MAP } from '../constants/matches';
