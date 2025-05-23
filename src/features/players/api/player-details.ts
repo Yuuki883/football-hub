@@ -6,7 +6,7 @@
 import { API_FOOTBALL } from '@/config/api';
 import { PlayerDetail } from '../types/types';
 import { ApiResponse } from '@/types/type';
-import { ApiPlayerProfile } from '@/lib/api-football/types/player';
+import { ApiPlayerProfile } from '@/lib/api-football/types';
 import { processTeamHistory } from './player-team-history';
 import { transformTransferHistory } from './player-transfers';
 import { transformPlayerStats } from './stats-helper';

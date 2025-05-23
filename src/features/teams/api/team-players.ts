@@ -8,8 +8,7 @@
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { CACHE_TTL } from '@/config/api';
-import { FormattedPlayer } from '@/lib/api-football/types/player';
-import { TeamPlayer, PlayerGroup } from '../types/types';
+import { TeamPlayer, TeamPlayerGroup } from '../types/types';
 
 /**
  * チームの選手一覧を取得する
@@ -76,7 +75,7 @@ export async function getTeamPlayers(
  * @param players 選手一覧
  * @returns ポジション別にグループ化された選手一覧
  */
-export function groupPlayersByPosition(players: TeamPlayer[]): PlayerGroup[] {
+export function groupPlayersByPosition(players: TeamPlayer[]): TeamPlayerGroup[] {
   // ポジションの表示順序とその表示名
   const positionOrder: Record<string, { order: number; displayName: string }> = {
     Goalkeeper: { order: 1, displayName: 'ゴールキーパー' },
@@ -112,7 +111,7 @@ export function groupPlayersByPosition(players: TeamPlayer[]): PlayerGroup[] {
   const groupedPlayers: Record<string, TeamPlayer[]> = {};
 
   players.forEach((player) => {
-    const normalizedPosition = normalizePosition(player.position);
+    const normalizedPosition = normalizePosition(player.position || 'Unknown');
 
     if (!groupedPlayers[normalizedPosition]) {
       groupedPlayers[normalizedPosition] = [];

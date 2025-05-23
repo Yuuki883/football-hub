@@ -3,7 +3,7 @@
  *
  * 選手の統計データを処理し、アプリケーション内で使用しやすい形式に変換する機能
  */
-import { ApiPlayerStatistics, LeagueInfo, PlayerStats } from '../types/types';
+import { ApiPlayerStatistics, PlayerDetailInfo, PlayerDetailStats } from '../types/types';
 import { Team } from '@/types/type';
 import { formatRating } from '../utils/format-utils';
 
@@ -40,7 +40,7 @@ export function findValidStats(statistics: ApiPlayerStatistics[]): ApiPlayerStat
  * @param currentStats - 統計データ
  * @returns リーグ情報
  */
-export function extractLeagueInfo(currentStats: ApiPlayerStatistics): LeagueInfo | undefined {
+export function extractLeagueInfo(currentStats: ApiPlayerStatistics): Team | undefined {
   if (!currentStats.league) {
     return undefined;
   }
@@ -49,7 +49,6 @@ export function extractLeagueInfo(currentStats: ApiPlayerStatistics): LeagueInfo
     id: currentStats.league.id,
     name: currentStats.league.name,
     logo: currentStats.league.logo,
-    season: String(currentStats.league.season),
   };
 }
 
@@ -80,8 +79,8 @@ export function extractTeamInfo(currentStats: ApiPlayerStatistics): Team | undef
  */
 export function buildPlayerStats(
   currentStats: ApiPlayerStatistics,
-  leagueInfo: LeagueInfo | undefined
-): PlayerStats {
+  leagueInfo: Team | undefined
+): PlayerDetailStats {
   return {
     appearances: currentStats.games?.appearences,
     minutes: currentStats.games?.minutes,
@@ -101,7 +100,7 @@ export function buildPlayerStats(
  * @returns 整形された統計情報とチーム情報
  */
 export function transformPlayerStats(statistics: ApiPlayerStatistics[]): {
-  stats: PlayerStats;
+  stats: PlayerDetailStats;
   currentTeam?: Team;
 } {
   // 有効な統計データを探す

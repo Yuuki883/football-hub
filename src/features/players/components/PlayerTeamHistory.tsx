@@ -27,7 +27,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
   const nationalTeams = transfers.filter((transfer) => transfer.isNationalTeam);
 
   // ユースチームに関連する単語パターン
-  const youthTeamPattern = /\b(U\d+|U-\d+|Youth|Junior|Juvenil|Primavera|Jong|Young)\b/i;
+  const youthTeamPattern = /\b(U\d+|U-\d+|Youth|Junior|Juvenil|Primavera|Jong)\b/i;
 
   // チームの重複を排除して統合する関数
   const consolidateTeams = (teamEntries: TransferHistoryEntry[]) => {

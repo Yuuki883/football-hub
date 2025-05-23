@@ -49,6 +49,22 @@ export interface BasicStats {
   assists?: number;
 }
 
+// 基本的な選手統計情報（BasicStatsを拡張）
+export interface BasicPlayerStats extends BasicStats {
+  yellowCards?: number;
+  redCards?: number;
+  rating?: string;
+}
+
+// 基本的な選手詳細情報（新規追加）
+export interface PlayerProfile extends Player {
+  birthDate?: string;
+  height?: string;
+  weight?: string;
+  number?: number;
+  injured?: boolean;
+}
+
 // APIレスポンスの共通型
 export interface ApiResponse<T> {
   errors?: string[];

@@ -4,65 +4,43 @@
  * 選手および選手統計に関する型定義を提供
  */
 
-import { Player, Team, ApiResponse } from '@/types/type';
+import { Player, PlayerProfile, BasicPlayerStats, Team, League, ApiResponse } from '@/types/type';
 
 /**
- * API-Football形式の選手型
+ * API-Football 生データの型定義
  */
+export interface ApiFootballPlayerRaw {
+  id: number;
+  name: string;
+  firstname: string;
+  lastname: string;
+  age: number;
+  nationality: string;
+  height: string;
+  weight: string;
+  injured: boolean;
+  photo: string;
+}
+
 export interface ApiFootballPlayer {
-  player: {
-    id: number;
-    name: string;
-    firstname: string;
-    lastname: string;
-    age: number;
-    nationality: string;
-    height: string;
-    weight: string;
-    injured: boolean;
-    photo: string;
-  };
+  player: ApiFootballPlayerRaw;
   statistics: ApiPlayerStatistics[];
 }
 
-export interface PlayerWithStats extends Player {
-  statistics: ApiPlayerStatistics[];
-}
-
-// ポジショングループの型
-export interface PlayerGroup {
-  position: string;
-  displayName: string;
-  players: FormattedPlayer[];
-}
-
-/**
- * 選手プロフィールAPIレスポンス
- */
 export interface ApiPlayerProfile {
-  player: {
-    id: number;
-    name: string;
-    firstname: string;
-    lastname: string;
-    age: number;
+  player: ApiFootballPlayerRaw & {
     birth: {
       date?: string;
       place?: string;
       country?: string;
     };
-    nationality: string;
-    height: string;
-    weight: string;
-    injured: boolean;
-    photo: string;
     position: string;
     number?: number;
   };
 }
 
 /**
- * API-Football選手統計の型
+ * API-Football選手統計の生データ
  */
 export interface ApiPlayerStatistics {
   team: {
@@ -133,7 +111,7 @@ export interface ApiPlayerStatistics {
 }
 
 /**
- * チーム履歴APIレスポンス
+ * 移籍・チーム履歴API型
  */
 export interface ApiTeamHistoryEntry {
   team: {
@@ -144,29 +122,39 @@ export interface ApiTeamHistoryEntry {
   seasons?: (string | number)[];
 }
 
-/**
- * 移籍履歴APIレスポンス
- */
 export interface ApiTransferEntry {
   date: string;
   type: string;
   teams: {
-    in: {
-      id: number;
-      name: string;
-      logo: string;
-    };
-    out: {
-      id: number;
-      name: string;
-      logo: string;
-    };
+    in: { id: number; name: string; logo: string };
+    out: { id: number; name: string; logo: string };
   };
 }
 
 /**
- * アプリで統一された選手データの形式
+ * アプリケーション内部で統一された型
  */
+export interface AppPlayer extends PlayerProfile {
+  team?: Team;
+  stats?: BasicPlayerStats;
+}
+
+export interface AppPlayerStats extends BasicPlayerStats {
+  team: Team;
+  league: League;
+}
+
+// 後方互換性のための既存型（段階的に削除予定）
+export interface PlayerWithStats extends Player {
+  statistics: ApiPlayerStatistics[];
+}
+
+export interface PlayerGroup {
+  position: string;
+  displayName: string;
+  players: FormattedPlayer[];
+}
+
 export interface FormattedPlayer {
   id: string;
   name: string;
@@ -181,9 +169,6 @@ export interface FormattedPlayer {
   };
 }
 
-/**
- * アプリで統一された選手統計情報
- */
 export interface FormattedPlayerStats extends FormattedPlayer {
   goals: number;
   assists: number;

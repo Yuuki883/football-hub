@@ -4,71 +4,60 @@
  * API-Footballのデータ構造を元に、アプリケーション内で扱いやすい形に変換した型を定義
  */
 
-import { Player, Team, League, BasicStats, ApiResponse } from '@/types/type';
+import { PlayerProfile, BasicPlayerStats, Team } from '@/types/type';
 import {
   ApiPlayerProfile,
   ApiPlayerStatistics,
   ApiTeamHistoryEntry,
   ApiTransferEntry,
-} from '@/lib/api-football/types/player';
+} from '@/lib/api-football/types';
 
-// 選手の基本情報（Player型を拡張）
-export interface PlayerInfo extends Player {
-  birthDate?: string;
-  height?: string;
-  weight?: string;
-  number?: number;
+/**
+ * 選手詳細ページ用の拡張情報
+ */
+export interface PlayerDetailInfo extends PlayerProfile {
+  // 選手詳細ページ特有の情報があれば追加
 }
 
-// 所属チーム情報
-export interface PlayerTeam {
-  team: Team;
-  current: boolean;
+/**
+ * 選手詳細用の統計情報
+ */
+export interface PlayerDetailStats extends BasicPlayerStats {
+  league?: {
+    id: number;
+    name: string;
+    logo: string;
+    season?: string;
+  };
+  // 詳細ページ特有の統計があれば追加
 }
 
-// リーグ情報（League型を拡張）
-export interface PlayerLeagueInfo extends League {
-  season?: string;
-}
-
-// 選手の統計情報（BasicStats型を拡張）
-export interface PlayerStats extends BasicStats {
-  yellowCards?: number;
-  redCards?: number;
-  rating?: string;
-  league?: PlayerLeagueInfo;
-}
-
-// 移籍履歴の各エントリ
+/**
+ * 移籍履歴エントリ
+ */
 export interface TransferHistoryEntry {
   team: Team;
-  startSeason?: string; // optional化
+  startSeason?: string;
   endSeason?: string;
-  isNationalTeam?: boolean; // 代表チームかどうかのフラグ
-  transferDate?: string; // 移籍日
-  transferType?: string; // 移籍タイプ（Free, Loan, €8.5Mなど）
+  isNationalTeam?: boolean;
+  transferDate?: string;
+  transferType?: string;
   fromTeam?: {
-    // 移籍元チーム情報
     id: number | string;
     name: string;
     logo: string;
   };
 }
 
-// 選手詳細ページのメインデータ構造
-export interface PlayerDetail extends PlayerInfo {
-  // 所属チーム
+/**
+ * 選手詳細ページのメインデータ構造
+ */
+export interface PlayerDetail extends PlayerDetailInfo {
   team?: Team;
-
-  // 今シーズンの統計
-  stats: PlayerStats;
-
-  // 移籍履歴
+  stats: PlayerDetailStats;
   transferHistory: TransferHistoryEntry[];
-
-  // 所属チーム履歴
   teamHistory: TransferHistoryEntry[];
 }
 
-// 型のエクスポート（他のモジュールでの利用時の利便性のため）
+// API型の再エクスポート（後方互換性のため）
 export type { ApiPlayerProfile, ApiPlayerStatistics, ApiTeamHistoryEntry, ApiTransferEntry };

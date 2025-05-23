@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { memo } from 'react';
-import { Event, PlayerEntry, PlayerStatistics } from '../../types/match.types';
+import { MatchPlayerEntry, Event, MatchPlayerStatistics } from '../../types/match.types';
 
 /**
  * レーティングに応じた背景色を取得する関数
@@ -107,9 +107,9 @@ const EventBadges = ({ events, playerId }: { events: Event[]; playerId: number }
  * 選手アイコンコンポーネントのProps型定義
  */
 export interface PlayerIconProps {
-  player: PlayerEntry['player'];
+  player: MatchPlayerEntry['player'];
   events: Event[];
-  stats?: PlayerStatistics;
+  stats?: MatchPlayerStatistics;
   teamColor: 'blue' | 'red';
   onClick: () => void;
   photo?: string;

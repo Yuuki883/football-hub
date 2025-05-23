@@ -3,14 +3,14 @@
  *
  * PlayerDetailから派生し、UI表示に特化した属性を追加した型を定義
  */
-import { PlayerDetail, PlayerInfo, PlayerStats, TransferHistoryEntry } from './types';
+import { PlayerDetail, PlayerDetailInfo, PlayerDetailStats, TransferHistoryEntry } from './types';
 import { TeamType } from '../utils/team-utils';
 
 /**
  * UI表示用の選手基本情報
  * 表示用のフォーマット済み属性を追加
  */
-export interface UiPlayerInfo extends PlayerInfo {
+export interface UiPlayerInfo extends PlayerDetailInfo {
   /** フォーマット済み身長（例: "185cm"） */
   formattedHeight?: string;
   /** フォーマット済み体重（例: "80kg"） */
@@ -25,7 +25,7 @@ export interface UiPlayerInfo extends PlayerInfo {
  * UI表示用の選手統計情報
  * パーセンテージや表示用のフォーマット済み値を追加
  */
-export interface UiPlayerStats extends PlayerStats {
+export interface UiPlayerStats extends PlayerDetailStats {
   /** 試合出場率（％） */
   appearancePercentage?: number;
   /** 試合あたりの得点 */

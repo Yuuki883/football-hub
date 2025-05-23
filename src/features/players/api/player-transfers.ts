@@ -5,7 +5,7 @@
  */
 import { TransferHistoryEntry } from '../types/types';
 import { ApiResponse } from '@/types/type';
-import { ApiTransferEntry } from '@/lib/api-football/types/player';
+import { ApiTransferEntry } from '@/lib/api-football/types';
 
 /**
  * 選手の移籍履歴を変換

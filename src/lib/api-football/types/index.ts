@@ -1,21 +1,28 @@
 /**
  * API-Football 型定義のエクスポート
  *
- * 型定義を一箇所から集中的にエクスポート
- * これにより、インポート側のコードを簡潔に保つことができます。
+ * すべての型定義を一箇所から集中的にエクスポート
+ * インポート側は統一的にこのindex.tsから型を取得
  */
 
-// 共通型のエクスポート
+// 共通ドメイン型の再エクスポート（新規追加）
+export type {
+  Player,
+  PlayerProfile,
+  BasicPlayerStats,
+  Team,
+  League,
+  Country,
+  ApiResponse,
+} from '@/types/type';
+
+// 既存の個別型エクスポート
 export * from './common';
-
-// 試合データ型のエクスポート
 export * from './fixture';
-
-// リーグデータ型のエクスポート
 export * from './league';
-
-// 選手データ型のエクスポート
 export * from './player';
-
-// 順位表データ型のエクスポート
 export * from './standing';
+
+// 推奨インポート例：
+// import { Player, ApiPlayerProfile, FormattedPlayer } from '@/lib/api-football/types';
+// 非推奨：import { ApiPlayerProfile } from '@/lib/api-football/types/player';

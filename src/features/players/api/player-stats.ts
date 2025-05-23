@@ -3,7 +3,7 @@
  *
  * 選手の統計データを取得し、表示用に整形する機能
  */
-import { PlayerStats } from '../types/types';
+import { PlayerDetailStats } from '../types/types';
 import { API_FOOTBALL } from '@/config/api';
 import { transformPlayerStats } from './stats-helper';
 
@@ -17,7 +17,7 @@ import { transformPlayerStats } from './stats-helper';
 export async function getPlayerStats(
   playerId: string,
   season: string
-): Promise<PlayerStats | null> {
+): Promise<PlayerDetailStats | null> {
   try {
     if (!API_FOOTBALL.KEY) {
       throw new Error('API key is not configured');
