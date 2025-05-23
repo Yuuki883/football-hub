@@ -262,7 +262,7 @@ export interface MatchDisplay {
 /**
  * 試合カレンダー用のリーグデータ型定義
  */
-export interface LeagueData {
+export interface CalendarLeagueData {
   id: string;
   code: string;
   name: string;

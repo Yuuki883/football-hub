@@ -60,13 +60,7 @@ export interface ApiResponse<T> {
   response: T;
 }
 
-// リーグデータ関連の型定義
-export interface LeagueData {
-  league: League;
-  country: Country;
-  seasons?: Season[];
-}
-
+// シーズン情報
 export interface Season {
   year: number;
   start: string;

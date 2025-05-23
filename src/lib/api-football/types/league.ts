@@ -4,27 +4,31 @@
  * リーグおよび順位表関連の型定義を提供
  */
 
-import { Country } from '@/types/type';
+import { League, Country, Season } from '@/types/type';
 
-// リーグの型
-export interface League {
+// APIレスポンス形式
+export interface ApiFootballLeague {
   id: number;
   name: string;
   type: string;
   logo: string;
 }
 
-// 国の型は @/types/domain からインポート
-
-export interface LeagueData {
-  league: League;
+export interface ApiFootballLeagueData {
+  league: ApiFootballLeague;
   country: Country;
-  seasons: Array<{
-    year: number;
-    start: string;
-    end: string;
-    current: boolean;
-  }>;
+  seasons: Season[];
+}
+
+// 変換後の形式
+export interface FormattedLeague extends League {
+  type: string;
+}
+
+export interface FormattedLeagueData {
+  league: FormattedLeague;
+  country: Country;
+  seasons: Season[];
 }
 
 // 順位表チームの型

@@ -8,6 +8,7 @@
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { LEAGUE_ID_MAPPING, LEAGUE_SLUG_MAPPING, CACHE_TTL } from '@/config/api';
+import { ApiFootballLeagueData } from '@/lib/api-football/types/league';
 
 export interface LeagueData {
   league: {
@@ -59,7 +60,7 @@ export async function getLeagueById(id: number | string): Promise<LeagueData | n
  * @param slug リーグのスラグ (例: 'premier-league')
  * @returns リーグデータ
  */
-export async function getLeagueBySlug(slug: string): Promise<LeagueData | null> {
+export async function getLeagueBySlug(slug: string): Promise<ApiFootballLeagueData | null> {
   // マッピングにあればIDで直接取得
   if (LEAGUE_SLUG_MAPPING[slug]) {
     return getLeagueById(LEAGUE_SLUG_MAPPING[slug]);

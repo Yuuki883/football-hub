@@ -27,7 +27,7 @@ export interface PlayerTeam {
 }
 
 // リーグ情報（League型を拡張）
-export interface LeagueInfo extends League {
+export interface PlayerLeagueInfo extends League {
   season?: string;
 }
 
@@ -36,7 +36,7 @@ export interface PlayerStats extends BasicStats {
   yellowCards?: number;
   redCards?: number;
   rating?: string;
-  league?: LeagueInfo;
+  league?: PlayerLeagueInfo;
 }
 
 // 移籍履歴の各エントリ
