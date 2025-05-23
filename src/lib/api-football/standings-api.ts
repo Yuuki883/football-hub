@@ -10,7 +10,7 @@ import { withCache, createCacheKey } from './cache';
 import { CACHE_TTL, LEAGUE_SLUG_MAPPING } from '@/config/api';
 import {
   StandingGroup,
-  TeamStanding,
+  ApiFootballTeamStanding,
   FormattedStanding,
   FormattedStandingGroup,
 } from './types/standing';
@@ -24,7 +24,7 @@ const MULTI_GROUP_LEAGUES = [2, 3, 848]; // Champions League, Europa League, Con
  * @param standing API-Footballから返されるチーム順位データ
  * @returns 変換後のデータ
  */
-function formatStanding(standing: TeamStanding): FormattedStanding {
+function formatStanding(standing: ApiFootballTeamStanding): FormattedStanding {
   return {
     position: standing.rank,
     team: {
@@ -33,14 +33,16 @@ function formatStanding(standing: TeamStanding): FormattedStanding {
       shortName: standing.team.name,
       crest: standing.team.logo,
     },
-    playedGames: standing.all.played,
-    won: standing.all.win,
-    draw: standing.all.draw,
-    lost: standing.all.lose,
-    points: standing.points,
-    goalsFor: standing.all.goals.for,
-    goalsAgainst: standing.all.goals.against,
-    goalDifference: standing.goalsDiff,
+    stats: {
+      played: standing.all.played,
+      won: standing.all.win,
+      draw: standing.all.draw,
+      lost: standing.all.lose,
+      points: standing.points,
+      goalsFor: standing.all.goals.for,
+      goalsAgainst: standing.all.goals.against,
+      goalDifference: standing.goalsDiff,
+    },
     form: standing.form || undefined,
     description: standing.description,
   };
@@ -85,7 +87,7 @@ export async function getStandings(
 
       if (isMultiGroup) {
         // 複数グループの場合（Champions Leagueなど）
-        return responseData.standings.map((group: TeamStanding[], index: number) => {
+        return responseData.standings.map((group: ApiFootballTeamStanding[], index: number) => {
           let groupName = `Group ${String.fromCharCode(65 + index)}`; // Group A, B, C...
 
           // グループ名がデータに含まれている場合はそれを使用
@@ -103,7 +105,7 @@ export async function getStandings(
         return [
           {
             groupName: responseData.name || 'League Table',
-            standings: responseData.standings.map((teamStanding: TeamStanding) =>
+            standings: responseData.standings.map((teamStanding: ApiFootballTeamStanding) =>
               formatStanding(teamStanding)
             ),
           },

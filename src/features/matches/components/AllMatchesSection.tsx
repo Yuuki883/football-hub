@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
-import { MatchDisplay, LeagueData } from '@/features/matches/types/match.types';
+import { MatchDisplay, CalendarLeagueData } from '@/features/matches/types/match.types';
 import { isMatchStarted } from '@/features/matches/utils/match-utils';
 
 /**
@@ -89,7 +89,7 @@ export default function AllMatchesSection() {
 
     if (matches.length === 0) return {};
 
-    const result: Record<string, LeagueData> = {};
+    const result: Record<string, CalendarLeagueData> = {};
 
     matches.forEach((match: MatchDisplay) => {
       const leagueId = match.competition.id;
@@ -162,7 +162,7 @@ export default function AllMatchesSection() {
 
 // リーグごとの試合カード
 interface LeagueMatchesCardProps {
-  league: LeagueData;
+  league: CalendarLeagueData;
 }
 
 function LeagueMatchesCard({ league }: LeagueMatchesCardProps) {

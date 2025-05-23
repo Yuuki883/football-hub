@@ -68,18 +68,14 @@ export interface Season {
   current: boolean;
 }
 
-// 順位表関連の型定義
+/**
+ * 基本的な順位情報
+ */
 export interface Standing {
   rank: number;
   team: Team;
   points: number;
   goalsDiff: number;
-  played?: number;
-  won?: number;
-  draw?: number;
-  lost?: number;
-  goalsFor?: number;
-  goalsAgainst?: number;
 }
 
 // スコア関連の型定義

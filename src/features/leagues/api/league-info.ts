@@ -10,33 +10,13 @@ import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { LEAGUE_ID_MAPPING, LEAGUE_SLUG_MAPPING, CACHE_TTL } from '@/config/api';
 import { ApiFootballLeagueData } from '@/lib/api-football/types/league';
 
-export interface LeagueData {
-  league: {
-    id: number;
-    name: string;
-    type: string;
-    logo: string;
-  };
-  country: {
-    name: string;
-    code: string;
-    flag: string;
-  };
-  seasons: Array<{
-    year: number;
-    start: string;
-    end: string;
-    current: boolean;
-  }>;
-}
-
 /**
  * リーグIDからリーグデータを取得
  *
  * @param id リーグID
  * @returns リーグデータ
  */
-export async function getLeagueById(id: number | string): Promise<LeagueData | null> {
+export async function getLeagueById(id: number | string): Promise<ApiFootballLeagueData | null> {
   // キャッシュキーを作成
   const cacheParams = { id };
   const cacheKey = createCacheKey('league', cacheParams);
@@ -76,7 +56,7 @@ export async function getLeagueBySlug(slug: string): Promise<ApiFootballLeagueDa
  *
  * @returns リーグデータの配列
  */
-export async function getAllLeagues(): Promise<LeagueData[]> {
+export async function getAllLeagues(): Promise<ApiFootballLeagueData[]> {
   try {
     // キャッシュキーを作成
     const cacheKey = 'all-leagues';
@@ -93,7 +73,7 @@ export async function getAllLeagues(): Promise<LeagueData[]> {
         const results = await Promise.all(promises);
 
         // nullを除外して返す
-        return results.filter((league): league is LeagueData => league !== null);
+        return results.filter((league): league is ApiFootballLeagueData => league !== null);
       },
       cacheTTL
     );

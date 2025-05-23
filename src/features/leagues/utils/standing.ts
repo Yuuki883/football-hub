@@ -1,24 +1,29 @@
-import { UEFA_LEAGUES, LEGEND_LABELS, LEGEND_ORDER } from '@/features/leagues/constants/standings';
+import {
+  UEFA_LEAGUE_SLUGS,
+  LEGEND_LABELS,
+  LEGEND_ORDER,
+} from '@/features/leagues/constants/standings';
 import type { FormattedStanding } from '@/lib/api-football/types/standing';
 
 type Info = { color: string; label: string };
 
 // 各種判定ロジックを小関数に分割
 const uefaNew = (position?: number): Info => {
-  if (position && position <= 8) return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
-  if (position && position <= 24) return { color: 'bg-purple-500', label: LEGEND_LABELS.PLAYOFF };
-  return { color: 'bg-gray-400', label: LEGEND_LABELS.ELIMINATION };
+  if (position && position <= 8)
+    return { color: 'bg-blue-600', label: LEGEND_LABELS.championsLeague };
+  if (position && position <= 24) return { color: 'bg-purple-500', label: LEGEND_LABELS.playoff };
+  return { color: 'bg-gray-400', label: 'elimination' };
 };
 
 const uefaOld = (position?: number, slug?: string): Info => {
-  if (position && position <= 2) return { color: 'bg-blue-600', label: LEGEND_LABELS.KNOCKOUT };
+  if (position && position <= 2) return { color: 'bg-blue-600', label: LEGEND_LABELS.knockout };
   if (position === 3) {
     if (slug === 'champions-league')
-      return { color: 'bg-orange-500', label: LEGEND_LABELS.EL_RELEGATION };
+      return { color: 'bg-orange-500', label: LEGEND_LABELS.elRelegation };
     if (slug === 'europa-league')
-      return { color: 'bg-green-500', label: LEGEND_LABELS.ECL_RELEGATION };
+      return { color: 'bg-green-500', label: LEGEND_LABELS.eclRelegation };
   }
-  return { color: 'bg-gray-400', label: LEGEND_LABELS.ELIMINATION };
+  return { color: 'bg-gray-400', label: LEGEND_LABELS.elimination };
 };
 
 /**
@@ -107,7 +112,9 @@ export function getPositionInfo(
 
   const isUefa =
     leagueSlug &&
-    UEFA_LEAGUES.includes(leagueSlug as 'champions-league' | 'europa-league' | 'conference-league');
+    UEFA_LEAGUE_SLUGS.includes(
+      leagueSlug as 'champions-league' | 'europa-league' | 'conference-league'
+    );
   if (isUefa) {
     return season >= 2024 ? uefaNew(position) : uefaOld(position, leagueSlug);
   }
@@ -134,47 +141,66 @@ export function getLegendItems(
   // UEFA旧フォーマットでは必要な凡例を大会ごとに追加
   if (
     leagueSlug &&
-    UEFA_LEAGUES.includes(
+    UEFA_LEAGUE_SLUGS.includes(
       leagueSlug as 'champions-league' | 'europa-league' | 'conference-league'
     ) &&
     season < 2024
   ) {
     // 決勝トーナメント進出は全大会共通
-    if (!map.has(LEGEND_LABELS.KNOCKOUT)) {
-      map.set(LEGEND_LABELS.KNOCKOUT, {
+    if (!map.has(LEGEND_LABELS.knockout)) {
+      map.set(LEGEND_LABELS.knockout, {
         color: 'bg-blue-600',
-        label: LEGEND_LABELS.KNOCKOUT,
+        label: LEGEND_LABELS.knockout,
       });
     }
 
     // 各大会ごとの降格先を追加
     if (leagueSlug === 'champions-league') {
       // CLの場合はELへの降格のみ
-      if (!map.has(LEGEND_LABELS.EL_RELEGATION)) {
-        map.set(LEGEND_LABELS.EL_RELEGATION, {
+      if (!map.has(LEGEND_LABELS.elRelegation)) {
+        map.set(LEGEND_LABELS.elRelegation, {
           color: 'bg-orange-500',
-          label: LEGEND_LABELS.EL_RELEGATION,
+          label: LEGEND_LABELS.elRelegation,
         });
       }
     } else if (leagueSlug === 'europa-league') {
       // ELの場合はECLへの降格のみ
-      if (!map.has(LEGEND_LABELS.ECL_RELEGATION)) {
-        map.set(LEGEND_LABELS.ECL_RELEGATION, {
+      if (!map.has(LEGEND_LABELS.eclRelegation)) {
+        map.set(LEGEND_LABELS.eclRelegation, {
           color: 'bg-green-500',
-          label: LEGEND_LABELS.ECL_RELEGATION,
+          label: LEGEND_LABELS.eclRelegation,
         });
       }
     }
 
     // 敗退は全大会共通
-    if (!map.has(LEGEND_LABELS.ELIMINATION)) {
-      map.set(LEGEND_LABELS.ELIMINATION, {
+    if (!map.has(LEGEND_LABELS.elimination)) {
+      map.set(LEGEND_LABELS.elimination, {
         color: 'bg-gray-400',
-        label: LEGEND_LABELS.ELIMINATION,
+        label: LEGEND_LABELS.elimination,
       });
     }
   }
 
-  // 定義順で並び替え
-  return LEGEND_ORDER.filter((lbl) => map.has(lbl)).map((lbl) => map.get(lbl)!);
+  // 定義順で並び替え（LEGEND_ORDERにあるものを優先し、その後に残りを追加）
+  const orderedItems: Info[] = [];
+  const processedLabels = new Set<string>();
+
+  // まずLEGEND_ORDERに定義された順序で追加
+  LEGEND_ORDER.forEach((lbl) => {
+    const value = LEGEND_LABELS[lbl];
+    if (map.has(value)) {
+      orderedItems.push(map.get(value)!);
+      processedLabels.add(value);
+    }
+  });
+
+  // LEGEND_ORDERにないが実際に存在するラベルを追加
+  map.forEach((info, label) => {
+    if (!processedLabels.has(label)) {
+      orderedItems.push(info);
+    }
+  });
+
+  return orderedItems;
 }

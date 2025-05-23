@@ -4,7 +4,24 @@
  * API-Footballの順位表データ構造を定義
  */
 
-export interface TeamStanding {
+/**
+ * チームの統計情報
+ */
+export interface ApiFootballTeamStats {
+  played: number;
+  win: number;
+  draw: number;
+  lose: number;
+  goals: {
+    for: number;
+    against: number;
+  };
+}
+
+/**
+ * API-Footballの順位表データ構造
+ */
+export interface ApiFootballTeamStanding {
   rank: number;
   team: {
     id: number;
@@ -16,43 +33,16 @@ export interface TeamStanding {
   group: string;
   form: string | null;
   description: string | null;
-  all: {
-    played: number;
-    win: number;
-    draw: number;
-    lose: number;
-    goals: {
-      for: number;
-      against: number;
-    };
-  };
-  home: {
-    played: number;
-    win: number;
-    draw: number;
-    lose: number;
-    goals: {
-      for: number;
-      against: number;
-    };
-  };
-  away: {
-    played: number;
-    win: number;
-    draw: number;
-    lose: number;
-    goals: {
-      for: number;
-      against: number;
-    };
-  };
+  all: ApiFootballTeamStats;
+  home: ApiFootballTeamStats;
+  away: ApiFootballTeamStats;
   update: string;
 }
 
 /**
  * 単一グループの順位表
  */
-export type StandingGroup = TeamStanding[];
+export type StandingGroup = ApiFootballTeamStanding[];
 
 /**
  * 複数グループがある場合の順位表（CLなど）
@@ -72,14 +62,16 @@ export interface FormattedStanding {
     shortName: string;
     crest: string;
   };
-  playedGames: number;
-  won: number;
-  draw: number;
-  lost: number;
-  points: number;
-  goalsFor: number;
-  goalsAgainst: number;
-  goalDifference: number;
+  stats: {
+    played: number;
+    won: number;
+    draw: number;
+    lost: number;
+    points: number;
+    goalsFor: number;
+    goalsAgainst: number;
+    goalDifference: number;
+  };
   form?: string;
   description?: string | null;
 }

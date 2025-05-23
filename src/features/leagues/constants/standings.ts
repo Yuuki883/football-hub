@@ -1,31 +1,42 @@
-export const UEFA_LEAGUES = ['champions-league', 'europa-league', 'conference-league'] as const;
+import type { LegendLabel, LegendOrder } from '../types/standings';
 
-export const LEGEND_LABELS = {
-  KNOCKOUT: '決勝T',
-  PLAYOFF: 'プレーオフ',
-  EL_RELEGATION: 'EL降格',
-  ECL_RELEGATION: 'ECL降格',
-  ELIMINATION: '敗退',
+/**
+ * UEFAリーグのスラッグ定義
+ */
+export const UEFA_LEAGUE_SLUGS = [
+  'champions-league',
+  'europa-league',
+  'conference-league',
+] as const;
+
+/**
+ * 順位表の凡例ラベル定義
+ */
+export const LEGEND_LABELS: Record<LegendLabel, string> = {
+  championsLeague: 'CL',
+  europaLeague: 'EL',
+  conferenceLeague: 'ECL',
+  relegation: '降格',
+  promotion: '昇格',
+  playoff: 'PO',
+  knockout: '決勝T',
+  elRelegation: 'EL降格',
+  eclRelegation: 'ECL降格',
+  elimination: '敗退',
 } as const;
 
-// 凡例の出現順
-export const LEGEND_ORDER = [
-  LEGEND_LABELS.KNOCKOUT,
-  LEGEND_LABELS.PLAYOFF,
-  LEGEND_LABELS.EL_RELEGATION,
-  LEGEND_LABELS.ECL_RELEGATION,
-  LEGEND_LABELS.ELIMINATION,
-  'CL',
-  'EL',
-  'ECL',
-  'CLプレーオフ',
-  'ELプレーオフ',
-  'ECLプレーオフ',
-  'CL予選',
-  'EL予選',
-  'ECL予選',
-  '予選',
-  '昇格',
-  '降格',
-  'PO',
+/**
+ * 凡例の表示順序
+ */
+export const LEGEND_ORDER: LegendOrder = [
+  'championsLeague',
+  'europaLeague',
+  'conferenceLeague',
+  'knockout',
+  'playoff',
+  'promotion',
+  'relegation',
+  'elRelegation',
+  'eclRelegation',
+  'elimination',
 ] as const;

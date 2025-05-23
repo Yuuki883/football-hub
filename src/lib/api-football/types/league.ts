@@ -15,9 +15,23 @@ export interface ApiFootballLeague {
 }
 
 export interface ApiFootballLeagueData {
-  league: ApiFootballLeague;
-  country: Country;
-  seasons: Season[];
+  league: {
+    id: number;
+    name: string;
+    type: string;
+    logo: string;
+  };
+  country: {
+    name: string;
+    code: string;
+    flag: string;
+  };
+  seasons: Array<{
+    year: number;
+    start: string;
+    end: string;
+    current: boolean;
+  }>;
 }
 
 // 変換後の形式
