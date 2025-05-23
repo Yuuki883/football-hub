@@ -6,14 +6,6 @@
 
 import { League, Country, Season } from '@/types/type';
 
-// APIレスポンス形式
-export interface ApiFootballLeague {
-  id: number;
-  name: string;
-  type: string;
-  logo: string;
-}
-
 export interface ApiFootballLeagueData {
   league: {
     id: number;

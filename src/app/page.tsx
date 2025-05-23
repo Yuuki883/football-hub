@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import NewsHighlights from '@/components/home/NewsHighlights';
+import NewsHighlights from '@/features/news/components/NewsHighlights';
 import AllMatchesSection from '@/features/matches/components/AllMatchesSection';
-import LeagueNavigation from '@/components/home/LeagueNavigation';
+import LeagueNavigation from '@/features/leagues/components/common/HomeLeagueNavigation';
 
 export const metadata: Metadata = {
   title: 'FootballHub - サッカー試合&ニュースポータル',
