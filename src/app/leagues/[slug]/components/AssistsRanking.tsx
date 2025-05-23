@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FormattedPlayerStats } from '@/lib/api-football/types/players';
+import { FormattedPlayerStats } from '@/lib/api-football/types/player';
 
 interface AssistsRankingProps {
   players: FormattedPlayerStats[] | null;

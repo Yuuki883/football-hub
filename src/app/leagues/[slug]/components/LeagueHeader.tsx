@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import type { League, Country } from '@/lib/api-football/types/leagues';
+import type { League } from '@/lib/api-football/types/league';
+import type { Country } from '@/types/type';
 import EntityHeader from '@/components/common/EntityHeader';
 import { FavoriteButton } from '@/features/favorites/components/FavoriteButton';
 import { useLeagueFavorite } from '@/features/favorites/hooks/useFavorite';

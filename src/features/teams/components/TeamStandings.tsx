@@ -1,6 +1,6 @@
 'use client';
 
-import { FormattedStandingGroup } from '@/lib/api-football/types/standings';
+import { FormattedStandingGroup } from '@/lib/api-football/types/standing';
 import StandingsTable from '@/app/leagues/[slug]/components/StandingsTable';
 
 interface TeamStandingsProps {
