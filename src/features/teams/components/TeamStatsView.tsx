@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { TeamStats } from '../types/types';
+import { TeamStats } from '../types/type';
 import { ProgressBar, ComparisonBar } from '@/components/ui/ProgressBar';
 import { MIN_LABEL_PCT } from '../constants/stats';
 

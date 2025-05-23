@@ -9,13 +9,13 @@ export * from './fixture';
 export * from './lineup';
 
 // 統計・パフォーマンス型
-export * from './statistics';
+export * from './statistic';
 
 // イベント型
-export * from './events';
+export * from './event';
 
 // UI型
-export * from './ui-types';
+export * from './ui-type';
 
 // 列挙型・定数型を constants/matches.ts から再エクスポート
 export type { MatchStatusType, MatchFilterType } from '../constants/matches';

@@ -5,7 +5,7 @@
  */
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache } from '@/lib/api-football/cache';
-import { TeamLeagueInfo } from '../types/types';
+import { TeamLeagueInfo } from '../types/type';
 
 /**
  * チームと所属リーグの情報を並行して取得する最適化関数

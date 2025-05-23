@@ -8,7 +8,7 @@
 import { getFixtures } from '@/lib/api-football/fixtures-api';
 import type { Match } from '@/lib/api-football/fixtures';
 import { DEFAULT_SEASON } from '@/config/api';
-import { TeamFixturesParams } from '../types/types';
+import { TeamFixturesParams } from '../types/type';
 
 /**
  * チームの試合日程を取得する

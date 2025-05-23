@@ -3,7 +3,7 @@
  *
  * 選手の統計データを処理し、アプリケーション内で使用しやすい形式に変換する機能
  */
-import { ApiPlayerStatistics, PlayerDetailInfo, PlayerDetailStats } from '../types/types';
+import { ApiPlayerStatistics, PlayerDetailInfo, PlayerDetailStats } from '../types/type';
 import { Team } from '@/types/type';
 import { formatRating } from '../utils/format-utils';
 

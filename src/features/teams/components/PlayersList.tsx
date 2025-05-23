@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { TeamPlayerGroup, TeamPlayer } from '../types/types';
+import { TeamPlayerGroup, TeamPlayer } from '../types/type';
 
 interface PlayersListProps {
   playerGroups: TeamPlayerGroup[];

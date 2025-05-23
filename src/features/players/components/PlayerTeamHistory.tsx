@@ -5,7 +5,7 @@
  * クラブチーム、ユースチーム、代表チームを分けて表示
  */
 import Image from 'next/image';
-import { TransferHistoryEntry } from '../types/types';
+import { TransferHistoryEntry } from '../types/type';
 
 interface PlayerTeamHistoryProps {
   transfers: TransferHistoryEntry[];

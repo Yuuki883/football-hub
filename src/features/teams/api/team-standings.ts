@@ -6,7 +6,7 @@ import {
 import { withCache } from '@/lib/api-football/cache';
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { getTeamDomesticLeague } from './team-leagues';
-import { TeamStandingInfo, TeamStandingsResult } from '../types/types';
+import { TeamStandingInfo, TeamStandingsResult } from '../types/type';
 
 /**
  * チームが所属するリーグの順位表を取得

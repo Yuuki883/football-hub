@@ -3,7 +3,7 @@
  *
  * 選手の統計データを取得し、表示用に整形する機能
  */
-import { PlayerDetailStats } from '../types/types';
+import { PlayerDetailStats } from '../types/type';
 import { API_FOOTBALL } from '@/config/api';
 import { transformPlayerStats } from './stats-helper';
 

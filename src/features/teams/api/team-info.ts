@@ -8,7 +8,7 @@
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { CACHE_TTL } from '@/config/api';
-import { TeamInfo } from '../types/types';
+import { TeamInfo } from '../types/type';
 
 /**
  * チームの基本情報を取得する

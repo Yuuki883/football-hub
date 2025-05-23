@@ -4,7 +4,7 @@
  * 選手の基本情報、今シーズンの統計、所属チーム履歴を取得して統合
  */
 import { API_FOOTBALL } from '@/config/api';
-import { PlayerDetail } from '../types/types';
+import { PlayerDetail } from '../types/type';
 import { ApiResponse } from '@/types/type';
 import { ApiPlayerProfile } from '@/lib/api-football/types';
 import { processTeamHistory } from './player-team-history';

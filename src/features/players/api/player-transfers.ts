@@ -3,7 +3,7 @@
  *
  * 移籍履歴の処理と整形を行う機能
  */
-import { TransferHistoryEntry } from '../types/types';
+import { TransferHistoryEntry } from '../types/type';
 import { ApiResponse } from '@/types/type';
 import { ApiTransferEntry } from '@/lib/api-football/types';
 

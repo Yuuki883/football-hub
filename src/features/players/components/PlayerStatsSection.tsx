@@ -4,7 +4,7 @@
  * ゴール数、アシスト数、出場数などの主要スタッツをカードで表示
  */
 import Image from 'next/image';
-import { PlayerDetailStats } from '../types/types';
+import { PlayerDetailStats } from '../types/type';
 
 interface PlayerStatsSectionProps {
   stats: PlayerDetailStats;

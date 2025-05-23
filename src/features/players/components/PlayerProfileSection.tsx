@@ -4,7 +4,7 @@
  * 選手の基本情報（写真、名前、所属チーム、身体データなど）を表示
  */
 import Image from 'next/image';
-import { PlayerDetail } from '../types/types';
+import { PlayerDetail } from '../types/type';
 import { formatDate } from '@/utils/date-formatter';
 
 interface PlayerProfileSectionProps {

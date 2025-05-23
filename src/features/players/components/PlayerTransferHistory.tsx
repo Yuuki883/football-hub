@@ -5,7 +5,7 @@
  * 移籍日付、移籍金、移籍元/移籍先チームを表示
  */
 import Image from 'next/image';
-import { TransferHistoryEntry } from '../types/types';
+import { TransferHistoryEntry } from '../types/type';
 
 interface PlayerTransferHistoryProps {
   transfers: TransferHistoryEntry[];

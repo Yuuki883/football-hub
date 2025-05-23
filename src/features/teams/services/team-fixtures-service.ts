@@ -5,7 +5,7 @@
  */
 
 import { getTeamFixtures as apiGetTeamFixtures } from '../api/team-fixtures';
-import type { TeamFixturesParams } from '../types/types';
+import type { TeamFixturesParams } from '../types/type';
 import type { Match } from '@/lib/api-football/types';
 
 /**

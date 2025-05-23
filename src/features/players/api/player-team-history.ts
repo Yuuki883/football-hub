@@ -7,7 +7,7 @@ import { Team } from '@/types/type';
 import { isNationalTeam } from './team-helper';
 import { classifyTeam } from '../utils/team-utils';
 import { parseSeasons } from '../utils/data-parser';
-import { TransferHistoryEntry } from '../types/types';
+import { TransferHistoryEntry } from '../types/type';
 import { ApiTeamHistoryEntry } from '@/lib/api-football/types';
 import { ApiResponse } from '@/types/type';
 
