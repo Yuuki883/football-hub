@@ -3,20 +3,9 @@
  *
  * チームの種別判定や整形処理のための関数群
  */
-import { Team } from '@/types/type';
 
-/**
- * チーム種別の定義
- */
-export type TeamType = 'senior' | 'youth' | 'national';
-
-/**
- * チーム情報の分類結果
- */
-export interface ClassifiedTeam {
-  type: TeamType;
-  teamData: Team;
-}
+// 統一された型定義を使用
+import type { Team, TeamType, ClassifiedTeam } from '@/types/type';
 
 /**
  * チームを種別（シニアチーム、ユースチーム、代表チーム）に分類する

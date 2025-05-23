@@ -4,7 +4,7 @@
  * 選手および選手統計に関する型定義を提供
  */
 
-import { Player, PlayerProfile, BasicPlayerStats, Team, League, ApiResponse } from '@/types/type';
+import { Player, PlayerProfile, BasicPlayerStats, Team, League } from '@/types/type';
 
 /**
  * API-Football 生データの型定義

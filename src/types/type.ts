@@ -1,10 +1,10 @@
 /**
  * アプリケーション全体で使用する共通ドメインモデル
  *
- * 基本的な型定義を集約し、アプリケーション全体で一貫した型を提供します。
+ * 基本的な型定義を集約し、アプリケーション全体で一貫した型を設定
  */
 
-// 基本的なチーム情報
+// 基本的なチーム情報（既存を拡張）
 export interface Team {
   id: number | string;
   name: string;
@@ -12,6 +12,10 @@ export interface Team {
   shortName?: string;
   tla?: string;
   crest?: string;
+  code?: string;
+  country?: string;
+  founded?: number;
+  national?: boolean;
 }
 
 // 基本的な選手情報
@@ -118,7 +122,7 @@ export interface MatchStatus {
   started?: boolean;
 }
 
-// 基本的な会場情報（新規追加）
+// 基本的な会場情報（試合用）
 export interface Venue {
   id?: number;
   name: string;
@@ -128,7 +132,38 @@ export interface Venue {
   image?: string;
 }
 
-// 基本的な試合情報（既存を拡張）
+// 基本的な会場情報（チーム用に特化）
+export interface TeamVenue {
+  id?: number;
+  name: string;
+  address?: string;
+  city: string;
+  capacity?: number;
+  surface?: string;
+  image?: string;
+}
+
+// チーム詳細情報（統合版）
+export interface TeamDetail extends Team {
+  venue?: TeamVenue;
+  website?: string;
+  description?: string;
+  colors?: {
+    primary?: string;
+    secondary?: string;
+  };
+}
+
+// チーム種別定義
+export type TeamType = 'senior' | 'youth' | 'national';
+
+// チーム分類情報
+export interface ClassifiedTeam {
+  type: TeamType;
+  teamData: Team;
+}
+
+// 基本的な試合情報
 export interface Match {
   id: number | string;
   utcDate: string;
@@ -145,7 +180,7 @@ export interface Match {
     | Venue;
   round?: string;
   matchday?: number;
-  // 既存フィールドも保持（後方互換性）
+  // 既存フィールドも保持
   stage?: string;
   group?: string | null;
   lastUpdated?: string;
@@ -153,7 +188,7 @@ export interface Match {
 }
 
 /**
- * ニュース記事の基本情報
+ * ニュースの基本情報
  */
 export interface NewsItem {
   title: string;

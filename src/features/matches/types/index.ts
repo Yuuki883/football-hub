@@ -9,7 +9,7 @@ export * from './fixture';
 export * from './lineup';
 
 // 統計・パフォーマンス型
-export * from './statistic';
+export * from './statistics';
 
 // イベント型
 export * from './event';

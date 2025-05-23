@@ -5,10 +5,6 @@
  * プロジェクト全体で一貫した設定値を使用するために参照
  */
 
-// デフォルト値（環境変数が存在しない場合のフォールバック）
-// const DEFAULT_API_HOST = 'v3.football.api-sports.io';
-// const DEFAULT_API_BASE = 'https://v3.football.api-sports.io';
-
 // API-Football API設定
 export const API_FOOTBALL = {
   KEY: process.env.API_FOOTBALL_KEY || process.env.NEXT_PUBLIC_API_FOOTBALL_KEY,

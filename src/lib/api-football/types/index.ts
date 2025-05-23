@@ -11,6 +11,10 @@ export type {
   PlayerProfile,
   BasicPlayerStats,
   Team,
+  TeamDetail,
+  TeamVenue,
+  TeamType,
+  ClassifiedTeam,
   League,
   Country,
   Competition,
@@ -27,3 +31,4 @@ export * from './fixture';
 export * from './league';
 export * from './player';
 export * from './standing';
+export * from './team';

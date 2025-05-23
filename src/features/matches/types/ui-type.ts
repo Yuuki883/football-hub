@@ -3,7 +3,7 @@
  */
 import { DetailedMatch } from './fixture';
 import { MatchEvent } from './event';
-import { MatchPlayerPerformance } from './statistic';
+import { MatchPlayerPerformance } from './statistics';
 
 /**
  * UI表示用の試合情報

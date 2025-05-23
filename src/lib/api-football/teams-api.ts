@@ -8,37 +8,13 @@ import { fetchFromAPI, createUrl } from './index';
 import { withCache, createCacheKey } from './cache';
 import { CACHE_TTL, LEAGUE_SLUG_MAPPING } from '@/config/api';
 
-/**
- * チーム情報の型定義
- */
-export interface Team {
-  id: number;
-  name: string;
-  code: string | null;
-  country: string;
-  founded: number;
-  national: boolean;
-  logo: string;
-}
-
-/**
- * チーム詳細情報の型定義
- */
-export interface TeamDetails {
-  team: Team;
-  venue: {
-    id: number;
-    name: string;
-    address: string;
-    city: string;
-    capacity: number;
-    surface: string;
-    image: string;
-  };
-}
+// 統一された型定義を使用
+import type { Team, TeamDetail } from '@/types/type';
+import type { ApiFootballTeamDetailRaw } from './types/team';
 
 /**
  * 変換後のチーム情報の型定義
+ * @deprecated UiTeamInfo または TeamCardInfo を使用してください
  */
 export interface FormattedTeam {
   id: string;
@@ -59,8 +35,9 @@ export interface FormattedTeam {
  *
  * @param teamDetails API-Footballから返されるチーム情報
  * @returns 変換後のチーム情報
+ * @deprecated 新しい変換ユーティリティを使用してください
  */
-function formatTeam(teamDetails: TeamDetails): FormattedTeam {
+function formatTeam(teamDetails: ApiFootballTeamDetailRaw): FormattedTeam {
   return {
     id: teamDetails.team.id.toString(),
     name: teamDetails.team.name,
@@ -104,7 +81,7 @@ export async function getLeagueTeams(
       }
 
       // チーム情報を変換して返す
-      return data.response.map((teamData: TeamDetails) => formatTeam(teamData));
+      return data.response.map((teamData: ApiFootballTeamDetailRaw) => formatTeam(teamData));
     },
     cacheTTL,
     forceRefresh

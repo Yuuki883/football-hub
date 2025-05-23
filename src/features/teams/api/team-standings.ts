@@ -90,9 +90,20 @@ export async function getTeamStandings(
                       teamInLeagueData = {
                         teamId: teamId.toString(),
                         teamName: standing.team.name,
+                        teamLogo: standing.team.logo,
+                        leagueId: leagueId.toString(),
                         leagueName: leagueStandingsData.name || leagueName || '',
                         leagueLogo: leagueStandingsData.logo || leagueLogo || '',
                         position: standing.rank,
+                        points: standing.points,
+                        played: standing.all.played,
+                        wins: standing.all.win,
+                        draws: standing.all.draw,
+                        losses: standing.all.lose,
+                        goalsFor: standing.all.goals.for,
+                        goalsAgainst: standing.all.goals.against,
+                        goalDifference: standing.goalsDiff,
+                        form: standing.form || undefined,
                       };
                     }
 
@@ -116,9 +127,20 @@ export async function getTeamStandings(
                     teamInLeagueData = {
                       teamId: teamId.toString(),
                       teamName: standing.team.name,
+                      teamLogo: standing.team.logo,
+                      leagueId: leagueId.toString(),
                       leagueName: leagueStandingsData.name || leagueName || '',
                       leagueLogo: leagueStandingsData.logo || leagueLogo || '',
                       position: standing.rank,
+                      points: standing.points,
+                      played: standing.all.played,
+                      wins: standing.all.win,
+                      draws: standing.all.draw,
+                      losses: standing.all.lose,
+                      goalsFor: standing.all.goals.for,
+                      goalsAgainst: standing.all.goals.against,
+                      goalDifference: standing.goalsDiff,
+                      form: standing.form || undefined,
                     };
                   }
 

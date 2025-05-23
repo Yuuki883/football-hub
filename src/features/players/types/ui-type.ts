@@ -4,7 +4,7 @@
  * PlayerDetailから派生し、UI表示に特化した属性を追加した型を定義
  */
 import { PlayerDetail, PlayerDetailInfo, PlayerDetailStats, TransferHistoryEntry } from './type';
-import { TeamType } from '../utils/team-utils';
+import type { TeamType } from '@/types/type';
 
 /**
  * UI表示用の選手基本情報
