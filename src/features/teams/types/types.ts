@@ -5,7 +5,7 @@
  * ドメイン型とAPI型の間のマッピングもここで定義
  */
 
-import { Team } from '@/types/football';
+import { Team } from '@/types/type';
 import { FormattedStandingGroup } from '@/lib/api-football/types';
 
 // チーム詳細情報の型

@@ -5,6 +5,8 @@
  */
 import { API_FOOTBALL } from '@/config/api';
 import { PlayerDetail } from '../types/types';
+import { ApiResponse } from '@/types/type';
+import { ApiPlayerProfile } from '@/lib/api-football/types/player';
 import { processTeamHistory } from './player-team-history';
 import { transformTransferHistory } from './player-transfers';
 import { transformPlayerStats } from './stats-helper';
@@ -15,7 +17,7 @@ import { transformPlayerStats } from './stats-helper';
  * @param playerId - 選手ID
  * @returns 選手プロフィール情報
  */
-async function getPlayerProfile(playerId: string) {
+async function getPlayerProfile(playerId: string): Promise<ApiPlayerProfile | null> {
   if (!API_FOOTBALL.KEY) {
     throw new Error('API key is not configured');
   }
@@ -40,7 +42,7 @@ async function getPlayerProfile(playerId: string) {
       return null;
     }
 
-    const profileData = await profileResponse.json();
+    const profileData = (await profileResponse.json()) as ApiResponse<ApiPlayerProfile[]>;
 
     if (!profileData.response?.length) {
       console.error('選手プロフィールが見つかりません:', playerId);

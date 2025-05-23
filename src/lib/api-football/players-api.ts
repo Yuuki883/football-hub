@@ -7,7 +7,7 @@
 import { fetchFromAPI, createUrl } from './index';
 import { withCache, createCacheKey } from './cache';
 import { CACHE_TTL, LEAGUE_SLUG_MAPPING } from '@/config/api';
-import { PlayerWithStats, FormattedPlayerStats, ApiFootballPlayer } from './types/players';
+import { PlayerWithStats, FormattedPlayerStats, ApiFootballPlayer } from './types/player';
 
 /**
  * 選手統計データをアプリ内で統一された形式に変換

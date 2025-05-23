@@ -4,15 +4,11 @@
  * リーグ関連の機能で使用される型を定義
  */
 
-import { League, Standing } from '@/types/football';
+import { League, Standing, Country } from '@/types/type';
 
 // リーグ詳細情報の型
 export interface LeagueDetails extends League {
-  country: {
-    name: string;
-    code?: string;
-    flag?: string;
-  };
+  country: Country;
   currentSeason?: {
     year: number;
     start: string;

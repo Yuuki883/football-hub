@@ -4,21 +4,19 @@
  * API-Footballのデータ構造を元に、アプリケーション内で扱いやすい形に変換した型を定義
  */
 
-import { Team } from '@/types/football';
+import { Player, Team, League, BasicStats, ApiResponse } from '@/types/type';
+import {
+  ApiPlayerProfile,
+  ApiPlayerStatistics,
+  ApiTeamHistoryEntry,
+  ApiTransferEntry,
+} from '@/lib/api-football/types/player';
 
-// 選手の基本情報
-export interface PlayerInfo {
-  id: number;
-  name: string;
-  firstName?: string;
-  lastName?: string;
-  age: number;
+// 選手の基本情報（Player型を拡張）
+export interface PlayerInfo extends Player {
   birthDate?: string;
-  nationality: string;
   height?: string;
   weight?: string;
-  photo: string;
-  position: string;
   number?: number;
 }
 
@@ -28,20 +26,13 @@ export interface PlayerTeam {
   current: boolean;
 }
 
-// リーグ情報
-export interface LeagueInfo {
-  id: number;
-  name: string;
-  logo: string;
+// リーグ情報（League型を拡張）
+export interface LeagueInfo extends League {
   season?: string;
 }
 
-// 選手の統計情報
-export interface PlayerStats {
-  appearances?: number;
-  minutes?: number;
-  goals?: number;
-  assists?: number;
+// 選手の統計情報（BasicStats型を拡張）
+export interface PlayerStats extends BasicStats {
   yellowCards?: number;
   redCards?: number;
   rating?: string;
@@ -65,21 +56,7 @@ export interface TransferHistoryEntry {
 }
 
 // 選手詳細ページのメインデータ構造
-export interface PlayerDetail {
-  // 基本情報
-  id: number;
-  name: string;
-  firstName?: string;
-  lastName?: string;
-  age: number;
-  birthDate?: string;
-  nationality: string;
-  height?: string;
-  weight?: string;
-  photo: string;
-  position: string;
-  number?: number;
-
+export interface PlayerDetail extends PlayerInfo {
   // 所属チーム
   team?: Team;
 
@@ -92,3 +69,6 @@ export interface PlayerDetail {
   // 所属チーム履歴
   teamHistory: TransferHistoryEntry[];
 }
+
+// 型のエクスポート（他のモジュールでの利用時の利便性のため）
+export type { ApiPlayerProfile, ApiPlayerStatistics, ApiTeamHistoryEntry, ApiTransferEntry };

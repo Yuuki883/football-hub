@@ -4,6 +4,8 @@
  * 移籍履歴の処理と整形を行う機能
  */
 import { TransferHistoryEntry } from '../types/types';
+import { ApiResponse } from '@/types/type';
+import { ApiTransferEntry } from '@/lib/api-football/types/player';
 
 /**
  * 選手の移籍履歴を変換
@@ -11,7 +13,9 @@ import { TransferHistoryEntry } from '../types/types';
  * @param transfersData - 移籍データ
  * @returns 整形された移籍履歴
  */
-export function transformTransferHistory(transfersData: any): TransferHistoryEntry[] {
+export function transformTransferHistory(
+  transfersData: ApiResponse<{ transfers: ApiTransferEntry[] }[]>
+): TransferHistoryEntry[] {
   // 移籍履歴データの作成
   let clubTransferHistory: TransferHistoryEntry[] = [];
 
@@ -20,7 +24,7 @@ export function transformTransferHistory(transfersData: any): TransferHistoryEnt
     const transfers = transfersData.response[0].transfers;
 
     // 移籍情報を変換
-    clubTransferHistory = transfers.map((transfer: any) => {
+    clubTransferHistory = transfers.map((transfer: ApiTransferEntry) => {
       return {
         team: {
           id: transfer.teams.in.id,

@@ -13,7 +13,7 @@ import {
   TeamStanding,
   FormattedStanding,
   FormattedStandingGroup,
-} from './types/standings';
+} from './types/standing';
 
 // UEFAの主要大会（複数グループ構成）
 const MULTI_GROUP_LEAGUES = [2, 3, 848]; // Champions League, Europa League, Conference League

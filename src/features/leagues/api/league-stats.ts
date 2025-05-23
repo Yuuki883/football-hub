@@ -7,7 +7,7 @@
 
 import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
 import { getTopScorers, getTopAssists } from '@/lib/api-football/players-api';
-import type { FormattedPlayerStats } from '@/lib/api-football/types/players';
+import type { FormattedPlayerStats } from '@/lib/api-football/types/player';
 
 /**
  * リーグの得点ランキングを取得

@@ -9,13 +9,13 @@
 export * from './common';
 
 // 試合データ型のエクスポート
-export * from './fixtures';
+export * from './fixture';
 
 // リーグデータ型のエクスポート
-export * from './leagues';
+export * from './league';
 
 // 選手データ型のエクスポート
-export * from './players';
+export * from './player';
 
 // 順位表データ型のエクスポート
-export * from './standings';
+export * from './standing';

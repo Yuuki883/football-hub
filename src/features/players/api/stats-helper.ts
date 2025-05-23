@@ -3,8 +3,8 @@
  *
  * 選手の統計データを処理し、アプリケーション内で使用しやすい形式に変換する機能
  */
-import { PlayerStats } from '../types/types';
-import { Team } from '@/types/football';
+import { ApiPlayerStatistics, LeagueInfo, PlayerStats } from '../types/types';
+import { Team } from '@/types/type';
 import { formatRating } from '../utils/format-utils';
 
 /**
@@ -13,9 +13,9 @@ import { formatRating } from '../utils/format-utils';
  * @param statistics - APIから取得した統計データ配列
  * @returns 有効な統計データ
  */
-export function findValidStats(statistics: any[]): any {
+export function findValidStats(statistics: ApiPlayerStatistics[]): ApiPlayerStatistics {
   if (!statistics || !statistics.length) {
-    return {};
+    return {} as ApiPlayerStatistics;
   }
 
   // 統計データを順番に確認し、有効なものを採用
@@ -31,7 +31,7 @@ export function findValidStats(statistics: any[]): any {
   }
 
   // 有効なデータが見つからなければ最初のエントリを使用
-  return statistics[0] || {};
+  return statistics[0] || ({} as ApiPlayerStatistics);
 }
 
 /**
@@ -40,7 +40,7 @@ export function findValidStats(statistics: any[]): any {
  * @param currentStats - 統計データ
  * @returns リーグ情報
  */
-export function extractLeagueInfo(currentStats: any) {
+export function extractLeagueInfo(currentStats: ApiPlayerStatistics): LeagueInfo | undefined {
   if (!currentStats.league) {
     return undefined;
   }
@@ -49,7 +49,7 @@ export function extractLeagueInfo(currentStats: any) {
     id: currentStats.league.id,
     name: currentStats.league.name,
     logo: currentStats.league.logo,
-    season: currentStats.league.season,
+    season: String(currentStats.league.season),
   };
 }
 
@@ -59,7 +59,7 @@ export function extractLeagueInfo(currentStats: any) {
  * @param currentStats - 統計データ
  * @returns チーム情報
  */
-export function extractTeamInfo(currentStats: any): Team | undefined {
+export function extractTeamInfo(currentStats: ApiPlayerStatistics): Team | undefined {
   if (!currentStats.team) {
     return undefined;
   }
@@ -78,7 +78,10 @@ export function extractTeamInfo(currentStats: any): Team | undefined {
  * @param leagueInfo - リーグ情報
  * @returns 選手統計情報
  */
-export function buildPlayerStats(currentStats: any, leagueInfo: any): PlayerStats {
+export function buildPlayerStats(
+  currentStats: ApiPlayerStatistics,
+  leagueInfo: LeagueInfo | undefined
+): PlayerStats {
   return {
     appearances: currentStats.games?.appearences,
     minutes: currentStats.games?.minutes,
@@ -97,7 +100,7 @@ export function buildPlayerStats(currentStats: any, leagueInfo: any): PlayerStat
  * @param statistics - APIから取得した統計データ
  * @returns 整形された統計情報とチーム情報
  */
-export function transformPlayerStats(statistics: any[]): {
+export function transformPlayerStats(statistics: ApiPlayerStatistics[]): {
   stats: PlayerStats;
   currentTeam?: Team;
 } {

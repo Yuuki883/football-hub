@@ -3,10 +3,13 @@
  *
  * 選手の所属チーム履歴を処理し、代表チーム、ユースチーム、シニアチームに分類
  */
-import { Team } from '@/types/football';
+import { Team } from '@/types/type';
 import { isNationalTeam } from './team-helper';
 import { classifyTeam } from '../utils/team-utils';
 import { parseSeasons } from '../utils/data-parser';
+import { TransferHistoryEntry } from '../types/types';
+import { ApiTeamHistoryEntry } from '@/lib/api-football/types/player';
+import { ApiResponse } from '@/types/type';
 
 /**
  * APIから取得したチーム履歴データを処理
@@ -14,7 +17,9 @@ import { parseSeasons } from '../utils/data-parser';
  * @param teamsHistoryData - APIから取得したチーム履歴データ
  * @returns 処理済みのチーム履歴エントリ
  */
-export async function processTeamHistory(teamsHistoryData: any): Promise<any[]> {
+export async function processTeamHistory(
+  teamsHistoryData: ApiResponse<ApiTeamHistoryEntry[]>
+): Promise<TransferHistoryEntry[]> {
   // チーム履歴がない場合
   if (!teamsHistoryData.response || !teamsHistoryData.response.length) {
     return [];
@@ -22,7 +27,7 @@ export async function processTeamHistory(teamsHistoryData: any): Promise<any[]> 
 
   // チーム履歴の各エントリについて処理
   const nationalTeamHistoryPromises =
-    teamsHistoryData.response?.map(async (entry: any) => {
+    teamsHistoryData.response?.map(async (entry: ApiTeamHistoryEntry) => {
       // チーム名を取得
       const teamName = entry.team.name;
 
@@ -30,7 +35,9 @@ export async function processTeamHistory(teamsHistoryData: any): Promise<any[]> 
       const seasons = entry.seasons || [];
 
       // シーズン情報の解析
-      const { startSeason, endSeason } = parseSeasons(seasons);
+      // 型変換：(string | number)[] を string[] または number[] に変換
+      const seasonsAsStrings = seasons.map((season) => String(season));
+      const { startSeason, endSeason } = parseSeasons(seasonsAsStrings);
 
       // チームの基本情報
       const teamData: Team = {

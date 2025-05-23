@@ -8,7 +8,7 @@
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { CACHE_TTL } from '@/config/api';
-import { FormattedPlayer } from '@/lib/api-football/types/players';
+import { FormattedPlayer } from '@/lib/api-football/types/player';
 import { TeamPlayer, PlayerGroup } from '../types/types';
 
 /**

@@ -5,12 +5,12 @@
  */
 
 import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
-import { Match, MATCH_STATUS_MAPPING, DateRange } from './types/fixtures';
+import { Match, MATCH_STATUS_MAPPING, DateRange } from './types/fixture';
 
 // デフォルトのシーズン設定をエクスポート
 export { DEFAULT_SEASON } from '@/config/api';
-export { MATCH_STATUS_MAPPING } from './types/fixtures';
-export type { Match } from './types/fixtures';
+export { MATCH_STATUS_MAPPING } from './types/fixture';
+export type { Match } from './types/fixture';
 
 /**
  * API-Football形式の試合データをアプリで使用する形式に変換
