@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
-import TeamGrid from '../components/TeamGrid';
+import TeamGrid from '../../../../features/leagues/components/matches/TeamGrid';
 import { getLeagueTeams, FormattedTeam } from '@/features/leagues/api/league-teams';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 

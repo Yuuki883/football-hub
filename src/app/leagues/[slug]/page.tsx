@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import StandingsTable from './components/StandingsTable';
-import MatchesList from './components/MatchesList';
-import ScorersRanking from './components/ScorersRanking';
-import AssistsRanking from './components/AssistsRanking';
+import StandingsTable from '../../../features/leagues/components/tables/StandingsTable';
+import MatchesList from '../../../features/leagues/components/matches/MatchesList';
+import ScorersRanking from '../../../features/leagues/components/rankings/ScorersRanking';
+import AssistsRanking from '../../../features/leagues/components/rankings/AssistsRanking';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
-import ScorersRanking from '../components/ScorersRanking';
-import AssistsRanking from '../components/AssistsRanking';
+import ScorersRanking from '../../../../features/leagues/components/rankings/ScorersRanking';
+import AssistsRanking from '../../../../features/leagues/components/rankings/AssistsRanking';
 import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 

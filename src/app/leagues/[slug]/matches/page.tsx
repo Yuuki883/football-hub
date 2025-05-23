@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
-import MatchesList from '../components/MatchesList';
+import MatchesList from '../../../../features/leagues/components/matches/MatchesList';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 

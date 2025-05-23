@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
-import StandingsTable from '../components/StandingsTable';
+import StandingsTable from '../../../../features/leagues/components/tables/StandingsTable';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 

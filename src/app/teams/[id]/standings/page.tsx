@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { getTeamById } from '@/features/teams/api/team-info';
 import { getTeamStandings } from '@/features/teams/api/team-standings';
-import StandingsTable from '@/app/leagues/[slug]/components/StandingsTable';
+import StandingsTable from '@/features/leagues/components/tables/StandingsTable';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
 

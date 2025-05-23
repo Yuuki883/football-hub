@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import LeagueHeader from './components/LeagueHeader';
-import LeagueNavigation from './components/LeagueNavigation';
-import SeasonSelector from './components/SeasonSelector';
+import LeagueHeader from '../../../features/leagues/components/common/LeagueHeader';
+import LeagueNavigation from '../../../features/leagues/components/common/LeagueNavigation';
+import SeasonSelector from '../../../features/leagues/components/common/SeasonSelector';
 import PageLayout from '@/components/layout/PageLayout';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
