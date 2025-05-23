@@ -1,7 +1,7 @@
 'use client';
 
 import NewsCard from './NewsCard';
-import { NewsItem } from '../types/type';
+import { NewsItem } from '@/types/type';
 
 interface NewsGridProps {
   initialNews: NewsItem[];

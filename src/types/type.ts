@@ -118,3 +118,14 @@ export interface Match {
   competition: Competition;
   minute?: number;
 }
+
+/**
+ * ニュース記事の基本情報
+ */
+export interface NewsItem {
+  title: string;
+  link: string;
+  pubDate: string;
+  content: string;
+  image?: string;
+}

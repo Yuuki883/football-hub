@@ -5,7 +5,8 @@
  */
 
 import Parser from 'rss-parser';
-import { NewsItem, RssItem } from '../types/type';
+import { RssItem } from '../types/type';
+import { NewsItem } from '@/types/type';
 
 // RSSパーサーの設定（HTMLコンテンツも取得）
 const parser = new Parser({

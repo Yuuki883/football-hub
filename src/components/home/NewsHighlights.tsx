@@ -1,5 +1,4 @@
 import { fetchNews } from '@/features/news/api/news';
-import { NewsItem } from '@/features/news/types/type';
 import NewsGrid from '@/features/news/components/NewsGrid';
 import Link from 'next/link';
 

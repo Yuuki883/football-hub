@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { NewsItem } from '../types/type';
+import { NewsItem } from '@/types/type';
 
 interface NewsCardProps {
   news: NewsItem;
