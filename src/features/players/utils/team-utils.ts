@@ -3,7 +3,7 @@
  *
  * チームの種別判定や整形処理のための関数群
  */
-import { Team } from '@/types/football';
+import { Team } from '@/types/type';
 
 /**
  * チーム種別の定義

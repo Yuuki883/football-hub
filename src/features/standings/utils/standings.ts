@@ -1,5 +1,5 @@
 import { UEFA_LEAGUES, LEGEND_LABELS, LEGEND_ORDER } from '@/features/standings/standings';
-import type { FormattedStanding } from '@/lib/api-football/types/standings';
+import type { FormattedStanding } from '@/lib/api-football/types/standing';
 
 type Info = { color: string; label: string };
 
