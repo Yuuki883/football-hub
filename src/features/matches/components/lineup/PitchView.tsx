@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback } from 'react';
-import { Lineup, Event, MatchPlayerPerformance, MatchPlayerEntry } from '../../types/match.types';
+import { Lineup, Event, MatchPlayerPerformance, MatchPlayerEntry } from '../../types';
 import { sortByGrid, posStyle } from '../../utils/grid-utils';
 import PlayerIcon from './PlayerIcon';
 import { TEAM_COLORS } from '../../constants/matches';

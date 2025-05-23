@@ -2,9 +2,8 @@
  * 試合関連のユーティリティ関数
  */
 
-import { formatMatchDate as formatDateUtil, formatMatchTime } from '@/utils/date-formatter';
-import { MatchDisplay, MatchStatus, MatchStatusType } from '../types/match.types';
-import { format } from 'date-fns';
+import { MatchDisplay, MatchStatusType, MATCH_STATUS } from '../types';
+import { formatMatchDate as formatDateUtil } from '@/utils/date-formatter';
 
 /**
  * 試合ステータスを表示用テキストに変換
@@ -69,7 +68,7 @@ export function formatMatchDate(dateString: string): string {
  */
 export function isMatchStarted(status: MatchStatusType | string): boolean {
   // スケジュール済み(SCHEDULED)以外は全て試合開始済みと見なす
-  return status !== MatchStatus.SCHEDULED && status !== 'NS' && status !== 'POSTPONED';
+  return status !== MATCH_STATUS.SCHEDULED && status !== 'NS' && status !== 'POSTPONED';
 }
 
 /**
@@ -78,7 +77,7 @@ export function isMatchStarted(status: MatchStatusType | string): boolean {
  * @returns CSSクラス名
  */
 export function getScoreDisplayClass(status: MatchStatusType | string): string {
-  if (status === MatchStatus.LIVE || status === MatchStatus.PAUSED) {
+  if (status === MATCH_STATUS.LIVE || status === MATCH_STATUS.PAUSED) {
     return 'text-green-700 dark:text-green-400 font-semibold';
   }
   return '';

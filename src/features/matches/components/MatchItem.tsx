@@ -1,7 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { MatchDisplay } from '../types/match.types';
+import Image from 'next/image';
+import { MatchDisplay } from '../types';
 import { isMatchStarted } from '../utils/match-utils';
 import { formatMatchTime } from '@/utils/date-formatter';
 

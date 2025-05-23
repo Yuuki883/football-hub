@@ -6,7 +6,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Fixture } from '../types/match.types';
+import { Fixture } from '../types';
 import { getStatistics } from '../api/match-service';
 import { STAT_LABELS, STAT_CATEGORIES, CATEGORY_COLORS } from '../constants/matches';
 

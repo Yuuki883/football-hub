@@ -1,13 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import {
-  Fixture,
-  Lineup,
-  Event,
-  TeamPlayers,
-  MatchPlayerPerformance,
-} from '../../types/match.types';
+import { Fixture, Lineup, Event, TeamPlayers, MatchPlayerPerformance } from '../../types';
 import { getLineups, getEvents, getFixturesPlayers } from '../../api/match-service';
 import PitchView from './PitchView';
 import CoachInfo from './CoachInfo';

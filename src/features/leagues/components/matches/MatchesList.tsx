@@ -1,10 +1,12 @@
 'use client';
 
+import React from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Match } from '@/lib/api-football/types';
+import { getStatusText } from '@/features/matches/utils/match-utils';
 
 interface MatchesListProps {
   matches: Match[] | null;
@@ -17,27 +19,8 @@ const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
 
   // 試合の状態を日本語で表示
   const getMatchStatus = (match: Match) => {
-    const status = match.status;
-
-    if (status === 'FT') return '試合終了';
-    if (status === 'NS') {
-      // 未開始の場合は開始時間を表示
-      try {
-        const matchDate = new Date(match.utcDate);
-        if (isNaN(matchDate.getTime())) {
-          return '未開始';
-        }
-        return format(matchDate, 'HH:mm', { locale: ja });
-      } catch (error) {
-        console.error('日付解析エラー:', match.utcDate);
-        return '未開始';
-      }
-    }
-    if (status === '1H') return '前半';
-    if (status === '2H') return '後半';
-    if (status === 'HT') return 'ハーフタイム';
-
-    return match.statusText || status;
+    const status = getStatusText(String(match.status));
+    return status;
   };
 
   // 試合日を表示

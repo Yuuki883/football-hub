@@ -89,7 +89,13 @@ export function buildPlayerStats(
     yellowCards: currentStats.cards?.yellow,
     redCards: currentStats.cards?.red,
     rating: formatRating(currentStats.games?.rating),
-    league: leagueInfo,
+    league: leagueInfo
+      ? {
+          id: Number(leagueInfo.id),
+          name: leagueInfo.name,
+          logo: leagueInfo.logo,
+        }
+      : undefined,
   };
 }
 

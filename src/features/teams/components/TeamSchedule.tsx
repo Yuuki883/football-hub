@@ -43,7 +43,7 @@ export default function TeamSchedule({
       case 'NS':
         return formatMatchTime(match.utcDate);
       default:
-        return match.statusText || match.status;
+        return String(match.status);
     }
   };
 
@@ -78,7 +78,7 @@ export default function TeamSchedule({
                 <div className="flex items-center space-x-2 flex-1">
                   <div className="relative w-6 h-6">
                     <Image
-                      src={match.homeTeam.crest}
+                      src={match.homeTeam.crest || '/team-placeholder.png'}
                       alt={match.homeTeam.name}
                       fill
                       sizes="24px"
@@ -129,7 +129,7 @@ export default function TeamSchedule({
                   </span>
                   <div className="relative w-6 h-6">
                     <Image
-                      src={match.awayTeam.crest}
+                      src={match.awayTeam.crest || '/team-placeholder.png'}
                       alt={match.awayTeam.name}
                       fill
                       sizes="24px"

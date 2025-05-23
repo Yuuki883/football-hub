@@ -1,8 +1,9 @@
 // src/components/matches/MatchList.tsx
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatMatchDate } from '../utils/match-utils';
-import { MatchDisplay } from '../types/match.types';
+import { MatchDisplay } from '../types';
 import { groupMatchesByDate, isMatchStarted } from '../utils/match-utils';
 import { formatMatchTime } from '@/utils/date-formatter';
 

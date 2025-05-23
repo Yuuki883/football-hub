@@ -8,7 +8,7 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fixture } from '../types/match.types';
+import { Fixture } from '../types';
 import { getStatusText, getStatusClass, formatMatchDate } from '../utils/match-utils';
 
 interface MatchHeaderProps {

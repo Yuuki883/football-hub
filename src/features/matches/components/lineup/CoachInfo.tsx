@@ -1,8 +1,9 @@
 'use client';
 
+import React from 'react';
 import Image from 'next/image';
 import { memo } from 'react';
-import { Lineup } from '../../types/match.types';
+import { Lineup } from '../../types';
 
 /**
  * コーチ情報表示コンポーネント

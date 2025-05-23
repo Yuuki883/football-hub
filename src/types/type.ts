@@ -6,7 +6,7 @@
 
 // 基本的なチーム情報
 export interface Team {
-  id: number;
+  id: number | string;
   name: string;
   logo: string;
   shortName?: string;
@@ -102,32 +102,53 @@ export interface Score {
 
 // 試合関連の型定義
 export interface Competition {
-  id: number;
+  id: number | string;
   name: string;
   code: string;
   type: string;
   emblem: string;
 }
 
-export interface Match {
-  id: number;
-  utcDate: string;
+// 基本的な試合ステータス（新規追加）
+export interface MatchStatus {
   status: string;
-  matchday: number;
-  stage: string;
-  group: string | null;
-  lastUpdated: string;
+  statusText?: string;
+  elapsed?: number;
+  finished?: boolean;
+  started?: boolean;
+}
+
+// 基本的な会場情報（新規追加）
+export interface Venue {
+  id?: number;
+  name: string;
+  city: string;
+  capacity?: number;
+  surface?: string;
+  image?: string;
+}
+
+// 基本的な試合情報（既存を拡張）
+export interface Match {
+  id: number | string;
+  utcDate: string;
+  status: MatchStatus | string; // 後方互換性のため union type
   homeTeam: Team;
   awayTeam: Team;
-  score: {
-    winner: string | null;
-    duration: string;
-    fullTime: Score;
-    halfTime: Score;
-    home: number | null;
-    away: number | null;
-  };
+  score: Score;
   competition: Competition;
+  venue?:
+    | {
+        name: string;
+        city: string;
+      }
+    | Venue;
+  round?: string;
+  matchday?: number;
+  // 既存フィールドも保持（後方互換性）
+  stage?: string;
+  group?: string | null;
+  lastUpdated?: string;
   minute?: number;
 }
 

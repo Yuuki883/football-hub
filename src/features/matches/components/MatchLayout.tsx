@@ -2,12 +2,12 @@
 
 /**
  * 試合詳細ページレイアウト
- * ヘッダーとタブナビゲーションを含む
  */
 
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
-import { Fixture } from '../types/match.types';
+import { Fixture } from '../types';
 import { MatchHeader } from './MatchHeader';
 import PageLayout from '@/components/layout/PageLayout';
 import StatsPanel from './StatsPanel';

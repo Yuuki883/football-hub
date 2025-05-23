@@ -82,17 +82,17 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
       );
 
       // まず「Final」というラウンド名を含む試合を検索
-      let finalMatch = sortedMatches.find((match: Match) =>
-        match.matchday?.toLowerCase().includes('final')
+      const finalMatches = sortedMatches.filter((match: Match) =>
+        String(match.matchday)?.toLowerCase().includes('final')
       );
 
       // 見つからない場合は、一番最後の試合を決勝戦とみなす
-      if (!finalMatch && sortedMatches.length > 0) {
-        finalMatch = sortedMatches[0]; // 日付でソートしているので最初の要素が最も新しい（最終戦）
+      if (finalMatches.length === 0 && sortedMatches.length > 0) {
+        finalMatches.push(sortedMatches[0]); // 日付でソートしているので最初の要素が最も新しい（最終戦）
       }
 
-      if (finalMatch) {
-        recentMatches = [finalMatch];
+      if (finalMatches.length > 0) {
+        recentMatches = finalMatches;
       }
     }
   } else {

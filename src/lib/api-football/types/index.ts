@@ -13,6 +13,11 @@ export type {
   Team,
   League,
   Country,
+  Competition,
+  Match,
+  Score,
+  MatchStatus,
+  Venue,
   ApiResponse,
 } from '@/types/type';
 
@@ -22,7 +27,3 @@ export * from './fixture';
 export * from './league';
 export * from './player';
 export * from './standing';
-
-// 推奨インポート例：
-// import { Player, ApiPlayerProfile, FormattedPlayer } from '@/lib/api-football/types';
-// 非推奨：import { ApiPlayerProfile } from '@/lib/api-football/types/player';

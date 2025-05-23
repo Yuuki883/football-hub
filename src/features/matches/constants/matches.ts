@@ -107,3 +107,44 @@ export const EVENT_TEXT_MAP = {
   subst: '選手交代',
   Var: 'VAR判定',
 };
+
+// =============================================================================
+// 試合機能で使用する定数と列挙型（enums.tsから移植）
+// =============================================================================
+
+/**
+ * 試合ステータス定数
+ */
+export const MATCH_STATUS = {
+  SCHEDULED: 'SCHEDULED',
+  LIVE: 'IN_PLAY',
+  PAUSED: 'PAUSED',
+  FINISHED: 'FINISHED',
+  POSTPONED: 'POSTPONED',
+  CANCELLED: 'CANCELLED',
+} as const;
+
+export type MatchStatusType = (typeof MATCH_STATUS)[keyof typeof MATCH_STATUS];
+
+/**
+ * 試合フィルター定数
+ */
+export const MATCH_FILTERS = {
+  ALL: 'all',
+  LIVE: 'live',
+  TODAY: 'today',
+  UPCOMING: 'upcoming',
+  FINISHED: 'finished',
+} as const;
+
+export type MatchFilterType = (typeof MATCH_FILTERS)[keyof typeof MATCH_FILTERS];
+
+/**
+ * 既存のMatchStatus定数（後方互換性のため保持）
+ */
+export const MatchStatus = {
+  SCHEDULED: 'SCHEDULED',
+  LIVE: 'IN_PLAY',
+  PAUSED: 'PAUSED',
+  FINISHED: 'FINISHED',
+} as const;

@@ -7,7 +7,7 @@
 
 import Image from 'next/image';
 import React from 'react';
-import { MatchPlayerPerformance } from '../types/match.types';
+import { MatchPlayerPerformance } from '../types';
 
 export default function PlayerPerformanceModal({
   player,

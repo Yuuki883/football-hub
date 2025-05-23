@@ -3,15 +3,7 @@
  * API-FOOTBALL v3からデータを取得し、キャッシュする
  */
 
-import {
-  ApiResponse,
-  Event,
-  Fixture,
-  Lineup,
-  MatchPlayerEntry,
-  Statistics,
-  TeamPlayers,
-} from '../types/match.types';
+import { Fixture, Statistics, Lineup, Event, TeamPlayers, MatchPlayerEntry } from '../types';
 import { CACHE_TTL } from '@/config/api';
 import { withCache, createCacheKey } from '@/lib/api-football/cache';
 import { fetchFromAPI, createUrl } from '@/lib/api-football/index';

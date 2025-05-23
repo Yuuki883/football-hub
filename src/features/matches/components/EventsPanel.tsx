@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { Fixture, Event, TeamPlayers } from '../types/match.types';
+import { Fixture, Event, TeamPlayers } from '../types';
 import { getEvents, getFixturesPlayers } from '../api/match-service';
 import { Goal, AlertTriangle, ArrowRightLeft, Clock, RefreshCw, Flag } from 'lucide-react';
 import { EVENT_FILTERS, EVENT_TEXT_MAP } from '../constants/matches';
@@ -523,7 +523,7 @@ export default function EventsPanel({ fixture }: EventsPanelProps) {
               <HalftimeIndicator
                 key={`halftime-${index}`}
                 events={events}
-                homeTeamId={fixture.teams.home.id}
+                homeTeamId={Number(fixture.teams.home.id)}
               />
             );
           }
@@ -547,7 +547,7 @@ export default function EventsPanel({ fixture }: EventsPanelProps) {
               <EventItem
                 key={`event-${index}`}
                 event={item}
-                homeTeamId={fixture.teams.home.id}
+                homeTeamId={Number(fixture.teams.home.id)}
                 playerPhotos={playerPhotosMap}
               />
             );

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { memo } from 'react';
-import { MatchPlayerEntry, Event, MatchPlayerStatistics } from '../../types/match.types';
+import { MatchPlayerEntry, Event, MatchPlayerStatistics } from '../../types';
 
 /**
  * レーティングに応じた背景色を取得する関数

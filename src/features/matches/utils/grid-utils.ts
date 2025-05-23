@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { MatchPlayerEntry } from '../types/match.types';
+import { MatchPlayerEntry } from '../types/lineup';
 
 /**
  * gridデータから選手の位置スタイルを計算する関数
