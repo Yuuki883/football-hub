@@ -12,7 +12,6 @@ import PlayerProfileSection from '@/features/players/components/PlayerProfileSec
 import PlayerStatsSection from '@/features/players/components/PlayerStatsSection';
 import PlayerTeamHistory from '@/features/players/components/PlayerTeamHistory';
 import PlayerTransferHistory from '@/features/players/components/PlayerTransferHistory';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import PageLayout from '@/components/layout/PageLayout';
 

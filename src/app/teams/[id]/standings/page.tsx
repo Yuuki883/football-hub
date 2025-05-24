@@ -2,8 +2,9 @@ import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getTeamById } from '@/features/teams/api/team-info';
-import { getTeamStandings } from '@/features/teams/api/team-standings';
+import { getTeamStandings, getLeagueSlugById } from '@/features/teams/api/team-standings';
 import StandingsTable from '@/features/leagues/components/tables/StandingsTable';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
@@ -81,6 +82,9 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
       );
     }
 
+    // リーグスラッグを取得
+    const leagueSlug = leagueId ? getLeagueSlugById(leagueId) : null;
+
     return (
       <PageLayout>
         <div className="mb-6">
@@ -105,7 +109,16 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
                   />
                 </div>
               )}
-              <h1 className="text-xl font-bold">{teamInLeagueData?.leagueName || ''}</h1>
+              {leagueSlug ? (
+                <Link
+                  href={`/leagues/${leagueSlug}`}
+                  className="text-xl font-bold hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  {teamInLeagueData?.leagueName || ''}
+                </Link>
+              ) : (
+                <h1 className="text-xl font-bold">{teamInLeagueData?.leagueName || ''}</h1>
+              )}
             </div>
             <StandingsTable standings={standings} season={season} highlightTeamId={id} />
           </Suspense>

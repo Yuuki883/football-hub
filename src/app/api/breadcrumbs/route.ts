@@ -6,12 +6,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTeamById } from '@/features/teams/api/team-info';
 import { getPlayerDetails } from '@/features/players/api/player-details';
+import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 import { DEFAULT_SEASON } from '@/config/api';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type'); // 'team' | 'player'
+    const type = searchParams.get('type'); // 'team' | 'player' | 'league'
     const id = searchParams.get('id');
 
     if (!type || !id) {
@@ -36,6 +37,15 @@ export async function GET(request: NextRequest) {
           name = playerData?.name || null;
         } catch (error) {
           console.error(`選手名取得エラー (ID: ${id}):`, error);
+        }
+        break;
+
+      case 'league':
+        try {
+          const leagueData = await getLeagueBySlug(id);
+          name = leagueData?.league.name || null;
+        } catch (error) {
+          console.error(`リーグ名取得エラー (slug: ${id}):`, error);
         }
         break;
 
