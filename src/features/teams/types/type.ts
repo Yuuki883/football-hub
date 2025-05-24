@@ -1,7 +1,7 @@
 /**
  * チーム機能の型定義
  *
- * チーム関連の機能固有の型定義を提供します。
+ * チーム関連の機能固有の型定義を提供
  */
 
 import { FormattedStandingGroup } from '@/lib/api-football/types/type-exports';

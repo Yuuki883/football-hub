@@ -3,7 +3,7 @@
  *
  * 指定されたチーム、リーグ、シーズンの統計データを取得する
  */
-import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/total-exports';
 import { TeamStats } from '../types/type';
 
 /**

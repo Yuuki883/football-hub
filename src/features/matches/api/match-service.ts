@@ -13,7 +13,7 @@ import {
 } from '../types';
 import { CACHE_TTL } from '@/config/api';
 import { withCache, createCacheKey } from '@/lib/api-football/client/cache';
-import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/total-exports';
 
 /**
  * 試合基本情報を取得する

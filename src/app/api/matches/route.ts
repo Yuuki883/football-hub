@@ -6,7 +6,6 @@ import {
 } from '@/features/leagues/api/league-fixtures';
 import { getTeamFixtures } from '@/features/teams/api/team-fixtures';
 
-import { format, parseISO, isBefore, isAfter, isToday } from 'date-fns';
 import { DEFAULT_SEASON } from '@/config/api';
 
 // APIルートが動的であることを明示

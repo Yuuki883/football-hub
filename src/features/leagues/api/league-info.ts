@@ -5,7 +5,7 @@
  * lib/api-footballの共通機能を使用
  */
 
-import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/total-exports';
 import { withCache, createCacheKey } from '@/lib/api-football/client/cache';
 import { LEAGUE_ID_MAPPING, LEAGUE_SLUG_MAPPING, CACHE_TTL } from '@/config/api';
 import { ApiFootballLeagueData } from '@/lib/api-football/types/league';

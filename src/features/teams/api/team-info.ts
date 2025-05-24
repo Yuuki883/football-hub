@@ -5,7 +5,7 @@
  * lib/api-footballの共通機能を使用。
  */
 
-import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/total-exports';
 import { withCache, createCacheKey } from '@/lib/api-football/client/cache';
 import { CACHE_TTL } from '@/config/api';
 import { TeamInfo } from '../types/type';

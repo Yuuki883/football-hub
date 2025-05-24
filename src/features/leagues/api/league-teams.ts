@@ -10,7 +10,7 @@ import {
   getLeagueTeams as getTeamsFromAPI,
   getLeagueTeamsBySlug as getTeamsBySlugFromAPI,
   FormattedTeam,
-} from '@/lib/api-football/api-football';
+} from '@/lib/api-football/total-exports';
 import { getLeagueBySlug } from './league-info';
 
 // 型定義をエクスポート

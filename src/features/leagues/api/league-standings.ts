@@ -6,8 +6,8 @@
  */
 
 import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
-import { getStandings, getStandingsBySlug } from '@/lib/api-football/api-football';
-import type { FormattedStandingGroup } from '@/lib/api-football/api-football';
+import { getStandings, getStandingsBySlug } from '@/lib/api-football/total-exports';
+import type { FormattedStandingGroup } from '@/lib/api-football/total-exports';
 
 /**
  * リーグの順位表を取得

@@ -4,7 +4,7 @@ import {
   ApiFootballTeamStanding,
 } from '@/lib/api-football/types/type-exports';
 import { withCache } from '@/lib/api-football/client/cache';
-import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/total-exports';
 import { getTeamDomesticLeague } from './team-leagues';
 import { TeamStandingInfo, TeamStandingsResult } from '../types/type';
 import { formatStanding } from '@/lib/api-football/utils/data-formatters';
