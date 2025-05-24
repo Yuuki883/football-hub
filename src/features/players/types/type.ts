@@ -10,7 +10,7 @@ import {
   ApiPlayerStatistics,
   ApiTeamHistoryEntry,
   ApiTransferEntry,
-} from '@/lib/api-football/types';
+} from '@/lib/api-football/types/type-exports';
 
 /**
  * 選手詳細ページ用の拡張情報
