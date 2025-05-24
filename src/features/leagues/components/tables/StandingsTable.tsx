@@ -4,7 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 
-import type { FormattedStandingGroup, FormattedStanding } from '@/lib/api-football/types';
+import type {
+  FormattedStandingGroup,
+  FormattedStanding,
+} from '@/lib/api-football/types/type-exports';
 import { getPositionInfo, getLegendItems } from '@/features/leagues/utils/standing';
 import { UEFA_LEAGUE_SLUGS } from '@/features/leagues/constants/standings';
 import { Badge } from '@/components/common/Badge';

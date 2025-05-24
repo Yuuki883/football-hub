@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Match } from '@/lib/api-football/types';
+import { Match } from '@/lib/api-football/types/type-exports';
 import { getStatusText } from '@/features/matches/utils/match-utils';
 
 interface MatchesListProps {

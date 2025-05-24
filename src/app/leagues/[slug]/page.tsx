@@ -9,7 +9,7 @@ import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
-import { Match } from '@/lib/api-football/types';
+import { Match } from '@/lib/api-football/types/type-exports';
 
 interface LeaguePageProps {
   params: {

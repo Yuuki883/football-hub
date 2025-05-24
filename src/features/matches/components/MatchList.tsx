@@ -2,10 +2,9 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatMatchDate } from '../utils/match-utils';
 import { MatchDisplay } from '../types';
 import { groupMatchesByDate, isMatchStarted } from '../utils/match-utils';
-import { formatMatchTime } from '@/utils/date-formatter';
+import { formatMatchDate, formatMatchTime } from '@/lib/api-football/utils/data-formatters';
 
 type MatchListProps = {
   matches: MatchDisplay[];

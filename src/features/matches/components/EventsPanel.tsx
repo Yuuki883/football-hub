@@ -5,9 +5,9 @@
 
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { Fixture, Event, TeamPlayers } from '../types';
+import { Fixture, Event, MatchTeamPlayers } from '../types';
 import { getEvents, getFixturesPlayers } from '../api/match-service';
 import { Goal, AlertTriangle, ArrowRightLeft, Clock, RefreshCw, Flag } from 'lucide-react';
 import { EVENT_FILTERS, EVENT_TEXT_MAP } from '../constants/matches';
@@ -354,7 +354,7 @@ type CustomEvent =
  */
 export default function EventsPanel({ fixture }: EventsPanelProps) {
   const [events, setEvents] = useState<Event[]>([]);
-  const [playerData, setPlayerData] = useState<TeamPlayers[]>([]);
+  const [playerData, setPlayerData] = useState<MatchTeamPlayers[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<string>('all');

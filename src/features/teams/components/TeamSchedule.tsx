@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import { Match } from '@/lib/api-football/fixtures';
+import { Match } from '@/lib/api-football/utils/data-formatters';
 
 interface TeamScheduleProps {
   pastFixtures: Match[];

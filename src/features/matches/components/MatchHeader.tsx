@@ -9,7 +9,8 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fixture } from '../types';
-import { getStatusText, getStatusClass, formatMatchDate } from '../utils/match-utils';
+import { getStatusText, getStatusClass } from '../utils/match-utils';
+import { formatMatchDate } from '@/lib/api-football/utils/data-formatters';
 
 interface MatchHeaderProps {
   fixture: Fixture;

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MatchDisplay } from '../types';
 import { isMatchStarted } from '../utils/match-utils';
-import { formatMatchTime } from '@/utils/date-formatter';
+import { formatMatchTime } from '@/lib/api-football/utils/data-formatters';
 
 interface MatchItemProps {
   match: MatchDisplay;
