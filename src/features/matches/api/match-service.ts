@@ -3,10 +3,17 @@
  * API-FOOTBALL v3からデータを取得し、キャッシュする
  */
 
-import { Fixture, Statistics, Lineup, Event, TeamPlayers, MatchPlayerEntry } from '../types';
+import {
+  Fixture,
+  MatchTeamStatistics,
+  Lineup,
+  Event,
+  MatchTeamPlayers,
+  MatchPlayerEntry,
+} from '../types';
 import { CACHE_TTL } from '@/config/api';
-import { withCache, createCacheKey } from '@/lib/api-football/cache';
-import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
+import { withCache, createCacheKey } from '@/lib/api-football/client/cache';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
 
 /**
  * 試合基本情報を取得する
@@ -117,7 +124,7 @@ export async function getFixture(id: string): Promise<Fixture> {
  * @param id - 試合ID
  * @returns 試合統計情報
  */
-export async function getStatistics(id: string): Promise<Statistics[]> {
+export async function getStatistics(id: string): Promise<MatchTeamStatistics[]> {
   // キャッシュキーを作成
   const cacheKey = createCacheKey('fixture-stats', { id });
   const cacheTTL = CACHE_TTL.MEDIUM;
@@ -215,7 +222,7 @@ export async function getEvents(id: string): Promise<Event[]> {
  * @param id - 試合ID
  * @returns チームごとの選手パフォーマンスデータ
  */
-export async function getFixturesPlayers(id: string): Promise<TeamPlayers[]> {
+export async function getFixturesPlayers(id: string): Promise<MatchTeamPlayers[]> {
   // キャッシュキーを作成
   const cacheKey = createCacheKey('fixture-players', { id });
   const cacheTTL = CACHE_TTL.MEDIUM;

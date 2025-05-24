@@ -5,7 +5,7 @@
  */
 import { ApiPlayerStatistics, PlayerDetailInfo, PlayerDetailStats } from '../types/type';
 import { Team } from '@/types/type';
-import { formatRating } from '../utils/format-utils';
+import { formatRating } from '@/lib/api-football/utils/data-formatters';
 
 /**
  * APIから取得した統計データから有効なエントリを見つける

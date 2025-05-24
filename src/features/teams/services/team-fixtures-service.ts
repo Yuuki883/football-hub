@@ -6,7 +6,7 @@
 
 import { getTeamFixtures as apiGetTeamFixtures } from '../api/team-fixtures';
 import type { TeamFixturesParams } from '../types/type';
-import type { Match } from '@/lib/api-football/types';
+import type { Match } from '@/lib/api-football/types/type-exports';
 
 /**
  * チームの試合データを取得する
