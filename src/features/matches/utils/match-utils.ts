@@ -3,7 +3,7 @@
  */
 
 import { MatchDisplay, MatchStatusType, MATCH_STATUS } from '../types';
-import { formatMatchDate as formatDateUtil } from '@/utils/date-formatter';
+import { formatMatchDate as formatDateUtil } from '@/lib/api-football/utils/data-formatters';
 
 /**
  * 試合ステータスを表示用テキストに変換
@@ -44,23 +44,6 @@ export function getStatusClass(status: string): string {
 
   return statusClasses[status] || 'bg-gray-600';
 }
-
-/**
- * 日付を表示用フォーマットに変換（エラーハンドリング付き）
- * @param dateString - 日付文字列
- * @returns フォーマット済み日付
- */
-export function formatMatchDate(dateString: string): string {
-  try {
-    // 共通ユーティリティの日付フォーマット関数を使用
-    return formatDateUtil(dateString, 'display');
-  } catch (error) {
-    console.error('日付フォーマットエラー:', error);
-    // エラー時はそのまま日付文字列を返す
-    return dateString || '日付不明';
-  }
-}
-
 /**
  * 試合がすでに開始している（試合中または終了）かどうかを判定
  * @param status - 試合ステータス
@@ -90,7 +73,7 @@ export function getScoreDisplayClass(status: MatchStatusType | string): string {
  */
 export function groupMatchesByDate(matches: MatchDisplay[]): Record<string, MatchDisplay[]> {
   return matches.reduce((acc: Record<string, MatchDisplay[]>, match) => {
-    const dateKey = formatDateUtil(match.utcDate, 'group');
+    const dateKey = formatDateUtil(match.utcDate, { type: 'group' });
     if (!acc[dateKey]) {
       acc[dateKey] = [];
     }

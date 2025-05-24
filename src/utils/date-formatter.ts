@@ -1,3 +1,9 @@
+/**
+ * 統合された日付フォーマットユーティリティ
+ *
+ * アプリケーション全体で一貫した日付フォーマット機能
+ */
+
 import { format, isToday, isTomorrow, isYesterday, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { ja } from 'date-fns/locale';
@@ -28,12 +34,33 @@ function toJapanTime(dateString?: string | null): Date {
 }
 
 /**
- * 試合日時をフォーマットする
+ * 日付フォーマットオプション
+ */
+export interface DateFormatOptions {
+  locale?: string;
+  includeYear?: boolean;
+  includeWeekday?: boolean;
+  type?: 'display' | 'group';
+}
+
+/**
+ * 統合された試合日時フォーマット関数
+ *
  * @param dateString - ISO形式の日付文字列
- * @param type - 表示タイプ（display: 表示用, group: グループ化用）
+ * @param options - フォーマットオプション
  * @returns フォーマットされた日付文字列
  */
-export function formatMatchDate(dateString?: string | null, type: 'display' | 'group' = 'display') {
+export function formatMatchDate(
+  dateString?: string | null,
+  options: DateFormatOptions = {}
+): string {
+  const {
+    locale = 'ja-JP',
+    includeYear = false,
+    includeWeekday = true,
+    type = 'display',
+  } = options;
+
   try {
     // 日付文字列がない場合
     if (!dateString) {
@@ -48,17 +75,37 @@ export function formatMatchDate(dateString?: string | null, type: 'display' | 'g
       return format(date, 'yyyy-MM-dd');
     }
 
+    // 相対日付判定
     if (isToday(date)) {
       return '今日';
     } else if (isTomorrow(date)) {
       return '明日';
     } else if (isYesterday(date)) {
       return '昨日';
-    } else {
-      return format(date, 'M月d日(E)', { locale: ja });
     }
+
+    // 通常の日付フォーマット
+    const formatOptions: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: 'numeric',
+    };
+
+    if (includeYear) formatOptions.year = 'numeric';
+    if (includeWeekday) formatOptions.weekday = 'short';
+
+    // 日本語ロケールの場合はdate-fnsを使用
+    if (locale === 'ja-JP' || locale === 'ja') {
+      const formatString = [includeYear ? 'yyyy年' : '', 'M月d日', includeWeekday ? '(E)' : '']
+        .filter(Boolean)
+        .join('');
+
+      return format(date, formatString, { locale: ja });
+    }
+
+    // その他のロケールの場合はIntl.DateTimeFormatを使用
+    return date.toLocaleDateString(locale, formatOptions);
   } catch (error) {
-    console.error('日付フォーマットエラー:', error, { dateString });
+    console.error('日付フォーマットエラー:', error, { dateString, options });
     return type === 'group' ? '未定' : '日時未定';
   }
 }
@@ -68,7 +115,7 @@ export function formatMatchDate(dateString?: string | null, type: 'display' | 'g
  * @param dateString - ISO形式の日付文字列
  * @returns フォーマットされた時間文字列
  */
-export function formatMatchTime(dateString?: string | null) {
+export function formatMatchTime(dateString?: string | null): string {
   try {
     if (!dateString) return '--:--';
 
@@ -81,7 +128,11 @@ export function formatMatchTime(dateString?: string | null) {
   }
 }
 
-// シンプルな日付フォーマット関数（yyyy/MM/dd形式）
+/**
+ * シンプルな日付フォーマット関数（yyyy/MM/dd形式）
+ * @param dateString - 日付文字列
+ * @returns フォーマット済み日付
+ */
 export function formatDate(dateString?: string | null): string {
   try {
     if (!dateString) return '日付なし';
@@ -95,4 +146,5 @@ export function formatDate(dateString?: string | null): string {
   }
 }
 
+// エイリアス関数
 export const formatTime = formatMatchTime;
