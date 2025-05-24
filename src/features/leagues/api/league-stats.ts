@@ -1,13 +1,13 @@
 /**
- * リーグ選手統計API
+ * リーグ統計API
  *
- * リーグの選手統計（得点王、アシスト王など）を取得する機能を提供
+ * 特定リーグの選手統計データを取得する機能を提供
  * lib/api-footballの共通機能を使用
  */
 
 import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
-import { getTopScorers, getTopAssists } from '@/lib/api-football/players-api';
-import type { FormattedPlayerStats } from '@/lib/api-football/types';
+import { getTopScorers, getTopAssists } from '@/lib/api-football/api-football';
+import type { FormattedPlayerStats } from '@/lib/api-football/api-football';
 
 /**
  * リーグの得点ランキングを取得

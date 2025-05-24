@@ -10,14 +10,11 @@ import {
   getLeagueTeams as getTeamsFromAPI,
   getLeagueTeamsBySlug as getTeamsBySlugFromAPI,
   FormattedTeam,
-} from '@/lib/api-football/teams-api';
+} from '@/lib/api-football/api-football';
 import { getLeagueBySlug } from './league-info';
 
-// 型定義をエクスポート（deprecated）
-/**
- * @deprecated TeamCardInfo または UiTeamInfo を使用してください
- */
-export type { FormattedTeam } from '@/lib/api-football/teams-api';
+// 型定義をエクスポート
+export type { FormattedTeam };
 
 /**
  * リーグのチーム一覧を取得
@@ -25,7 +22,6 @@ export type { FormattedTeam } from '@/lib/api-football/teams-api';
  * @param leagueIdOrSlug リーグID または スラグ
  * @param params 取得パラメータ
  * @returns チーム情報の配列
- * @deprecated 新しいチーム型定義への移行を検討してください
  */
 export async function getLeagueTeams(
   leagueIdOrSlug: number | string,
@@ -64,7 +60,6 @@ export async function getLeagueTeams(
  * @param slug リーグスラグ（例: premier-league）
  * @param params 取得パラメータ
  * @returns チーム情報の配列
- * @deprecated 新しいチーム型定義への移行を検討してください
  */
 export async function getLeagueTeamsBySlug(
   slug: string,

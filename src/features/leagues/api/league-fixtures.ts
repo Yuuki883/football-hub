@@ -6,10 +6,10 @@
  */
 
 import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
-import { getFixtures } from '@/lib/api-football/fixtures-api';
-import type { Match } from '@/lib/api-football/fixtures';
+import { getFixtures } from '@/lib/api-football/api/match-data';
+import type { Match } from '@/lib/api-football/utils/data-formatters';
 import { getLeagueBySlug } from './league-info';
-import { withCache, createCacheKey } from '@/lib/api-football/cache';
+import { withCache, createCacheKey } from '@/lib/api-football/client/cache';
 import { CACHE_TTL } from '@/config/api';
 
 /**
@@ -181,79 +181,6 @@ export async function getMatchDatesForLeague(
     console.error(`リーグの試合日程取得中にエラー: ${leagueCode}`, error);
     return [];
   }
-}
-
-/**
- * 特定リーグの試合データを取得（コード指定）
- *
- * 指定されたリーグコードの試合データを取得
- *
- * @param leagueCode リーグコード（PL, PD, BL1, SA, FL1, CLなど）
- * @param season シーズン（指定なしの場合はデフォルトシーズン）
- * @returns 試合データの配列
- */
-export async function getMatchesByLeague(
-  leagueCode: string,
-  season = DEFAULT_SEASON
-): Promise<Match[]> {
-  if (!leagueCode) {
-    throw new Error('リーグコードが指定されていません');
-  }
-
-  // API-FootballのリーグIDに変換
-  const leagueId = LEAGUE_ID_MAPPING[leagueCode];
-  if (!leagueId) {
-    throw new Error(`サポートされていないリーグコードです: ${leagueCode}`);
-  }
-
-  // シーズン全体の日付範囲を設定（1年間）
-  const seasonStartYear = typeof season === 'string' ? parseInt(season) : season;
-  const dateFrom = `${seasonStartYear - 1}-07-01`; // 前年7月から
-  const dateTo = `${seasonStartYear}-06-30`; // 当年6月まで（シーズン1年分）
-
-  // 共通関数を使用してデータを取得（制限なし）
-  return getLeagueFixtures(leagueId, {
-    season,
-    dateFrom,
-    dateTo,
-    forceRefresh: true, // キャッシュを無視して最新データを取得
-  });
-}
-
-/**
- * 特定の日付範囲の試合を取得
- *
- * @param leagueCode リーグコード
- * @param dateFrom 開始日（YYYY-MM-DD形式）
- * @param dateTo 終了日（YYYY-MM-DD形式）
- * @param forceRefresh キャッシュを無視して強制的に更新する場合はtrue
- * @param season シーズン（指定なしの場合はデフォルトシーズン）
- * @returns 試合データの配列
- */
-export async function getMatchesByDateRange(
-  leagueCode: string,
-  dateFrom: string,
-  dateTo: string,
-  forceRefresh: boolean = false,
-  season = DEFAULT_SEASON
-): Promise<Match[]> {
-  if (!leagueCode) {
-    throw new Error('リーグコードが指定されていません');
-  }
-
-  // API-FootballのリーグIDに変換
-  const leagueId = LEAGUE_ID_MAPPING[leagueCode];
-  if (!leagueId) {
-    throw new Error(`リーグコードが存在しません: ${leagueCode}`);
-  }
-
-  // 共通関数を使用してデータを取得
-  return getLeagueFixtures(leagueId, {
-    season,
-    dateFrom,
-    dateTo,
-    forceRefresh,
-  });
 }
 
 /**
