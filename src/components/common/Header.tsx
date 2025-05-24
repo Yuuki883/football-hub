@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -10,23 +10,31 @@ import AuthButtons from '@/features/auth/components/AuthButtons';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
 
   // パス変更時にメニューを閉じる
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  // スクロール時にメニューを閉じる
+  // メニュー外クリック時に閉じる
   useEffect(() => {
-    const handleScroll = () => {
-      if (isMenuOpen) {
+    if (!isMenuOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // 次のイベントループで追加（現在のクリックイベントの処理後）
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 0);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timeoutId);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [isMenuOpen]);
 
@@ -44,8 +52,16 @@ export default function Header() {
     return pathname.startsWith(path);
   };
 
+  // メニューの開閉
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <header className="bg-gradient-to-r from-blue-900 to-blue-700 text-white shadow-lg sticky top-0 z-50">
+    <header
+      ref={headerRef}
+      className="bg-gradient-to-r from-blue-900 to-blue-700 text-white shadow-lg sticky top-0 z-[100]"
+    >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* ロゴ */}
@@ -87,7 +103,7 @@ export default function Header() {
           {/* モバイルメニューボタン */}
           <button
             className="md:hidden flex items-center p-1 rounded-md hover:bg-blue-800 transition-colors cursor-pointer"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            onClick={toggleMenu}
             aria-label="メニューを開く/閉じる"
             aria-expanded={isMenuOpen}
           >
