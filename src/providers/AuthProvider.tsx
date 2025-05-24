@@ -6,7 +6,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Providers } from '@/lib/providers';
+import SessionProviderWrapper from './SessionProvider';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -17,5 +17,5 @@ interface AuthProviderProps {
  * アプリケーション全体に認証状態を提供
  */
 export default function AuthProvider({ children }: AuthProviderProps) {
-  return <Providers>{children}</Providers>;
+  return <SessionProviderWrapper>{children}</SessionProviderWrapper>;
 }
