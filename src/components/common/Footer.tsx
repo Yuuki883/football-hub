@@ -24,7 +24,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* サイト情報 */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-white">FootballHub</h3>
+            <h3 className="text-xl font-bold mb-4 text-white">FootBallHub</h3>
             <p className="mb-3 text-sm">
               欧州5大リーグ、欧州大会、代表戦の最新情報をリアルタイムで提供。
               サッカーファンのための総合ポータルサイト。
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-sm text-center">
-          <p>© {currentYear} FootballHub. All rights reserved.</p>
+          <p>© {currentYear} FootBallHub. All rights reserved.</p>
         </div>
       </div>
     </footer>

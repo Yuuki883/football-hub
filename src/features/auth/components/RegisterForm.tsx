@@ -74,7 +74,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
       <div className="bg-blue-600 p-4">
         <h2 className="text-2xl font-bold text-white text-center">新規ユーザー登録</h2>
       </div>
@@ -82,7 +82,10 @@ export default function RegisterForm() {
       <form onSubmit={handleSubmit} className="p-6 space-y-6">
         {/* 名前入力 */}
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             名前
           </label>
           <input
@@ -95,15 +98,18 @@ export default function RegisterForm() {
             onChange={handleChange}
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 border ${
-              formErrors.name ? 'border-red-500' : 'border-gray-300'
-            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+              formErrors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           />
           {formErrors.name && <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>}
         </div>
 
         {/* メールアドレス入力 */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             メールアドレス
           </label>
           <input
@@ -116,15 +122,18 @@ export default function RegisterForm() {
             onChange={handleChange}
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 border ${
-              formErrors.email ? 'border-red-500' : 'border-gray-300'
-            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+              formErrors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           />
           {formErrors.email && <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>}
         </div>
 
         {/* パスワード入力 */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
             パスワード
           </label>
           <input
@@ -137,18 +146,20 @@ export default function RegisterForm() {
             onChange={handleChange}
             disabled={isLoading}
             className={`mt-1 block w-full px-3 py-2 border ${
-              formErrors.password ? 'border-red-500' : 'border-gray-300'
-            } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+              formErrors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+            } rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
           />
           {formErrors.password && (
             <p className="mt-1 text-sm text-red-600">{formErrors.password}</p>
           )}
-          <p className="mt-1 text-xs text-gray-500">8文字以上の英数字を入力してください</p>
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            8文字以上の英数字を入力してください
+          </p>
         </div>
 
         {/* エラーメッセージ */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-400 rounded-lg p-4">
             <p className="text-sm">{error}</p>
           </div>
         )}
@@ -166,7 +177,7 @@ export default function RegisterForm() {
 
         {/* ログインへのリンク */}
         <div className="text-center mt-4">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             すでにアカウントをお持ちですか？{' '}
             <Link href="/login" className="text-blue-600 hover:text-blue-500">
               ログイン

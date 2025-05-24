@@ -131,7 +131,7 @@ async function fetchOgImage(url: string): Promise<string | undefined> {
     // 記事ページを取得
     const response = await fetch(url, {
       signal: controller.signal,
-      headers: { 'User-Agent': 'Mozilla/5.0 FootballHub/1.0' },
+      headers: { 'User-Agent': 'Mozilla/5.0 FootBallHub/1.0' },
     });
 
     clearTimeout(timeoutId);
