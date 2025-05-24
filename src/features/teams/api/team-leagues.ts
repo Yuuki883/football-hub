@@ -3,8 +3,8 @@
  *
  * チームが所属するリーグを特定する機能を提供
  */
-import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
-import { withCache } from '@/lib/api-football/cache';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
+import { withCache } from '@/lib/api-football/client/cache';
 import { TeamLeagueInfo } from '../types/type';
 
 /**

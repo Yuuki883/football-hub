@@ -3,7 +3,7 @@
  *
  * チームの種別判定（代表チーム、クラブチーム）を行う機能
  */
-import { getCountryNames } from '@/lib/api-football/country';
+import { getCountryNames } from '@/lib/api-football/utils/country';
 
 /**
  * チームが代表チームかどうかを判定する関数

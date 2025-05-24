@@ -2,11 +2,12 @@ import {
   FormattedStandingGroup,
   FormattedStanding,
   ApiFootballTeamStanding,
-} from '@/lib/api-football/types';
-import { withCache } from '@/lib/api-football/cache';
-import { fetchFromAPI, createUrl } from '@/lib/api-football/index';
+} from '@/lib/api-football/types/type-exports';
+import { withCache } from '@/lib/api-football/client/cache';
+import { fetchFromAPI, createUrl } from '@/lib/api-football/api-football';
 import { getTeamDomesticLeague } from './team-leagues';
 import { TeamStandingInfo, TeamStandingsResult } from '../types/type';
+import { formatStanding } from '@/lib/api-football/utils/data-formatters';
 
 /**
  * チームが所属するリーグの順位表を取得
@@ -170,34 +171,4 @@ export async function getTeamStandings(
     3600, // 1時間キャッシュ
     forceRefresh
   );
-}
-
-/**
- * チーム順位データをアプリ内で統一された形式に変換
- *
- * @param standing API-Footballから返されるチーム順位データ
- * @returns FormattedStandingに準拠した変換後のデータ
- */
-function formatStanding(standing: ApiFootballTeamStanding): FormattedStanding {
-  return {
-    position: standing.rank,
-    team: {
-      id: standing.team.id.toString(),
-      name: standing.team.name,
-      shortName: standing.team.name,
-      crest: standing.team.logo,
-    },
-    stats: {
-      played: standing.all.played,
-      won: standing.all.win,
-      draw: standing.all.draw,
-      lost: standing.all.lose,
-      points: standing.points,
-      goalsFor: standing.all.goals.for,
-      goalsAgainst: standing.all.goals.against,
-      goalDifference: standing.goalsDiff,
-    },
-    form: standing.form || undefined,
-    description: standing.description,
-  };
 }

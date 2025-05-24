@@ -2,13 +2,12 @@
  * チーム試合データAPI
  *
  * 特定チームの試合データを取得する機能を提供
- * lib/api-footballの共通機能を使用。
  */
 
-import { getFixtures } from '@/lib/api-football/fixtures-api';
-import type { Match } from '@/lib/api-football/fixtures';
+import { getFixtures } from '@/lib/api-football/api/match-data';
+import type { Match } from '@/lib/api-football/utils/data-formatters';
 import { DEFAULT_SEASON } from '@/config/api';
-import { TeamFixturesParams } from '../types/type';
+import type { TeamFixturesParams } from '../types/type';
 
 /**
  * チームの試合日程を取得する
