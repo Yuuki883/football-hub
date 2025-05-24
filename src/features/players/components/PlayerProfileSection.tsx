@@ -5,7 +5,7 @@
  */
 import Image from 'next/image';
 import { PlayerDetail } from '../types/type';
-import { formatDate } from '@/utils/date-formatter';
+import { formatDate } from '@/lib/api-football/utils/data-formatters';
 
 interface PlayerProfileSectionProps {
   player: PlayerDetail;

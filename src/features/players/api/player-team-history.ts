@@ -8,7 +8,7 @@ import { isNationalTeam } from './team-helper';
 import { classifyTeam } from '../utils/team-utils';
 import { parseSeasons } from '../utils/data-parser';
 import { TransferHistoryEntry } from '../types/type';
-import { ApiTeamHistoryEntry } from '@/lib/api-football/types';
+import { ApiTeamHistoryEntry } from '@/lib/api-football/types/type-exports';
 import { ApiResponse } from '@/types/type';
 
 /**

@@ -5,7 +5,11 @@
  */
 import { TransferHistoryEntry } from '../types/type';
 import { ApiResponse } from '@/types/type';
-import { ApiTransferEntry } from '@/lib/api-football/types';
+import { ApiTransferEntry } from '@/lib/api-football/types/type-exports';
+import { formatTransferType } from '@/lib/api-football/utils/data-formatters';
+
+// 以下の関数はエクスポートを維持
+export { formatTransferType };
 
 /**
  * 選手の移籍履歴を変換
@@ -45,22 +49,4 @@ export function transformTransferHistory(
 
   // 移籍履歴のみを返す
   return clubTransferHistory;
-}
-
-/**
- * 移籍情報の表示名を生成
- *
- * @param transferType - 移籍タイプ（"Free", "Loan", "€8.5M"など）
- * @returns 日本語を含む表示用移籍タイプ
- */
-export function formatTransferType(transferType?: string): string {
-  if (!transferType) return '不明';
-
-  // 一般的な移籍タイプの日本語表示
-  if (transferType.toLowerCase() === 'free') return '無料移籍';
-  if (transferType.toLowerCase() === 'loan') return 'レンタル移籍';
-  if (transferType.toLowerCase() === 'end of loan') return 'レンタル終了';
-
-  // 金額を含む移籍タイプはそのまま表示
-  return transferType;
 }
