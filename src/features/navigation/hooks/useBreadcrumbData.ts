@@ -79,28 +79,37 @@ export function useBreadcrumbData(pathname: string): {
 
         // 数値IDの判定
         const isNumericId = /^\d+$/.test(segment);
+        // リーグスラッグの判定（ハイフン区切りの文字列）
+        const isLeagueSlug = /^[a-z]+(-[a-z]+)*$/.test(segment);
+
+        let entityType: string | null = null;
+        let shouldFetch = false;
 
         if (isNumericId && prevSegment) {
-          let entityType: string | null = null;
-
-          // エンティティタイプを判定
+          // 数値ID系エンティティ
           if (prevSegment === 'teams') {
             entityType = 'team';
+            shouldFetch = true;
           } else if (prevSegment === 'players') {
             entityType = 'player';
+            shouldFetch = true;
           }
+        } else if (isLeagueSlug && prevSegment === 'leagues') {
+          // リーグスラッグ
+          entityType = 'league';
+          shouldFetch = true;
+        }
 
-          if (entityType) {
-            hasAsyncOperations = true;
-            setIsLoading(true);
+        if (shouldFetch && entityType) {
+          hasAsyncOperations = true;
+          setIsLoading(true);
 
-            const name = await fetchEntityName(entityType, segment);
-            if (name) {
-              newOverrides.push({
-                segment,
-                displayName: name,
-              });
-            }
+          const name = await fetchEntityName(entityType, segment);
+          if (name) {
+            newOverrides.push({
+              segment,
+              displayName: name,
+            });
           }
         }
       }

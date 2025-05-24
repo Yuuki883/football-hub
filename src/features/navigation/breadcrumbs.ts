@@ -11,14 +11,6 @@ export const PATH_DISPLAY_MAP: Record<string, string> = {
   teams: 'チーム',
   players: '選手',
   news: 'ニュース',
-  'premier-league': 'プレミアリーグ',
-  'la-liga': 'ラ・リーガ',
-  bundesliga: 'ブンデスリーガ',
-  'serie-a': 'セリエA',
-  'ligue-1': 'リーグ・アン',
-  'champions-league': 'チャンピオンズリーグ',
-  'europa-league': 'ヨーロッパリーグ',
-  'conference-league': 'カンファレンスリーグ',
 };
 
 /**
@@ -28,7 +20,7 @@ export const PATH_DISPLAY_MAP: Record<string, string> = {
  * @param segmentIndex - 現在のセグメントのインデックス
  * @returns 表示名
  */
-export function resolveDynamicSegment(
+export function dynamicSegment(
   segment: string,
   pathSegments: string[],
   segmentIndex: number
@@ -44,16 +36,7 @@ export function resolveDynamicSegment(
     return '試合詳細';
   }
 
-  // チーム詳細ページの場合（将来的な拡張用）
-  if (previousSegment === 'teams' && isNumericId) {
-    return 'チーム詳細';
-  }
-
-  // リーグのスラッグの場合は、既存のマッピングを使用
-  if (previousSegment === 'leagues' && PATH_DISPLAY_MAP[segment]) {
-    return PATH_DISPLAY_MAP[segment];
-  }
-
+  // リーグのスラッグの場合は動的取得（useBreadcrumbDataで処理）
   // 既存のマッピングを確認
   if (PATH_DISPLAY_MAP[segment]) {
     return PATH_DISPLAY_MAP[segment];

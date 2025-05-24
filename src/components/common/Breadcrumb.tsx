@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
-import { PATH_DISPLAY_MAP, resolveDynamicSegment } from '@/features/navigation/breadcrumbs';
+import { PATH_DISPLAY_MAP, dynamicSegment } from '@/features/navigation/breadcrumbs';
 import { useBreadcrumbData } from '@/features/navigation/hooks/useBreadcrumbData';
 
 /**
@@ -85,7 +85,7 @@ export default function SmartBreadcrumb({
       const override = mergedOverrides.find((o) => o.segment === segment);
       const displayName = override
         ? override.displayName
-        : resolveDynamicSegment(segment, segments, index);
+        : dynamicSegment(segment, segments, index);
 
       return {
         name: displayName,
