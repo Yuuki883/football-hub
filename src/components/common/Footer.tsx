@@ -7,8 +7,8 @@ export default function Footer() {
 
   const footerLinks = [
     { name: 'ホーム', path: '/' },
-    { name: 'リーグ', path: '/leagues' },
-    { name: '試合', path: '/matches' },
+    // { name: 'リーグ', path: '/leagues' },
+    // { name: '試合', path: '/matches' },
     { name: 'ニュース', path: '/news' },
   ];
 

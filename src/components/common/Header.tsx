@@ -40,8 +40,8 @@ export default function Header() {
 
   const navItems = [
     { name: 'ホーム', path: '/' },
-    { name: 'リーグ', path: '/leagues' },
-    { name: '試合', path: '/matches' },
+    // { name: 'リーグ', path: '/leagues' },
+    // { name: '試合', path: '/matches' },
     { name: 'ニュース', path: '/news' },
   ];
 
