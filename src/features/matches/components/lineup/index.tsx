@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Fixture, Lineup, Event, TeamPlayers, MatchPlayerPerformance } from '../../types';
+import { Fixture, Lineup, Event, MatchTeamPlayers, MatchPlayerPerformance } from '../../types';
 import { getLineups, getEvents, getFixturesPlayers } from '../../api/match-service';
 import PitchView from './PitchView';
 import CoachInfo from './CoachInfo';
@@ -16,7 +16,7 @@ import { TEAM_COLORS } from '../../constants/matches';
 export default function LineupPanel({ fixture }: { fixture: Fixture }) {
   const [lineups, setLineups] = useState<Lineup[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-  const [teamsPlayers, setTeamsPlayers] = useState<TeamPlayers[]>([]);
+  const [teamsPlayers, setTeamsPlayers] = useState<MatchTeamPlayers[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string>();
   const [selected, setSelected] = useState<MatchPlayerPerformance | null>(null);
