@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { Fixture } from '../types';
 import { MatchHeader } from './MatchHeader';
-import PageLayout from '@/components/layout/PageLayout';
+import SmartBreadcrumb from '@/components/common/Breadcrumb';
 import StatsPanel from './StatsPanel';
 import LineupPanel from './lineup';
 import EventsPanel from './EventsPanel';
@@ -66,7 +66,8 @@ export function MatchLayout({ fixture, initialTab }: MatchLayoutProps) {
   };
 
   return (
-    <PageLayout>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SmartBreadcrumb showLoadingState />
       <div className="container mx-auto my-8 px-4">
         <MatchHeader fixture={fixture} />
 
@@ -91,6 +92,6 @@ export function MatchLayout({ fixture, initialTab }: MatchLayoutProps) {
         {/* タブコンテンツ */}
         <div>{renderTabContent()}</div>
       </div>
-    </PageLayout>
+    </div>
   );
 }

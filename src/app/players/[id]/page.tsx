@@ -50,53 +50,48 @@ export async function generateMetadata({ params }: PlayerDetailPageProps): Promi
   }
 }
 
-// 選手データを取得して表示するコンポーネント
-async function PlayerContent({ playerId }: { playerId: string }) {
+// 選手データを表示するコンポーネント（データは既に取得済み）
+function PlayerContent({ playerData }: { playerData: any }) {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      {/* 選手プロフィール（左カラム） */}
+      <div className="lg:col-span-4">
+        <PlayerProfileSection player={playerData} />
+      </div>
+
+      {/* 選手成績と移籍履歴（右カラム） */}
+      <div className="lg:col-span-8">
+        <PlayerStatsSection stats={playerData.stats} />
+        <PlayerTransferHistory transfers={playerData.transferHistory} />
+        <PlayerTeamHistory transfers={playerData.teamHistory} />
+      </div>
+    </div>
+  );
+}
+
+// メインページコンポーネント
+export default async function PlayerDetailPage({ params }: PlayerDetailPageProps) {
+  const { id } = params;
+
   try {
-    const playerData = await getPlayerDetails(playerId, DEFAULT_SEASON);
+    // 選手データを取得
+    const playerData = await getPlayerDetails(id, DEFAULT_SEASON);
 
     if (!playerData) {
       notFound();
     }
 
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* 選手プロフィール（左カラム） */}
-        <div className="lg:col-span-4">
-          <PlayerProfileSection player={playerData} />
-        </div>
-
-        {/* 選手成績と移籍履歴（右カラム） */}
-        <div className="lg:col-span-8">
-          <PlayerStatsSection stats={playerData.stats} />
-          <PlayerTransferHistory transfers={playerData.transferHistory} />
-          <PlayerTeamHistory transfers={playerData.teamHistory} />
-        </div>
-      </div>
+      <PageLayout>
+        <PlayerContent playerData={playerData} />
+      </PageLayout>
     );
   } catch (error) {
     console.error('選手データ取得エラー:', error);
-    return <ErrorMessage message="選手情報の取得中にエラーが発生しました。" />;
+    return (
+      <PageLayout>
+        <ErrorMessage message="選手情報の取得中にエラーが発生しました。" />
+      </PageLayout>
+    );
   }
-}
-
-// メインページコンポーネント
-export default function PlayerDetailPage({ params }: PlayerDetailPageProps) {
-  const { id } = params;
-
-  return (
-    <PageLayout>
-      <Suspense
-        fallback={
-          <LoadingSpinner
-            size="large"
-            message="選手情報を読み込んでいます..."
-            className="min-h-[60vh]"
-          />
-        }
-      >
-        <PlayerContent playerId={id} />
-      </Suspense>
-    </PageLayout>
-  );
 }

@@ -66,12 +66,6 @@ export default async function TeamPage({ params, searchParams }: TeamPageProps) 
     limit: 5,
   });
 
-  // パンくずリスト用の設定
-  const breadcrumbData = {
-    teamId: id,
-    teamName: teamData.team.name,
-  };
-
   return (
     <PageLayout>
       <div className="mb-6">

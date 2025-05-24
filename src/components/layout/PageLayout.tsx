@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import Breadcrumb from '@/components/common/Breadcrumb';
+import SmartBreadcrumb from '@/components/common/Breadcrumb';
 
 type PageLayoutProps = {
   children: ReactNode;
@@ -16,7 +16,7 @@ export default function PageLayout({
 }: PageLayoutProps) {
   return (
     <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ${className}`}>
-      {showBreadcrumb && <Breadcrumb />}
+      {showBreadcrumb && <SmartBreadcrumb showLoadingState />}
       {children}
     </div>
   );
