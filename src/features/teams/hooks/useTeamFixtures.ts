@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Match } from '@/lib/api-football/types';
+import { Match } from '@/lib/api-football/types/type-exports';
 import { getTeamFixtures } from '../services/team-fixtures-service';
 
 interface UseTeamFixturesOptions {
