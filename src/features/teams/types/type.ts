@@ -1,14 +1,10 @@
 /**
  * チーム機能の型定義
  *
- * このファイルは既存コードとの互換性のために残されています。
- * 新しいコードでは @/types/type からの型インポートを推奨します。
- *
- * @deprecated 共通ドメイン型を直接使用してください
+ * チーム関連の機能固有の型定義を提供します。
  */
 
-import { Team } from '@/types/type';
-import { FormattedStandingGroup } from '@/lib/api-football/types';
+import { FormattedStandingGroup } from '@/lib/api-football/types/type-exports';
 import { PlayerProfile } from '@/types/type';
 
 // ホーム/アウェイ統計値
@@ -128,19 +124,6 @@ export interface TeamStandingsResult {
     lastUpdated: string;
     season: number;
   };
-}
-
-// 基本的な型エイリアス（後方互換性のため）
-/**
- * @deprecated Team型を直接使用してください
- */
-export interface TeamDetails extends Team {
-  founded?: number;
-  venue?: string;
-  country?: string;
-  address?: string;
-  website?: string;
-  description?: string;
 }
 
 /**

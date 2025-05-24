@@ -104,32 +104,3 @@ export interface MatchTeamPlayers {
   };
   players: MatchPlayerPerformance[];
 }
-
-/**
- * 既存のStatistics型（後方互換性のため保持）
- * @deprecated MatchTeamStatistics を使用してください
- */
-export interface Statistics {
-  team: {
-    id: number;
-    name: string;
-  };
-  statistics: Array<{
-    type: string;
-    value: number | string | null;
-  }>;
-}
-
-/**
- * 既存のTeamPlayers型（後方互換性のため保持）
- * @deprecated MatchTeamPlayers を使用してください
- */
-export interface TeamPlayers {
-  team: {
-    id: number;
-    name: string;
-    logo: string;
-    update: string;
-  };
-  players: MatchPlayerPerformance[];
-}
