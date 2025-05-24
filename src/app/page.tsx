@@ -5,7 +5,7 @@ import AllMatchesSection from '@/features/matches/components/AllMatchesSection';
 import LeagueNavigation from '@/features/leagues/components/common/HomeLeagueNavigation';
 
 export const metadata: Metadata = {
-  title: 'FootballHub - サッカー試合&ニュースポータル',
+  title: 'FootBallHub - サッカー試合&ニュースポータル',
   description: '欧州5大リーグ、欧州大会、代表戦の最新情報をリアルタイムで提供',
 };
 

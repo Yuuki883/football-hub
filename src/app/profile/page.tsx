@@ -12,7 +12,7 @@ import FavoriteTeams from '@/features/profile/components/FavoriteTeams';
 import FavoriteLeagues from '@/features/profile/components/FavoriteLeagues';
 
 export const metadata: Metadata = {
-  title: 'プロフィール | FootballHub',
+  title: 'プロフィール | FootBallHub',
   description: 'あなたのプロフィール情報とお気に入りを管理します',
 };
 
