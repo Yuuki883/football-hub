@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { memo } from 'react';
 import { Lineup } from '../../types';
+import { isApiFootballImage } from '@/utils/image-helpers';
 
 /**
  * コーチ情報表示コンポーネント
@@ -19,7 +20,13 @@ const CoachInfo = memo(({ lineup, side = 'home' }: { lineup: Lineup; side?: 'hom
       {/* コーチの写真 */}
       <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-gray-300">
         {coachPhoto ? (
-          <Image src={coachPhoto} alt={coachName} fill className="object-cover" unoptimized />
+          <Image
+            src={coachPhoto}
+            alt={coachName}
+            fill
+            className="object-cover"
+            unoptimized={isApiFootballImage(coachPhoto)}
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-500">
             <svg

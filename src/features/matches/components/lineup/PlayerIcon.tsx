@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { memo } from 'react';
 import { MatchPlayerEntry, Event, MatchPlayerStatistics } from '../../types';
+import { isApiFootballImage } from '@/utils/image-helpers';
 
 /**
  * レーティングに応じた背景色を取得する関数
@@ -142,7 +143,7 @@ const PlayerIcon = memo(
                 alt={player.name}
                 fill
                 className="object-cover w-full h-full"
-                unoptimized
+                unoptimized={isApiFootballImage(photo)}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center font-bold bg-gray-100">

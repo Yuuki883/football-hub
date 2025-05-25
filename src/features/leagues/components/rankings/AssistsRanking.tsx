@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FormattedPlayerStats } from '@/lib/api-football/types/player';
+import { isApiFootballImage } from '@/utils/image-helpers';
 
 interface AssistsRankingProps {
   players: FormattedPlayerStats[] | null;
@@ -48,6 +49,7 @@ const AssistsRanking: React.FC<AssistsRankingProps> = ({ players, limit = 10 }) 
                       fill
                       sizes="48px"
                       className="object-cover"
+                      unoptimized={player.photo ? isApiFootballImage(player.photo) : false}
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = '/images/player-placeholder.png';
@@ -72,6 +74,9 @@ const AssistsRanking: React.FC<AssistsRankingProps> = ({ players, limit = 10 }) 
                           fill
                           sizes="16px"
                           className="object-contain"
+                          unoptimized={
+                            player.team.logo ? isApiFootballImage(player.team.logo) : false
+                          }
                         />
                       </div>
                       <span className="text-xs text-gray-500">{player.team.name}</span>

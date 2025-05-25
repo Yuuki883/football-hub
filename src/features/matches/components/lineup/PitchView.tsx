@@ -6,6 +6,7 @@ import { Lineup, Event, MatchPlayerPerformance, MatchPlayerEntry } from '../../t
 import { sortByGrid, posStyle } from '../../utils/grid-utils';
 import PlayerIcon from './PlayerIcon';
 import { TEAM_COLORS } from '../../constants/matches';
+import { isApiFootballImage } from '@/utils/image-helpers';
 
 /**
  * ピッチ表示コンポーネントのProps
@@ -141,7 +142,7 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
             alt={homeLineup.team.name}
             fill
             className="object-contain"
-            unoptimized
+            unoptimized={isApiFootballImage(homeLineup.team.logo)}
           />
         </div>
         <div className="flex flex-col">
@@ -161,7 +162,7 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
             alt={awayLineup.team.name}
             fill
             className="object-contain"
-            unoptimized
+            unoptimized={isApiFootballImage(awayLineup.team.logo)}
           />
         </div>
       </div>
