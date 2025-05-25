@@ -1,142 +1,140 @@
-# football-hub
+# Football Hub
 
-サッカーのヨーロッパ 5 大リーグ、国際試合、選手個人のデータを取得して情報を表示するウェブアプリケーションです。お気に入りのチーム、選手に関する情報、ニュースを確認できます。
+<div align="center">
+
+サッカーの情報を提供するWebアプリケーション
+
+[![Next.js](https://img.shields.io/badge/Next.js-15.3.2-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2.2-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.22.0-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/)
+
+</div>
+
+## 🌐 デモサイト
+
+**URL**: [https://www.football-hub.jp/](https://www.football-hub.jp/)
+
+### 🔑 テストアカウント
+
+- **メールアドレス**: `test@test.com`
+- **パスワード**: `test_user`
+
+※ログインなしでも閲覧可能です。
+
+## ✨ 主要機能
+
+- 📊 **リーグ情報**: プレミアリーグ、ラ・リーガ、ブンデスリーガ、セリエA、リーグ・アン、欧州大会の順位表・試合日程
+- 🏟️ **試合情報**: 試合結果、試合日程、詳細統計、
+- ⚽ **チーム情報**: チーム詳細データ、所属選手一覧、直近の試合結果・予定、統計情報
+- 👤 **選手情報**: 選手プロフィール、パフォーマンス統計、キャリア履歴、詳細データ
+- 📰 **ニュース機能**: 最新サッカーニュース、チーム・選手別ニュース検索、関連記事表示
+- ⭐ **お気に入り機能**: チーム・選手のお気に入り登録、パーソナライズされた情報表示
+- 🔐 **認証システム**: NextAuth.jsによる安全なユーザー管理、プロフィール画像アップロード
+- 📊 **リアルタイムデータ**: API-Footballによる最新の情報
+- 📱 **レスポンシブ対応**: モバイル・タブレット・デスクトップ対応
 
 ## 🛠 技術スタック
 
-| 技術         | バージョン |
-| ------------ | ---------- |
-| React        | 18.2.0     |
-| TypeScript   | 5.2.2      |
-| Next.js      | 14.0.4     |
-| Node.js      | 20.10.0    |
-| Supabase     | 2.39.3     |
-| Prisma       | 5.6.0      |
-| Tailwind CSS | 3.3.5      |
+### Frontend
 
-## 📝 要件定義
+<img src="https://img.shields.io/badge/-React-61DAFB.svg?logo=react&style=for-the-badge&logoColor=black">
+<img src="https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-TypeScript-007ACC.svg?logo=typescript&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-TailwindCSS-06B6D4.svg?logo=tailwindcss&style=for-the-badge&logoColor=white">
 
-### 機能要件
+### Backend & Database
 
-#### 1. ユーザー関連機能
+<img src="https://img.shields.io/badge/-Prisma-2D3748.svg?logo=prisma&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-PostgreSQL-336791.svg?logo=postgresql&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-Supabase-3ECF8E.svg?logo=supabase&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-Redis-DC382D.svg?logo=redis&style=for-the-badge&logoColor=white">
 
-- ユーザー登録・ログイン (Supabase Auth)
-- プロフィール設定・編集
-- お気に入りチーム・選手の登録/削除
+### Authentication & State Management
 
-#### 2. リーグ・大会情報機能
+<img src="https://img.shields.io/badge/-NextAuth.js-000000.svg?logo=next.js&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-TanStack_Query-FF4154.svg?logo=react-query&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-Zustand-000000.svg?logo=react&style=for-the-badge&logoColor=white">
 
-- ヨーロッパ 5 大リーグ情報表示
-- 国際大会情報表示
-- リーグ/大会の順位表表示
-- 試合日程・結果一覧表示
+### Infrastructure & DevOps
 
-#### 3. チーム情報機能
+<img src="https://img.shields.io/badge/-Docker-2496ED.svg?logo=docker&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-Docker_Compose-2496ED.svg?logo=docker&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-Node.js-339933.svg?logo=node.js&style=for-the-badge&logoColor=white">
 
-- チーム基本情報表示
-- チーム所属選手一覧
-- 直近の試合結果・予定
-- チーム統計情報
+### UI & Utils
 
-#### 4. 選手情報機能
+<img src="https://img.shields.io/badge/-Lucide_React-000000.svg?logo=lucide&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-date--fns-770C56.svg?logo=date-fns&style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/-Recharts-8884D8.svg?logo=recharts&style=for-the-badge&logoColor=white">
 
-- 選手基本情報表示
-- 選手統計情報表示
-- キャリア履歴表示
+## 🏗️ プロジェクト構成
 
-#### 5. 試合情報機能
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API Routes
+│   ├── leagues/           # リーグ関連ページ
+│   ├── teams/             # チーム関連ページ
+│   ├── players/           # 選手関連ページ
+│   ├── matches/           # 試合関連ページ
+│   ├── news/              # ニュース関連ページ
+│   ├── login/             # ログインページ
+│   ├── register/          # 登録ページ
+│   ├── profile/           # プロフィールページ
+│   ├── layout.tsx         # 共通レイアウト
+│   ├── page.tsx           # ホームページ
+│   └── globals.css        # グローバルスタイル
+├── components/            # 共通コンポーネント
+│   ├── layout/           # レイアウトコンポーネント
+│   ├── common/           # 汎用コンポーネント
+│   ├── ui/               # UIコンポーネント
+│   └── feedback/         # フィードバックコンポーネント
+├── features/             # 機能別コンポーネント
+│   ├── auth/             # 認証機能
+│   ├── leagues/          # リーグ機能
+│   ├── teams/            # チーム機能
+│   ├── players/          # 選手機能
+│   ├── matches/          # 試合機能
+│   ├── news/             # ニュース機能
+│   ├── favorites/        # お気に入り機能
+│   ├── profile/          # プロフィール機能
+│   └── navigation/       # ナビゲーション
+├── lib/                  # ライブラリとユーティリティ
+│   ├── api-football/     # 外部API統合
+│   ├── auth/             # 認証関連
+│   ├── prisma/           # Prismaクライアント
+│   ├── supabase/         # Supabase統合
+│   ├── media/            # メディア処理
+│   ├── sync/             # データ同期
+│   └── redis.ts          # Redisクライアント
+├── providers/            # React Context プロバイダー
+├── types/                # TypeScript型定義
+├── utils/                # ユーティリティ関数
+└── config/               # 設定ファイル
+```
 
-- 試合基本情報表示
-- スコア・得点者情報
-- 試合統計表示
+## 🗄️ データベース設計
 
-#### 6. ニュース機能
+### ER図
 
-- 最新サッカーニュース一覧
-- チーム・選手別ニュース検索
-- お気に入り対象の関連ニュース
+![ER図]()
 
-#### 7. パーソナライズ機能
+データベースは以下の主要エンティティで構成されています：
 
-- カスタマイズ可能なダッシュボード
-- お気に入りに基づいた情報表示
-- 通知設定・管理
+- **Account**: 認証プロバイダー情報
+- **User**: ユーザー基本情報
+- **Session**: セッション管理
+- **Provider/ProviderAccount**: 外部認証プロバイダー連携
+- **League**: リーグ情報
+- **Team**: チーム情報
+- **Player**: 選手情報
+- **Match**: 試合情報
+- **Favorite_Team/Favorite_League**: お気に入り機能
 
-### 非機能要件
+## 📄 ライセンス
 
-#### 1. パフォーマンス
+このプロジェクトは [MIT License](LICENSE) の下で公開されています。
 
-- 初期読み込み時間: 2 秒以内
-- API 応答時間: 1 秒以内
-- Lighthouse Performance Score: 90 以上
-
-#### 2. レスポンシブ対応
-
-- モバイル、タブレット、デスクトップの各画面サイズに対応
-
-#### 3. セキュリティ
-
-- Supabase RLS によるデータアクセス制御
-- 認証・認可の適切な実装
-
-#### 4. API 使用最適化
-
-- キャッシュ戦略によるリクエスト削減
-- バッチ処理によるリクエスト効率化
-
-### システムアーキテクチャ
-
-````ascii
-                   +----------------+
-                   |                |
-  +-------------+  |   Next.js      |  +-------------------+
-  |             |  |   (Frontend &  |  |  External APIs    |
-  |  ユーザー   +--+   Backend API) +--+  - Football-data.org |
-  |             |  |                |  |  - TheSportsDB    |
-  +-------------+  +-------+--------+  |  - Gnews API      |
-                           |           +-------------------+
-                   +-------v--------+
-                   |                |  +-------------+
-                   |   Supabase     +--+             |
-                   |   (Auth, DB,   |  |   Prisma    |
-                   |   Storage)     |  |   (ORM)     |
-                   |                |  |             |
-                   +----------------+  +-------------+
-
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-````
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p align="right">(<a href="#top">トップへ</a>)</p>
