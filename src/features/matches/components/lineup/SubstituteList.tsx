@@ -97,6 +97,7 @@ const SubPlayerItem = memo(
                     alt={player.name}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
               ) : (
@@ -204,7 +205,7 @@ const SubstituteList = memo(
         <div className={`${bgColor} py-2 px-4`}>
           <div className="flex items-center">
             <div className="relative w-6 h-6 mr-2">
-              <Image src={team.logo} alt={team.name} fill className="object-contain" />
+              <Image src={team.logo} alt={team.name} fill className="object-contain" unoptimized />
             </div>
             <h4 className="text-white font-semibold">{team.name}</h4>
           </div>

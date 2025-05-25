@@ -34,6 +34,7 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
             className="object-cover object-top"
             sizes="(max-width: 768px) 100vw, 320px"
             priority
+            unoptimized
           />
         ) : (
           <div className="flex items-center justify-center h-full">
@@ -57,6 +58,7 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
                   width={20}
                   height={20}
                   className="object-contain"
+                  unoptimized
                 />
               </div>
               <span className="text-slate-600 truncate">{player.team.name}</span>

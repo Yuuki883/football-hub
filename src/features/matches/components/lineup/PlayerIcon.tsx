@@ -137,7 +137,13 @@ const PlayerIcon = memo(
             className={`w-12 h-12 rounded-full bg-white overflow-hidden border-2 ${border} shadow-md transition-transform duration-200 group-hover:scale-110`}
           >
             {photo ? (
-              <Image src={photo} alt={player.name} fill className="object-cover w-full h-full" />
+              <Image
+                src={photo}
+                alt={player.name}
+                fill
+                className="object-cover w-full h-full"
+                unoptimized
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center font-bold bg-gray-100">
                 {player.number}

@@ -141,6 +141,7 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
             alt={homeLineup.team.name}
             fill
             className="object-contain"
+            unoptimized
           />
         </div>
         <div className="flex flex-col">
@@ -160,6 +161,7 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
             alt={awayLineup.team.name}
             fill
             className="object-contain"
+            unoptimized
           />
         </div>
       </div>
