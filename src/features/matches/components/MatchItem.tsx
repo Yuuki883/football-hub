@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import { MatchDisplay } from '../types';
 import { isMatchStarted } from '../utils/match-utils';
 import { formatMatchTime } from '@/lib/api-football/utils/data-formatters';
@@ -27,7 +27,7 @@ const MatchItem: React.FC<MatchItemProps> = ({ match }) => {
           {match.homeTeam.shortName || match.homeTeam.name}
         </span>
         <div className="w-8 h-8 sm:w-10 sm:h-10 relative">
-          <Image
+          <OptimizedImage
             src={match.homeTeam.crest || '/team-placeholder.png'}
             alt={match.homeTeam.name}
             width={40}
@@ -73,7 +73,7 @@ const MatchItem: React.FC<MatchItemProps> = ({ match }) => {
 
       <div className="flex-1 flex items-center">
         <div className="w-8 h-8 sm:w-10 sm:h-10 relative">
-          <Image
+          <OptimizedImage
             src={match.awayTeam.crest || '/team-placeholder.png'}
             alt={match.awayTeam.name}
             width={40}

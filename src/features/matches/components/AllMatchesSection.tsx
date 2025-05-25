@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import MatchCalendar from '@/features/matches/components/MatchCalendar';
 import Link from 'next/link';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
@@ -182,7 +182,7 @@ function LeagueMatchesCard({ league }: LeagueMatchesCardProps) {
       <div className="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 text-left font-medium">
         <div className="flex items-center flex-wrap flex-1 mr-2">
           <div className="w-8 h-8 mr-3 relative flex-shrink-0 flex items-center justify-center">
-            <Image
+            <OptimizedImage
               src={league.emblem || '/league-placeholder.png'}
               alt={league.name}
               width={28}
@@ -228,7 +228,7 @@ function MatchRow({ match }: { match: MatchDisplay }) {
           {match.homeTeam.shortName || match.homeTeam.name}
         </span>
         <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex-shrink-0 flex items-center justify-center">
-          <Image
+          <OptimizedImage
             src={match.homeTeam.crest || '/team-placeholder.png'}
             alt={match.homeTeam.name}
             width={40}
@@ -279,7 +279,7 @@ function MatchRow({ match }: { match: MatchDisplay }) {
 
       <div className="flex-1 flex items-center">
         <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex-shrink-0 flex items-center justify-center">
-          <Image
+          <OptimizedImage
             src={match.awayTeam.crest || '/team-placeholder.png'}
             alt={match.awayTeam.name}
             width={40}

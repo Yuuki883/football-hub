@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 
 interface Team {
@@ -42,7 +42,13 @@ const TeamGrid: React.FC<TeamGridProps> = ({ teams }) => {
           className="flex flex-col items-center p-4 bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow"
         >
           <div className="relative w-20 h-20 mb-3">
-            <Image src={team.logo} alt={team.name} fill sizes="80px" className="object-contain" />
+            <OptimizedImage
+              src={team.logo}
+              alt={team.name}
+              fill
+              sizes="80px"
+              className="object-contain"
+            />
           </div>
           <h3 className="text-sm font-medium text-center">{team.name}</h3>
           {team.founded && <div className="text-xs text-gray-500 mt-1">創立: {team.founded}年</div>}

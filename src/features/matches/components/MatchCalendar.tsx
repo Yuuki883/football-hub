@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft, ChevronRight, Calendar, CircleArrowUp } from 'lucide-react';
-import { format, isSameDay, parseISO, isToday, addDays } from 'date-fns';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { format, isSameDay, parseISO, isToday } from 'date-fns';
 import { ja } from 'date-fns/locale';
 
 interface MatchCalendarProps {

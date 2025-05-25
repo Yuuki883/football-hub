@@ -3,7 +3,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { Match } from '@/lib/api-football/types/type-exports';
 import { getStatusText } from '@/features/matches/utils/match-utils';
@@ -71,10 +71,10 @@ const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
             <div className="divide-y divide-gray-200">
               {dateMatches.map((match) => {
                 // チーム画像のフォールバック処理
-                const homeTeamCrest = match.homeTeam?.crest || '/images/team-placeholder.png';
-                const awayTeamCrest = match.awayTeam?.crest || '/images/team-placeholder.png';
-                const homeTeamName = match.homeTeam?.name || '不明';
-                const awayTeamName = match.awayTeam?.name || '不明';
+                const homeTeamCrest = match.homeTeam?.crest || '';
+                const awayTeamCrest = match.awayTeam?.crest || '';
+                const homeTeamName = match.homeTeam?.name || '';
+                const awayTeamName = match.awayTeam?.name || '';
 
                 return (
                   <Link
@@ -86,16 +86,12 @@ const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
                       <div className="flex justify-between items-center">
                         <div className="flex items-center space-x-3 flex-1">
                           <div className="relative h-8 w-8">
-                            <Image
+                            <OptimizedImage
                               src={homeTeamCrest}
                               alt={homeTeamName}
                               fill
                               sizes="32px"
                               className="object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.src = '/images/team-placeholder.png';
-                              }}
                             />
                           </div>
                           <span className="text-sm font-medium truncate max-w-[120px] md:max-w-none">
@@ -143,16 +139,12 @@ const MatchesList: React.FC<MatchesListProps> = ({ matches }) => {
                             {awayTeamName}
                           </span>
                           <div className="relative h-8 w-8">
-                            <Image
+                            <OptimizedImage
                               src={awayTeamCrest}
                               alt={awayTeamName}
                               fill
                               sizes="32px"
                               className="object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.src = '/images/team-placeholder.png';
-                              }}
                             />
                           </div>
                         </div>

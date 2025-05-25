@@ -6,7 +6,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import { Fixture, Event, MatchTeamPlayers } from '../types';
 import { getEvents, getFixturesPlayers } from '../api/match-service';
 import { Goal, AlertTriangle, ArrowRightLeft, Clock, RefreshCw, Flag } from 'lucide-react';
@@ -98,7 +98,7 @@ function EventItem({
         <div className="flex items-center">
           {assistPhoto && (
             <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
-              <Image
+              <OptimizedImage
                 src={assistPhoto}
                 alt={incomingPlayer.name || ''}
                 fill
@@ -141,7 +141,7 @@ function EventItem({
         <div className="flex items-center">
           {playerPhoto && (
             <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
-              <Image
+              <OptimizedImage
                 src={playerPhoto}
                 alt={outgoingPlayer.name || ''}
                 fill
@@ -170,7 +170,12 @@ function EventItem({
     <div className="flex items-center">
       {playerPhoto && (
         <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 border border-gray-200">
-          <Image src={playerPhoto} alt={event.player.name || ''} fill className="object-cover" />
+          <OptimizedImage
+            src={playerPhoto}
+            alt={event.player.name || ''}
+            fill
+            className="object-cover"
+          />
         </div>
       )}
       <div className="flex flex-col">
@@ -181,7 +186,7 @@ function EventItem({
             アシスト:
             {assistPhoto && (
               <div className="relative w-4 h-4 rounded-full overflow-hidden mx-1">
-                <Image
+                <OptimizedImage
                   src={assistPhoto}
                   alt={event.assist.name || ''}
                   fill
@@ -200,7 +205,12 @@ function EventItem({
     <div className="flex items-center">
       {playerPhoto && (
         <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 border border-gray-200">
-          <Image src={playerPhoto} alt={event.player.name || ''} fill className="object-cover" />
+          <OptimizedImage
+            src={playerPhoto}
+            alt={event.player.name || ''}
+            fill
+            className="object-cover"
+          />
         </div>
       )}
       <div className="flex flex-col">
@@ -211,7 +221,7 @@ function EventItem({
             アシスト:
             {assistPhoto && (
               <div className="relative w-4 h-4 rounded-full overflow-hidden mx-1">
-                <Image
+                <OptimizedImage
                   src={assistPhoto}
                   alt={event.assist.name || ''}
                   fill

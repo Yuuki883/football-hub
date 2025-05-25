@@ -6,7 +6,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { Fixture } from '../types';
 import { getStatusText, getStatusClass } from '../utils/match-utils';
@@ -107,7 +107,7 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
       {/* リーグ情報 */}
       <div className="p-4 bg-gray-50 border-b flex items-center justify-center">
         {safeFixture.league.logo && (
-          <Image
+          <OptimizedImage
             src={safeFixture.league.logo}
             alt={safeFixture.league.name}
             width={32}
@@ -129,7 +129,7 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
               className="flex flex-col items-center hover:opacity-90 transition-opacity"
             >
               <div className="relative w-20 h-20 mb-3 flex-shrink-0 transition-transform hover:scale-105">
-                <Image
+                <OptimizedImage
                   src={safeFixture.teams.home.logo}
                   alt={safeFixture.teams.home.name}
                   fill
@@ -167,7 +167,7 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
               className="flex flex-col items-center hover:opacity-90 transition-opacity"
             >
               <div className="relative w-20 h-20 mb-3 flex-shrink-0 transition-transform hover:scale-105">
-                <Image
+                <OptimizedImage
                   src={safeFixture.teams.away.logo}
                   alt={safeFixture.teams.away.name}
                   fill

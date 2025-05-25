@@ -6,7 +6,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import { User } from '@prisma/client';
 
 type ProfileHeaderProps = {
@@ -113,7 +113,7 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
             accept="image/*"
             className="hidden"
           />
-          <Image
+          <OptimizedImage
             src={getDisplayImageUrl()}
             alt={user.name || 'ユーザー'}
             fill

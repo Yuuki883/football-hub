@@ -1,4 +1,5 @@
-// src/components/common/OptimizedImage.tsx
+'use client';
+
 import Image, { ImageProps } from 'next/image';
 import { ReactNode, useState, useEffect } from 'react';
 
@@ -27,6 +28,7 @@ export default function OptimizedImage({
   lazyLoad = false,
   lazyDelay = 1000,
   loading = 'lazy', // デフォルトでlazyに設定
+  priority = false, // priorityプロパティを追加
   retryLoad = true, // デフォルトで再読み込み試行を有効化
   retryDelay = 3000, // デフォルトで3秒後に再試行
   maxRetries = 2, // デフォルトで最大2回再試行
@@ -176,12 +178,14 @@ export default function OptimizedImage({
       }
     }
   };
+  // priorityが指定されている場合は、loadingプロパティを無視する
+  const imgLoading = priority ? undefined : loading;
 
   return (
     <Image
       src={imageSrc}
       alt={alt}
-      loading={loading}
+      loading={imgLoading}
       unoptimized={unoptimized}
       onError={onError}
       {...props}

@@ -5,7 +5,6 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { Fixture } from '../types';
 import { MatchHeader } from './MatchHeader';
