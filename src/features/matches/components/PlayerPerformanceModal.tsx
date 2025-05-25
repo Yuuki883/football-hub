@@ -5,10 +5,9 @@
 
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
 import { MatchPlayerPerformance } from '../types';
-import { isApiFootballImage } from '@/utils/image-helpers';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 export default function PlayerPerformanceModal({
   player,
@@ -37,12 +36,11 @@ export default function PlayerPerformanceModal({
           <div className="flex items-center">
             <div className="relative w-12 h-12 mr-3 bg-gray-100 rounded-full overflow-hidden">
               {player.player.photo ? (
-                <Image
+                <OptimizedImage
                   src={player.player.photo}
                   alt={player.player.name}
                   fill
                   className="object-cover"
-                  unoptimized={isApiFootballImage(player.player.photo)}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-500">

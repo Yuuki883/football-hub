@@ -1,12 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import { useCallback } from 'react';
 import { Lineup, Event, MatchPlayerPerformance, MatchPlayerEntry } from '../../types';
 import { sortByGrid, posStyle } from '../../utils/grid-utils';
 import PlayerIcon from './PlayerIcon';
 import { TEAM_COLORS } from '../../constants/matches';
-import { isApiFootballImage } from '@/utils/image-helpers';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 /**
  * ピッチ表示コンポーネントのProps
@@ -137,12 +136,11 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
       {/* チーム名とフォーメーション表示 */}
       <div className="absolute top-2 left-4 bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold shadow-md flex items-center space-x-2 z-10">
         <div className="relative w-5 h-5">
-          <Image
+          <OptimizedImage
             src={homeLineup.team.logo}
             alt={homeLineup.team.name}
             fill
             className="object-contain"
-            unoptimized={isApiFootballImage(homeLineup.team.logo)}
           />
         </div>
         <div className="flex flex-col">
@@ -157,12 +155,11 @@ function PitchView({ homeLineup, awayLineup, events, perfMap, onPlayerClick }: P
           <div className="text-[10px] text-white/80">{awayLineup.formation}</div>
         </div>
         <div className="relative w-5 h-5">
-          <Image
+          <OptimizedImage
             src={awayLineup.team.logo}
             alt={awayLineup.team.name}
             fill
             className="object-contain"
-            unoptimized={isApiFootballImage(awayLineup.team.logo)}
           />
         </div>
       </div>

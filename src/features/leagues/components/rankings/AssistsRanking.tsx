@@ -1,9 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { FormattedPlayerStats } from '@/lib/api-football/types/player';
-import { isApiFootballImage } from '@/utils/image-helpers';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 interface AssistsRankingProps {
   players: FormattedPlayerStats[] | null;
@@ -43,17 +42,12 @@ const AssistsRanking: React.FC<AssistsRankingProps> = ({ players, limit = 10 }) 
 
                 <div className="flex-shrink-0 ml-2">
                   <div className="relative h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                    <Image
+                    <OptimizedImage
                       src={player.photo || '/images/player-placeholder.png'}
                       alt={player.name}
                       fill
                       sizes="48px"
                       className="object-cover"
-                      unoptimized={player.photo ? isApiFootballImage(player.photo) : false}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/images/player-placeholder.png';
-                      }}
                     />
                   </div>
                 </div>
@@ -68,15 +62,12 @@ const AssistsRanking: React.FC<AssistsRankingProps> = ({ players, limit = 10 }) 
                   {player.team && (
                     <div className="flex items-center mt-1">
                       <div className="relative h-4 w-4 mr-1">
-                        <Image
+                        <OptimizedImage
                           src={player.team.logo || '/images/team-placeholder.png'}
                           alt={player.team.name}
                           fill
                           sizes="16px"
                           className="object-contain"
-                          unoptimized={
-                            player.team.logo ? isApiFootballImage(player.team.logo) : false
-                          }
                         />
                       </div>
                       <span className="text-xs text-gray-500">{player.team.name}</span>
