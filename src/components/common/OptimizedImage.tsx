@@ -7,12 +7,12 @@ interface OptimizedImageProps extends Omit<ImageProps, 'unoptimized' | 'loading'
   fallbackSrc?: string;
   disableOptimization?: boolean;
   fallbackComponent?: ReactNode;
-  lazyLoad?: boolean; // 遅延読み込みフラグ
-  lazyDelay?: number; // 遅延時間（ミリ秒）
-  loading?: 'lazy' | 'eager'; // 明示的にloadingプロパティ追加
-  retryLoad?: boolean; // 画像再読み込み試行フラグ
-  retryDelay?: number; // 再試行までの遅延時間
-  maxRetries?: number; // 最大再試行回数
+  lazyLoad?: boolean;
+  lazyDelay?: number;
+  loading?: 'lazy' | 'eager';
+  retryLoad?: boolean;
+  retryDelay?: number;
+  maxRetries?: number;
 }
 
 /**
@@ -27,14 +27,13 @@ export default function OptimizedImage({
   fallbackComponent,
   lazyLoad = false,
   lazyDelay = 1000,
-  loading = 'lazy', // デフォルトでlazyに設定
-  priority = false, // priorityプロパティを追加
-  retryLoad = true, // デフォルトで再読み込み試行を有効化
-  retryDelay = 3000, // デフォルトで3秒後に再試行
-  maxRetries = 2, // デフォルトで最大2回再試行
+  loading = 'lazy',
+  priority = false,
+  retryLoad = true,
+  retryDelay = 3000,
+  maxRetries = 2,
   ...props
 }: OptimizedImageProps) {
-  // 画像の読み込み状態を管理
   const [imageSrc, setImageSrc] = useState<any>(lazyLoad ? '' : src || '');
   const [isLoading, setIsLoading] = useState(lazyLoad || (!src && retryLoad));
   const [loadFailed, setLoadFailed] = useState(false);
@@ -55,12 +54,10 @@ export default function OptimizedImage({
 
   // 画像再読み込み試行
   useEffect(() => {
-    // 画像読み込みに失敗し、再試行が有効で、最大試行回数未満の場合
     if (loadFailed && retryLoad && retryCount < maxRetries) {
       setIsLoading(true);
 
       const timer = setTimeout(() => {
-        // 画像URLにタイムスタンプを追加してキャッシュバスティング
         if (typeof src === 'string') {
           const bustCache = `${src}${src.includes('?') ? '&' : '?'}t=${Date.now()}`;
           setImageSrc(bustCache);
@@ -109,14 +106,10 @@ export default function OptimizedImage({
     if (!imageSrc || imageSrc === '') return false;
 
     return (
-      // API-Football関連の画像
       imageSrc.includes('api-sports.io') ||
       imageSrc.includes('media-api') ||
-      // SVGファイル
       imageSrc.endsWith('.svg') ||
-      // 外部画像（内部画像は '/' から始まる）
       (!imageSrc.startsWith('/') && !imageSrc.startsWith('data:')) ||
-      // 自社ドメイン以外
       !imageSrc.includes('.football-hub.')
     );
   };
@@ -125,9 +118,30 @@ export default function OptimizedImage({
   const unoptimized =
     disableOptimization !== undefined ? disableOptimization : isExternalImage(imageSrc);
 
+  // 画像読み込み成功ハンドラー
+  const onLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    const parent = target.parentElement;
+
+    if (parent) {
+      // プレースホルダーが存在する場合は削除
+      const placeholder = parent.querySelector('.image-placeholder');
+      if (placeholder) {
+        parent.removeChild(placeholder);
+      }
+
+      // 画像を表示状態に戻す
+      target.style.display = '';
+    }
+
+    // 元のonLoadが指定されていれば実行
+    if (props.onLoad) {
+      props.onLoad(e);
+    }
+  };
+
   // エラーハンドラー
   const onError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    // 読み込み失敗状態をセット
     setLoadFailed(true);
 
     const target = e.currentTarget;
@@ -138,10 +152,8 @@ export default function OptimizedImage({
     } else if (props.onError) {
       props.onError(e);
     } else if (parent) {
-      // 画像要素を非表示
       target.style.display = 'none';
 
-      // 再試行中のプレースホルダーを表示
       if (retryLoad && retryCount < maxRetries) {
         if (!parent.querySelector('.image-placeholder')) {
           const placeholder = document.createElement('div');
@@ -156,7 +168,6 @@ export default function OptimizedImage({
           parent.appendChild(placeholder);
         }
       } else {
-        // 最大再試行回数に達した場合のプレースホルダー
         if (!parent.querySelector('.image-placeholder')) {
           const placeholder = document.createElement('div');
           placeholder.className =
@@ -169,7 +180,6 @@ export default function OptimizedImage({
           placeholder.appendChild(text);
           parent.appendChild(placeholder);
         } else {
-          // 既存のプレースホルダーがあれば、テキストを更新
           const existingText = parent.querySelector('.image-placeholder span');
           if (existingText) {
             existingText.textContent = 'No Image';
@@ -178,7 +188,7 @@ export default function OptimizedImage({
       }
     }
   };
-  // priorityが指定されている場合は、loadingプロパティを無視する
+
   const imgLoading = priority ? undefined : loading;
 
   return (
@@ -188,6 +198,7 @@ export default function OptimizedImage({
       loading={imgLoading}
       unoptimized={unoptimized}
       onError={onError}
+      onLoad={onLoad}
       {...props}
     />
   );
