@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import OptimizedImage from './OptimizedImage';
 import { ReactNode } from 'react';
 
 export interface EntityHeaderProps {
@@ -70,7 +70,7 @@ export default function EntityHeader({
     <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden ${className}`}>
       <div className="p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
         <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0">
-          <Image
+          <OptimizedImage
             src={logo}
             alt={name}
             fill
@@ -88,7 +88,7 @@ export default function EntityHeader({
               <div className="flex items-center">
                 {showFlag && (flag || defaultFlagUrl) && (
                   <div className="relative w-5 h-4 mr-1 border border-gray-100 dark:border-gray-700 rounded-sm overflow-hidden">
-                    <Image
+                    <OptimizedImage
                       src={flag || defaultFlagUrl}
                       alt={country}
                       fill
