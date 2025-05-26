@@ -65,17 +65,17 @@ export function MatchLayout({ fixture, initialTab }: MatchLayoutProps) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
       <SmartBreadcrumb showLoadingState />
-      <div className="container mx-auto my-8 px-4">
+      <div className="container mx-auto my-3 sm:my-6">
         <MatchHeader fixture={fixture} />
 
         {/* タブナビゲーション */}
-        <div className="flex border-b border-gray-200 mt-8 mb-6 overflow-x-auto">
+        <div className="flex justify-between sm:justify-start border-b border-gray-200 mt-4 sm:mt-8 mb-4 sm:mb-6 overflow-x-auto">
           {TABS.map((tab) => (
             <button
               key={tab.id}
-              className={`py-3 px-4 font-medium border-b-2 transition-colors
+              className={`py-2 sm:py-3 px-2 sm:px-4 text-sm sm:text-base font-medium border-b-2 transition-colors whitespace-nowrap flex-1 sm:flex-initial
               ${
                 activeTab === tab.id
                   ? 'border-blue-500 text-blue-600'
@@ -83,13 +83,14 @@ export function MatchLayout({ fixture, initialTab }: MatchLayoutProps) {
               }`}
               onClick={() => handleTabChange(tab.id as TabType)}
             >
-              {tab.label}
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.shortLabel}</span>
             </button>
           ))}
         </div>
 
         {/* タブコンテンツ */}
-        <div>{renderTabContent()}</div>
+        <div className="pb-6">{renderTabContent()}</div>
       </div>
     </div>
   );

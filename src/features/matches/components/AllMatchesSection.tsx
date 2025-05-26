@@ -179,9 +179,9 @@ function LeagueMatchesCard({ league }: LeagueMatchesCardProps) {
 
   return (
     <div className="rounded-lg overflow-hidden">
-      <div className="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 text-left font-medium">
-        <div className="flex items-center flex-wrap flex-1 mr-2">
-          <div className="w-8 h-8 mr-3 relative flex-shrink-0 flex items-center justify-center">
+      <div className="w-full flex items-center justify-between p-2 sm:p-3 bg-gray-100 dark:bg-gray-800 text-left font-medium">
+        <div className="flex items-center flex-wrap flex-1 mr-1 sm:mr-2">
+          <div className="w-6 h-6 sm:w-8 sm:h-8 mr-2 sm:mr-3 relative flex-shrink-0 flex items-center justify-center">
             <OptimizedImage
               src={league.emblem || '/league-placeholder.png'}
               alt={league.name}
@@ -190,14 +190,14 @@ function LeagueMatchesCard({ league }: LeagueMatchesCardProps) {
               className="object-contain max-w-full max-h-full"
             />
           </div>
-          <span className="font-medium mr-2">{league.name}</span>
+          <span className="font-medium mr-1 sm:mr-2 text-sm sm:text-base">{league.name}</span>
           <div className="flex items-center space-x-1 mt-0.5">
             {statusSummary.liveCount > 0 && (
-              <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+              <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
                 Live {statusSummary.liveCount}
               </span>
             )}
-            <span className="text-sm text-gray-500">({league.matches.length}試合)</span>
+            <span className="text-xs sm:text-sm text-gray-500">({league.matches.length}試合)</span>
           </div>
         </div>
       </div>
@@ -221,28 +221,28 @@ function MatchRow({ match }: { match: MatchDisplay }) {
   return (
     <Link
       href={`/matches/${match.id}`}
-      className="flex items-center px-4 py-4 hover:bg-gray-50 dark:hover:bg-gray-800/60"
+      className="flex items-center px-2 sm:px-4 py-3 sm:py-4 hover:bg-gray-50 dark:hover:bg-gray-800/60"
     >
       <div className="flex-1 flex items-center justify-end">
-        <span className="font-semibold mr-2 text-right text-gray-900 dark:text-white text-base sm:text-lg truncate max-w-[120px] sm:max-w-[180px]">
+        <span className="font-semibold mr-1 sm:mr-2 text-right text-gray-900 dark:text-white text-xs sm:text-sm md:text-base truncate max-w-[80px] sm:max-w-[120px] md:max-w-[180px]">
           {match.homeTeam.shortName || match.homeTeam.name}
         </span>
-        <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex-shrink-0 flex items-center justify-center">
+        <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 relative flex-shrink-0 flex items-center justify-center">
           <OptimizedImage
             src={match.homeTeam.crest || '/team-placeholder.png'}
             alt={match.homeTeam.name}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
             className="object-contain max-w-full max-h-full"
           />
         </div>
       </div>
 
-      <div className="w-24 sm:w-28 flex justify-center mx-2 sm:mx-4 flex-shrink-0">
+      <div className="w-14 sm:w-20 md:w-24 flex justify-center mx-1 sm:mx-2 md:mx-4 flex-shrink-0">
         {matchStarted ? (
-          <div className="flex justify-center items-center space-x-2">
+          <div className="flex justify-center items-center space-x-1 sm:space-x-2">
             <span
-              className={`text-base sm:text-xl font-bold ${
+              className={`text-xs sm:text-sm md:text-base font-bold ${
                 match.score?.home !== null &&
                 match.score?.away !== null &&
                 (match.score?.home || 0) > (match.score?.away || 0)
@@ -252,9 +252,9 @@ function MatchRow({ match }: { match: MatchDisplay }) {
             >
               {match.score?.home ?? '0'}
             </span>
-            <span className="text-sm sm:text-base text-gray-400">-</span>
+            <span className="text-xs sm:text-sm text-gray-400">-</span>
             <span
-              className={`text-base sm:text-xl font-bold ${
+              className={`text-xs sm:text-sm md:text-base font-bold ${
                 match.score?.home !== null &&
                 match.score?.away !== null &&
                 (match.score?.away || 0) > (match.score?.home || 0)
@@ -265,29 +265,29 @@ function MatchRow({ match }: { match: MatchDisplay }) {
               {match.score?.away ?? '0'}
             </span>
             {match.status === 'IN_PLAY' && (
-              <span className="text-xs bg-red-500 text-white px-1 py-0.5 rounded-full font-medium ml-1">
+              <span className="text-[8px] sm:text-[10px] bg-red-500 text-white px-1 py-0.5 rounded-full font-medium ml-0.5 sm:ml-1">
                 LIVE
               </span>
             )}
           </div>
         ) : (
-          <div className="text-sm sm:text-base px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+          <div className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
             {format(new Date(match.utcDate), 'HH:mm')}
           </div>
         )}
       </div>
 
       <div className="flex-1 flex items-center">
-        <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex-shrink-0 flex items-center justify-center">
+        <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 relative flex-shrink-0 flex items-center justify-center">
           <OptimizedImage
             src={match.awayTeam.crest || '/team-placeholder.png'}
             alt={match.awayTeam.name}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
             className="object-contain max-w-full max-h-full"
           />
         </div>
-        <span className="font-semibold ml-2 text-gray-900 dark:text-white text-base sm:text-lg truncate max-w-[120px] sm:max-w-[180px]">
+        <span className="font-semibold ml-1 sm:ml-2 text-gray-900 dark:text-white text-xs sm:text-sm md:text-base truncate max-w-[80px] sm:max-w-[120px] md:max-w-[180px]">
           {match.awayTeam.shortName || match.awayTeam.name}
         </span>
       </div>

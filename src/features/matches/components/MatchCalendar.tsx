@@ -135,16 +135,16 @@ export default function MatchCalendar({
 
       {/* カレンダーモーダル */}
       {isCalendarOpen && (
-        <div className="relative z-10">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2">
           <div
             className="fixed inset-0 bg-black bg-opacity-25"
             onClick={() => setIsCalendarOpen(false)}
           ></div>
-          <div className="absolute mt-2 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
-            <div className="flex justify-between items-center mb-4">
+          <div className="relative bg-white dark:bg-gray-800 rounded-lg shadow-lg w-[95vw] max-w-[360px]">
+            <div className="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700">
               <button
                 onClick={() => navigateDate('prev', 'month')}
-                className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
                 aria-label="前の月"
               >
                 <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
@@ -155,14 +155,14 @@ export default function MatchCalendar({
               <div className="flex items-center">
                 <button
                   onClick={() => navigateDate('next', 'month')}
-                  className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 mr-2"
+                  className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 mr-2"
                   aria-label="次の月"
                 >
                   <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                 </button>
                 <button
                   onClick={() => setIsCalendarOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 p-1"
                   aria-label="カレンダーを閉じる"
                 >
                   ✕
@@ -173,40 +173,43 @@ export default function MatchCalendar({
             {isLoading ? (
               <div className="p-4 text-center">データを読み込み中...</div>
             ) : (
-              <div className="grid grid-cols-7 gap-1">
-                {/* 曜日ヘッダー */}
-                {['日', '月', '火', '水', '木', '金', '土'].map((day) => (
-                  <div key={day} className="text-center text-sm font-medium p-2">
-                    {day}
-                  </div>
-                ))}
+              <div className="p-3">
+                <div className="grid grid-cols-7 gap-1">
+                  {/* 曜日ヘッダー */}
+                  {['日', '月', '火', '水', '木', '金', '土'].map((day) => (
+                    <div key={day} className="text-center text-sm font-medium p-1">
+                      {day}
+                    </div>
+                  ))}
 
-                {/* カレンダー日付 - すべての日を選択可能に */}
-                {generateCalendar(selectedDate, availableDates).map((calDay, index) => {
-                  const hasMatch = availableDates.some((d: Date) => isSameDay(d, calDay.date));
+                  {/* カレンダー日付 - すべての日を選択可能に */}
+                  {generateCalendar(selectedDate, availableDates).map((calDay, index) => {
+                    const hasMatch = availableDates.some((d: Date) => isSameDay(d, calDay.date));
 
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => handleDateSelect(calDay.date)}
-                      className={`
-                        text-center p-2 rounded
-                        ${calDay.isCurrentMonth ? '' : 'text-gray-400'}
-                        hover:bg-gray-100 dark:hover:bg-gray-700
-                        ${hasMatch ? 'font-medium' : ''}
-                        ${
-                          isSameDay(calDay.date, selectedDate)
-                            ? 'bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100'
-                            : ''
-                        }
-                        ${isToday(calDay.date) ? 'border border-blue-500' : ''}
-                      `}
-                      title={hasMatch ? '試合あり' : ''}
-                    >
-                      {format(calDay.date, 'd')}
-                    </button>
-                  );
-                })}
+                    return (
+                      <div key={index} className="flex items-center justify-center">
+                        <button
+                          onClick={() => handleDateSelect(calDay.date)}
+                          className={`
+                            w-9 h-9 flex items-center justify-center rounded-full text-sm
+                            ${calDay.isCurrentMonth ? '' : 'text-gray-400'}
+                            hover:bg-gray-100 dark:hover:bg-gray-700
+                            ${hasMatch ? 'font-medium' : ''}
+                            ${
+                              isSameDay(calDay.date, selectedDate)
+                                ? 'bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-100'
+                                : ''
+                            }
+                            ${isToday(calDay.date) ? 'ring-2 ring-blue-500' : ''}
+                          `}
+                          title={hasMatch ? '試合あり' : ''}
+                        >
+                          {format(calDay.date, 'd')}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

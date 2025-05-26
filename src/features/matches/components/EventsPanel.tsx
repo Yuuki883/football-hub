@@ -80,7 +80,8 @@ function EventItem({
   const icon = getEventIcon(event.type, event.detail);
   const eventText = getEventText(event);
 
-  const timeClass = 'flex items-center justify-center w-12 h-12 rounded-full bg-gray-100';
+  const timeClass =
+    'flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100';
 
   // 選手の写真を取得
   const playerPhoto = event.player?.id ? playerPhotos.get(event.player.id) : null;
@@ -97,7 +98,7 @@ function EventItem({
       <div className="flex flex-col items-center">
         <div className="flex items-center">
           {assistPhoto && (
-            <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
+            <div className="relative w-5 h-5 sm:w-6 sm:h-6 rounded-full overflow-hidden mr-1 sm:mr-2">
               <OptimizedImage
                 src={assistPhoto}
                 alt={incomingPlayer.name || ''}
@@ -106,12 +107,14 @@ function EventItem({
               />
             </div>
           )}
-          <div className="font-medium text-sm text-green-600">{incomingPlayer.name}</div>
+          <div className="font-medium text-xs sm:text-sm text-green-600 truncate max-w-[80px] sm:max-w-[120px]">
+            {incomingPlayer.name}
+          </div>
         </div>
         <div className="flex items-center my-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-green-600"
+            className="h-3 w-3 sm:h-4 sm:w-4 text-green-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -125,7 +128,7 @@ function EventItem({
           </svg>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-red-600"
+            className="h-3 w-3 sm:h-4 sm:w-4 text-red-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -140,7 +143,7 @@ function EventItem({
         </div>
         <div className="flex items-center">
           {playerPhoto && (
-            <div className="relative w-6 h-6 rounded-full overflow-hidden mr-2">
+            <div className="relative w-5 h-5 sm:w-6 sm:h-6 rounded-full overflow-hidden mr-1 sm:mr-2">
               <OptimizedImage
                 src={playerPhoto}
                 alt={outgoingPlayer.name || ''}
@@ -149,18 +152,22 @@ function EventItem({
               />
             </div>
           )}
-          <div className="font-medium text-sm text-red-600">{outgoingPlayer.name}</div>
+          <div className="font-medium text-xs sm:text-sm text-red-600 truncate max-w-[80px] sm:max-w-[120px]">
+            {outgoingPlayer.name}
+          </div>
         </div>
       </div>
     );
 
     return (
-      <div className="flex items-center py-4 border-b border-gray-100 last:border-b-0">
-        <div className="w-1/2 flex justify-end mr-3">{isHomeTeam && <SubstitutionContent />}</div>
-        <div className={timeClass}>
-          <span className="text-sm font-medium">{event.time.elapsed}&apos;</span>
+      <div className="flex items-center py-3 sm:py-4 border-b border-gray-100 last:border-b-0">
+        <div className="w-1/2 flex justify-end mr-2 sm:mr-3">
+          {isHomeTeam && <SubstitutionContent />}
         </div>
-        <div className="w-1/2 flex ml-3">{!isHomeTeam && <SubstitutionContent />}</div>
+        <div className={timeClass}>
+          <span className="text-xs sm:text-sm font-medium">{event.time.elapsed}&apos;</span>
+        </div>
+        <div className="w-1/2 flex ml-2 sm:ml-3">{!isHomeTeam && <SubstitutionContent />}</div>
       </div>
     );
   }
@@ -169,7 +176,7 @@ function EventItem({
   const homeContent = isHomeTeam ? (
     <div className="flex items-center">
       {playerPhoto && (
-        <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 border border-gray-200">
+        <div className="relative w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden mr-1 sm:mr-2 border border-gray-200">
           <OptimizedImage
             src={playerPhoto}
             alt={event.player.name || ''}
@@ -179,13 +186,15 @@ function EventItem({
         </div>
       )}
       <div className="flex flex-col">
-        <div className="font-medium text-sm">{event.player.name}</div>
-        <div className="text-gray-600 text-xs">{eventText}</div>
+        <div className="font-medium text-xs sm:text-sm truncate max-w-[80px] sm:max-w-[150px]">
+          {event.player.name}
+        </div>
+        <div className="text-gray-600 text-[10px] sm:text-xs">{eventText}</div>
         {event.assist && event.assist.name && event.type === 'Goal' && (
-          <div className="text-gray-500 text-xs flex items-center">
+          <div className="text-gray-500 text-[10px] sm:text-xs flex items-center">
             アシスト:
             {assistPhoto && (
-              <div className="relative w-4 h-4 rounded-full overflow-hidden mx-1">
+              <div className="relative w-3 h-3 sm:w-4 sm:h-4 rounded-full overflow-hidden mx-1">
                 <OptimizedImage
                   src={assistPhoto}
                   alt={event.assist.name || ''}
@@ -194,7 +203,7 @@ function EventItem({
                 />
               </div>
             )}
-            {event.assist.name}
+            <span className="truncate max-w-[60px] sm:max-w-[100px]">{event.assist.name}</span>
           </div>
         )}
       </div>
@@ -204,7 +213,7 @@ function EventItem({
   const awayContent = !isHomeTeam ? (
     <div className="flex items-center">
       {playerPhoto && (
-        <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 border border-gray-200">
+        <div className="relative w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden mr-1 sm:mr-2 border border-gray-200">
           <OptimizedImage
             src={playerPhoto}
             alt={event.player.name || ''}
@@ -214,13 +223,15 @@ function EventItem({
         </div>
       )}
       <div className="flex flex-col">
-        <div className="font-medium text-sm">{event.player.name}</div>
-        <div className="text-gray-600 text-xs">{eventText}</div>
+        <div className="font-medium text-xs sm:text-sm truncate max-w-[80px] sm:max-w-[150px]">
+          {event.player.name}
+        </div>
+        <div className="text-gray-600 text-[10px] sm:text-xs">{eventText}</div>
         {event.assist && event.assist.name && event.type === 'Goal' && (
-          <div className="text-gray-500 text-xs flex items-center">
+          <div className="text-gray-500 text-[10px] sm:text-xs flex items-center">
             アシスト:
             {assistPhoto && (
-              <div className="relative w-4 h-4 rounded-full overflow-hidden mx-1">
+              <div className="relative w-3 h-3 sm:w-4 sm:h-4 rounded-full overflow-hidden mx-1">
                 <OptimizedImage
                   src={assistPhoto}
                   alt={event.assist.name || ''}
@@ -229,7 +240,7 @@ function EventItem({
                 />
               </div>
             )}
-            {event.assist.name}
+            <span className="truncate max-w-[60px] sm:max-w-[100px]">{event.assist.name}</span>
           </div>
         )}
       </div>
@@ -239,28 +250,28 @@ function EventItem({
   // スコア表示（ゴールの場合）
   const scoreDisplay =
     event.type === 'Goal' && event.detail !== 'Missed Penalty' ? (
-      <div className="text-xs font-bold">{isHomeTeam ? '(1 - 0)' : '(1 - 0)'}</div>
+      <div className="text-[10px] sm:text-xs font-bold">{isHomeTeam ? '(1 - 0)' : '(1 - 0)'}</div>
     ) : null;
 
   return (
-    <div className="flex items-center py-4 border-b border-gray-100 last:border-b-0">
-      <div className="w-1/2 flex justify-end mr-3">
+    <div className="flex items-center py-3 sm:py-4 border-b border-gray-100 last:border-b-0">
+      <div className="w-1/2 flex justify-end mr-2 sm:mr-3">
         {homeContent}
         {isHomeTeam && (
-          <div className="ml-2 flex items-center">
-            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+          <div className="ml-1 sm:ml-2 flex items-center">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-green-100 flex items-center justify-center">
               {icon}
             </div>
           </div>
         )}
       </div>
       <div className={timeClass}>
-        <span className="text-sm font-medium">{event.time.elapsed}&apos;</span>
+        <span className="text-xs sm:text-sm font-medium">{event.time.elapsed}&apos;</span>
       </div>
-      <div className="w-1/2 flex ml-3">
+      <div className="w-1/2 flex ml-2 sm:ml-3">
         {!isHomeTeam && (
-          <div className="mr-2 flex items-center">
-            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+          <div className="mr-1 sm:mr-2 flex items-center">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-green-100 flex items-center justify-center">
               {icon}
             </div>
           </div>
@@ -505,28 +516,28 @@ export default function EventsPanel({ fixture }: EventsPanelProps) {
 
   return (
     <div>
-      <h3 className="text-center text-xl font-semibold mb-6">イベント</h3>
+      <h3 className="text-center text-lg sm:text-xl font-semibold mb-4 sm:mb-6">イベント</h3>
 
       {/* フィルター */}
-      <div className="flex overflow-x-auto pb-2 mb-6 justify-center">
+      <div className="flex overflow-x-auto pb-2 mb-4 sm:mb-6 justify-center">
         {EVENT_FILTERS.map((filterOption) => (
           <button
             key={filterOption.id}
             onClick={() => setFilter(filterOption.id)}
-            className={`px-4 py-2 rounded-full mr-2 whitespace-nowrap flex items-center ${
+            className={`px-2 sm:px-4 py-1 sm:py-2 rounded-full mr-1 sm:mr-2 whitespace-nowrap flex items-center text-xs sm:text-sm ${
               filter === filterOption.id
                 ? filterOption.activeClass
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {filterOption.icon && <filterOption.icon className="w-4 h-4 mr-1" />}
+            {filterOption.icon && <filterOption.icon className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />}
             {filterOption.label}
           </button>
         ))}
       </div>
 
       {/* イベントリスト表示 */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-sm p-3 sm:p-6">
         {processedEvents.map((item, index) => {
           if (item.type === 'halftime') {
             return (
