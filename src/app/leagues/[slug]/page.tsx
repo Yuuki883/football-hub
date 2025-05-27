@@ -12,13 +12,13 @@ import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { Match } from '@/lib/api-football/types/type-exports';
 
 interface LeaguePageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
     forceRefresh?: string;
-  };
+  }>;
 }
 
 // 動的メタデータ生成
@@ -27,7 +27,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const leagueData = await getLeagueBySlug(slug);
 
   if (!leagueData) {
@@ -43,9 +43,10 @@ export async function generateMetadata({
 }
 
 export default async function LeaguePage({ params, searchParams }: LeaguePageProps) {
-  const { slug } = params;
-  const season = parseInt(searchParams.season || '2024');
-  const forceRefresh = searchParams.forceRefresh === 'true';
+  const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const season = parseInt(resolvedSearchParams.season || '2024');
+  const forceRefresh = resolvedSearchParams.forceRefresh === 'true';
   const currentYear = new Date().getFullYear();
 
   // UEFA大会かどうかを判定

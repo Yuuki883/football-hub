@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { getTeamById } from '@/features/teams/api/team-info';
-import { getTeamStandings, getLeagueSlugById } from '@/features/teams/api/team-standings';
+import { getTeamStandings } from '@/features/teams/api/team-standings';
+import { getStandardLeagueSlugById } from '@/features/leagues/api/league-info';
 import StandingsTable from '@/features/leagues/components/tables/StandingsTable';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
@@ -83,7 +84,7 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
     }
 
     // リーグスラッグを取得
-    const leagueSlug = leagueId ? getLeagueSlugById(leagueId) : null;
+    const leagueSlug = leagueId ? getStandardLeagueSlugById(leagueId) : null;
 
     return (
       <PageLayout>
