@@ -62,45 +62,31 @@ API-Footballによる最新の情報
 
 ### 言語・フレームワーク
 
-<img src="https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<img src="https://img.shields.io/badge/Next.js-15.3.2-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<img src="https://img.shields.io/badge/TypeScript-5.2.2-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
-<img src="https://img.shields.io/badge/Node.js-20.17.30-339933?style=for-the-badge&logo=node.js&logoColor=white">
+<img src="https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react">　<img src="https://img.shields.io/badge/Next.js-15.3.2-000000?style=for-the-badge&logo=next.js">　<img src="https://img.shields.io/badge/TypeScript-5.2.2-007ACC?style=for-the-badge&logo=typescript">　<img src="https://img.shields.io/badge/Node.js-20.17.30-339933?style=for-the-badge&logo=node.js">
 
 ### UI・スタイリング
 
-<img src="https://img.shields.io/badge/Tailwind_CSS-4.1.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
-<img src="https://img.shields.io/badge/Lucide_React-0.487.0-000000?style=for-the-badge&logo=lucide&logoColor=white">
-<img src="https://img.shields.io/badge/Recharts-2.15.2-8884D8?style=for-the-badge&logo=recharts&logoColor=white">
+<img src="https://img.shields.io/badge/Tailwind_CSS-4.1.3-06B6D4?style=for-the-badge&logo=tailwindcss">　<img src="https://img.shields.io/badge/Lucide_React-0.487.0-000000?style=for-the-badge&logo=lucide">　<img src="https://img.shields.io/badge/Recharts-2.15.2-8884D8?style=for-the-badge&logo=recharts">
 
 ### ユーティリティ・ライブラリ
 
-<img src="https://img.shields.io/badge/date--fns-4.1.0-770C56?style=for-the-badge&logo=date-fns&logoColor=white">
-<img src="https://img.shields.io/badge/clsx-2.1.1-FF6B6B?style=for-the-badge&logoColor=white">
-<img src="https://img.shields.io/badge/zod-3.24.2-3E67B1?style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/date--fns-4.1.0-770C56?style=for-the-badge&logo=date-fns">　<img src="https://img.shields.io/badge/clsx-2.1.1-FF6B6B?style=for-the-badge">　<img src="https://img.shields.io/badge/zod-3.24.2-3E67B1?style=for-the-badge">
 
 ### バックエンド・データベース
 
-<img src="https://img.shields.io/badge/Prisma-5.22.0-2D3748?style=for-the-badge&logo=prisma&logoColor=white">
-<img src="https://img.shields.io/badge/PostgreSQL-Latest-336791?style=for-the-badge&logo=postgresql&logoColor=white">
-<img src="https://img.shields.io/badge/Supabase-2.49.8-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white">
-<img src="https://img.shields.io/badge/Supabase_Storage-Latest-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white">
-<img src="https://img.shields.io/badge/Upstash_Redis-1.34.6-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/Prisma-5.22.0-2D3748?style=for-the-badge&logo=prisma">　<img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql">　<img src="https://img.shields.io/badge/Supabase-2.49.8-3ECF8E?style=for-the-badge&logo=supabase">　<img src="https://img.shields.io/badge/Supabase_Storage-Latest-3ECF8E?style=for-the-badge&logo=supabase">　<img src="https://img.shields.io/badge/Upstash_Redis-1.34.6-DC382D?style=for-the-badge&logo=redis">
 
 ### 外部API
 
-<img src="https://img.shields.io/badge/API--Football-Latest-FF6B35?style=for-the-badge&logoColor=white">
+<img src="https://img.shields.io/badge/API--Football-FF6B35?style=for-the-badge">
 
 ### 認証・状態管理
 
-<img src="https://img.shields.io/badge/NextAuth.js-4.24.11-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<img src="https://img.shields.io/badge/Zustand-5.0.3-000000?style=for-the-badge&logo=react&logoColor=white">
+<img src="https://img.shields.io/badge/NextAuth.js-4.24.11-000000?style=for-the-badge&logo=next.js">　<img src="https://img.shields.io/badge/Zustand-5.0.3-000000?style=for-the-badge&logo=react">
 
 ### インフラ・DevOps
 
-<img src="https://img.shields.io/badge/Vercel-Latest-000000?style=for-the-badge&logo=vercel&logoColor=white">
-<img src="https://img.shields.io/badge/Docker-Latest-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-<img src="https://img.shields.io/badge/Docker_Compose-Latest-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel">　<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">　<img src="https://img.shields.io/badge/Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 
 ## 🗄️ データベース
 
@@ -116,7 +102,7 @@ API-Footballによる最新の情報
 - **Players**: 選手情報
 - **Favorite_Teams/Favorite_Leagues**: お気に入り機能
 
-### 🏗️ インフラ構成
+## 🏗️ インフラ構成
 
 - 🗄️ **データベース**: Supabase PostgreSQL
 - 📁 **ファイルストレージ**: Supabase Storage
