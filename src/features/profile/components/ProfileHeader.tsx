@@ -5,7 +5,7 @@
  */
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import OptimizedImage from '@/components/common/OptimizedImage';
 import { User } from '@prisma/client';
 
@@ -20,6 +20,8 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
   const [isUploading, setIsUploading] = useState(false);
   // エラーメッセージの管理
   const [error, setError] = useState<string | null>(null);
+  // 画像更新フラグ - 強制的に再描画するための状態
+  const [imageKey, setImageKey] = useState<string>('initial');
   // ファイル入力用のref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -27,14 +29,15 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
   const defaultImage = '/default_pic.png';
 
   // 表示する画像URLを決定する関数
-  const getDisplayImageUrl = () => {
+  const getDisplayImageUrl = useCallback(() => {
     // ユーザー画像が存在し、有効な場合はそれを使用
     if (user.image && user.image.trim() !== '') {
-      return user.image;
+      // キャッシュを強制的に回避するためのクエリパラメータを追加
+      return `${user.image}?t=${imageKey}`;
     }
     // それ以外はデフォルト画像を使用
     return defaultImage;
-  };
+  }, [user.image, imageKey]);
 
   // 画像読み込み失敗時の処理
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -80,6 +83,9 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
         ...user,
         image: data.image,
       });
+
+      // 画像キーを更新して再描画
+      setImageKey(Date.now().toString());
     } catch (err) {
       setError(err instanceof Error ? err.message : 'アップロードに失敗しました');
       console.error('画像アップロードエラー:', err);
@@ -114,11 +120,14 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
             className="hidden"
           />
           <OptimizedImage
+            key={imageKey}
             src={getDisplayImageUrl()}
             alt={user.name || 'ユーザー'}
             fill
             className="object-cover"
             priority
+            disableOptimization={false}
+            retryLoad={false}
             onError={handleImageError}
           />
           {isUploading && (
