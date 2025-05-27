@@ -23,7 +23,7 @@ export async function isNationalTeam(teamName: string): Promise<boolean> {
   }
 
   // 代表チームの特徴的な名前パターン
-  const nationalTeamKeywords = ['U15', 'U16', 'U17', 'U18', 'U19', 'U20', 'U21', 'U23'];
+  const nationalTeamKeywords = ['U15', 'U16', 'U17', 'U18', 'U19', 'U20', 'U21', 'U22', 'U23'];
 
   // 国名を含み、かつ代表チームキーワードのいずれかを含む場合のみ代表チームと判定
   for (const country of countryNames) {

@@ -6,6 +6,7 @@
 import OptimizedImage from '@/components/common/OptimizedImage';
 import { PlayerDetail } from '../types/type';
 import { formatDate } from '@/lib/api-football/utils/data-formatters';
+import Link from 'next/link';
 
 interface PlayerProfileSectionProps {
   player: PlayerDetail;
@@ -59,7 +60,12 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
                   className="object-contain"
                 />
               </div>
-              <span className="text-slate-600 truncate">{player.team.name}</span>
+              <Link
+                href={`/teams/${player.team.id}`}
+                className="text-slate-600 truncate hover:text-blue-600 hover:underline transition-colors"
+              >
+                {player.team.name}
+              </Link>
             </div>
           )}
         </div>

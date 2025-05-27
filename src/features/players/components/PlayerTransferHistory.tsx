@@ -5,6 +5,7 @@
  * 移籍日付、移籍金、移籍元/移籍先チームを表示
  */
 import Image from 'next/image';
+import Link from 'next/link';
 import { TransferHistoryEntry } from '../types/type';
 
 interface PlayerTransferHistoryProps {
@@ -43,8 +44,20 @@ export default function PlayerTransferHistory({ transfers }: PlayerTransferHisto
           {sortedTransfers.map((transfer, index) => (
             <TransferCard
               key={`transfer-${index}`}
-              toTeam={transfer.team}
-              fromTeam={transfer.fromTeam}
+              toTeam={{
+                id: transfer.team.id,
+                name: transfer.team.name,
+                logo: transfer.team.logo,
+              }}
+              fromTeam={
+                transfer.fromTeam
+                  ? {
+                      id: transfer.fromTeam.id,
+                      name: transfer.fromTeam.name,
+                      logo: transfer.fromTeam.logo,
+                    }
+                  : undefined
+              }
               transferDate={transfer.transferDate}
               transferType={transfer.transferType}
             />
@@ -58,10 +71,12 @@ export default function PlayerTransferHistory({ transfers }: PlayerTransferHisto
 // 移籍カードコンポーネント
 interface TransferCardProps {
   toTeam: {
+    id: number | string;
     name: string;
     logo: string;
   };
   fromTeam?: {
+    id: number | string;
     name: string;
     logo: string;
   };
@@ -115,7 +130,12 @@ function TransferCard({ toTeam, fromTeam, transferDate, transferType }: Transfer
               </div>
               <div className="flex flex-col">
                 <span className="text-xs text-slate-500">移籍元</span>
-                <span className="font-medium text-slate-800">{fromTeam.name}</span>
+                <Link
+                  href={`/teams/${fromTeam.id}`}
+                  className="font-medium text-slate-800 hover:text-blue-600 hover:underline transition-colors"
+                >
+                  {fromTeam.name}
+                </Link>
               </div>
             </div>
           )}
@@ -152,7 +172,12 @@ function TransferCard({ toTeam, fromTeam, transferDate, transferType }: Transfer
             </div>
             <div className="flex flex-col">
               <span className="text-xs text-slate-500">移籍先</span>
-              <span className="font-medium text-slate-800">{toTeam.name}</span>
+              <Link
+                href={`/teams/${toTeam.id}`}
+                className="font-medium text-slate-800 hover:text-blue-600 hover:underline transition-colors"
+              >
+                {toTeam.name}
+              </Link>
             </div>
           </div>
         </div>

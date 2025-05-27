@@ -5,6 +5,7 @@
  * クラブチーム、ユースチーム、代表チームを分けて表示
  */
 import Image from 'next/image';
+import Link from 'next/link';
 import { TransferHistoryEntry } from '../types/type';
 
 interface PlayerTeamHistoryProps {
@@ -141,7 +142,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
                 startSeason={transfer.startSeason}
                 endSeason={transfer.endSeason}
                 transferDate={transfer.transferDate}
-                isLatest={false} // ユースチームには「現在」バッジを表示しない
+                isLatest={false}
               />
             ))}
           </div>
@@ -173,6 +174,7 @@ export default function PlayerTeamHistory({ transfers }: PlayerTeamHistoryProps)
 // チームカードコンポーネント（クラブチーム用）
 interface TeamCardProps {
   team: {
+    id: number | string;
     name: string;
     logo: string;
   };
@@ -206,11 +208,6 @@ function TeamCard({ team, startSeason, endSeason, transferDate, isLatest }: Team
       return `${start}年`;
     }
 
-    // 複数年の場合（現在のチームなら「〜たった今」表示）
-    if (isLatest) {
-      return `${start}年 - たった今`;
-    }
-
     return `${start}年 - ${end}年`;
   };
 
@@ -236,20 +233,18 @@ function TeamCard({ team, startSeason, endSeason, transferDate, isLatest }: Team
 
       {/* チーム名と在籍期間 */}
       <div className="flex-grow min-w-0">
-        <h3 className="font-medium text-slate-800 truncate">{team.name}</h3>
+        <h3 className="font-medium truncate">
+          <Link
+            href={`/teams/${team.id}`}
+            className="text-slate-800 hover:text-blue-600 hover:underline transition-colors"
+          >
+            {team.name}
+          </Link>
+        </h3>
         <div className="text-sm text-slate-500 mt-1">
           {tenureDisplay && <span className="block">{tenureDisplay}</span>}
         </div>
       </div>
-
-      {/* 現在のチーム表示 */}
-      {isLatest && (
-        <div className="ml-2 flex-shrink-0">
-          <span className="text-xs px-2 py-0.5 bg-slate-100 text-slate-800 rounded-full whitespace-nowrap">
-            現在
-          </span>
-        </div>
-      )}
     </div>
   );
 }
@@ -257,6 +252,7 @@ function TeamCard({ team, startSeason, endSeason, transferDate, isLatest }: Team
 // 代表チーム用カードコンポーネント
 interface NationalTeamCardProps {
   team: {
+    id: number | string;
     name: string;
     logo: string;
   };
@@ -300,7 +296,14 @@ function NationalTeamCard({ team, startSeason, endSeason }: NationalTeamCardProp
 
       {/* チーム名と在籍期間 */}
       <div className="flex-grow min-w-0">
-        <h3 className="font-medium text-slate-800 truncate">{team.name}</h3>
+        <h3 className="font-medium truncate">
+          <Link
+            href={`/teams/${team.id}`}
+            className="text-slate-800 hover:text-blue-600 hover:underline transition-colors"
+          >
+            {team.name}
+          </Link>
+        </h3>
         <span className="text-sm text-slate-500 block mt-1">{tenureDisplay}</span>
       </div>
     </div>
