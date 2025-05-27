@@ -1,6 +1,8 @@
-import Image from 'next/image';
+'use client';
+
 import Link from 'next/link';
 import { TeamPlayerGroup, TeamPlayer } from '../types/type';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 interface PlayersListProps {
   playerGroups: TeamPlayerGroup[];
@@ -19,16 +21,13 @@ export default function PlayersList({ playerGroups }: PlayersListProps) {
                 href={`/players/${player.id}`}
                 className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="flex-shrink-0">
-                  {player.photo && (
-                    <Image
-                      src={player.photo}
-                      alt={`${player.name}の写真`}
-                      width={48}
-                      height={48}
-                      className="rounded-full object-cover"
-                    />
-                  )}
+                <div className="flex-shrink-0 relative w-12 h-12">
+                  <OptimizedImage
+                    src={player.photo || ''}
+                    alt={`${player.name}の写真`}
+                    fill
+                    className="rounded-full object-cover"
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-gray-900">{player.name}</div>

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { getTeamById } from '@/features/teams/api/team-info';
 import { getTeamStandings, getLeagueSlugById } from '@/features/teams/api/team-standings';
@@ -96,7 +96,7 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
             <div className="flex items-center gap-3 mb-5">
               {teamInLeagueData?.leagueLogo && (
                 <div className="relative w-8 h-8 flex-shrink-0">
-                  <Image
+                  <OptimizedImage
                     src={teamInLeagueData.leagueLogo}
                     alt={teamInLeagueData.leagueName || 'リーグロゴ'}
                     fill

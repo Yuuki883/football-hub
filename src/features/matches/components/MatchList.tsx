@@ -1,6 +1,5 @@
-// src/components/matches/MatchList.tsx
 import React from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { MatchDisplay } from '../types';
 import { groupMatchesByDate, isMatchStarted } from '../utils/match-utils';
@@ -47,7 +46,7 @@ export default function MatchList({ matches }: MatchListProps) {
                     {match.homeTeam.shortName || match.homeTeam.name}
                   </span>
                   <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex-shrink-0">
-                    <Image
+                    <OptimizedImage
                       src={match.homeTeam.crest || '/team-placeholder.png'}
                       alt={match.homeTeam.name}
                       width={40}
@@ -93,7 +92,7 @@ export default function MatchList({ matches }: MatchListProps) {
 
                 <div className="flex-1 flex items-center">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 relative flex-shrink-0">
-                    <Image
+                    <OptimizedImage
                       src={match.awayTeam.crest || '/team-placeholder.png'}
                       alt={match.awayTeam.name}
                       width={40}

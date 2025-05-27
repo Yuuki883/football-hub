@@ -178,6 +178,7 @@ export default function PlayerStatsSection({ stats }: PlayerStatsSectionProps) {
                     width={32}
                     height={32}
                     className="object-contain"
+                    unoptimized // 外部API画像のため最適化を無効化
                   />
                 </div>
               )}

@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -77,7 +77,7 @@ export default function TeamSchedule({
                 {/* ホームチーム */}
                 <div className="flex items-center space-x-2 flex-1">
                   <div className="relative w-6 h-6">
-                    <Image
+                    <OptimizedImage
                       src={match.homeTeam.crest || '/team-placeholder.png'}
                       alt={match.homeTeam.name}
                       fill
@@ -128,7 +128,7 @@ export default function TeamSchedule({
                     {match.awayTeam.name}
                   </span>
                   <div className="relative w-6 h-6">
-                    <Image
+                    <OptimizedImage
                       src={match.awayTeam.crest || '/team-placeholder.png'}
                       alt={match.awayTeam.name}
                       fill

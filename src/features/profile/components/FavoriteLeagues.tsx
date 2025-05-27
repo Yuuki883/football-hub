@@ -2,7 +2,7 @@
  * お気に入りリーグ一覧コンポーネント
  * ユーザーがお気に入り登録したリーグのリストを表示
  */
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { FavoriteLeague, League } from '@prisma/client';
 
@@ -33,7 +33,7 @@ export default function FavoriteLeagues({ favoriteLeagues }: FavoriteLeaguesProp
         >
           <div className="relative w-12 h-12 mr-4 flex-shrink-0">
             {league.logo ? (
-              <Image src={league.logo} alt={league.name} fill className="object-contain" />
+              <OptimizedImage src={league.logo} alt={league.name} fill className="object-contain" />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
                 <span className="text-xs font-bold">{league.name.substring(0, 2)}</span>

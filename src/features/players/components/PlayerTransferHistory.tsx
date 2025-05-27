@@ -110,6 +110,7 @@ function TransferCard({ toTeam, fromTeam, transferDate, transferType }: Transfer
                   fill
                   sizes="40px"
                   className="object-contain"
+                  unoptimized // 外部API画像のため最適化を無効化
                 />
               </div>
               <div className="flex flex-col">
@@ -146,6 +147,7 @@ function TransferCard({ toTeam, fromTeam, transferDate, transferType }: Transfer
                 fill
                 sizes="40px"
                 className="object-contain"
+                unoptimized // 外部API画像のため最適化を無効化
               />
             </div>
             <div className="flex flex-col">

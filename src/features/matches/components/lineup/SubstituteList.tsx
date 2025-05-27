@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { memo } from 'react';
 import { Event, MatchPlayerEntry, MatchPlayerPerformance, Team } from '../../types';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 /**
  * レーティングに応じた背景色を取得する関数
@@ -92,7 +92,7 @@ const SubPlayerItem = memo(
             <div className="relative w-10 h-10 mr-3 flex-shrink-0">
               {playerPerf?.player.photo ? (
                 <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
+                  <OptimizedImage
                     src={playerPerf.player.photo}
                     alt={player.name}
                     fill
@@ -204,7 +204,7 @@ const SubstituteList = memo(
         <div className={`${bgColor} py-2 px-4`}>
           <div className="flex items-center">
             <div className="relative w-6 h-6 mr-2">
-              <Image src={team.logo} alt={team.name} fill className="object-contain" />
+              <OptimizedImage src={team.logo} alt={team.name} fill className="object-contain" />
             </div>
             <h4 className="text-white font-semibold">{team.name}</h4>
           </div>

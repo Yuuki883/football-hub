@@ -229,6 +229,7 @@ function TeamCard({ team, startSeason, endSeason, transferDate, isLatest }: Team
             sizes="48px"
             className="object-contain"
             priority
+            unoptimized // 外部API画像のため最適化を無効化
           />
         </div>
       </div>
@@ -292,6 +293,7 @@ function NationalTeamCard({ team, startSeason, endSeason }: NationalTeamCardProp
             sizes="48px"
             className="object-contain"
             priority
+            unoptimized // 外部API画像のため最適化を無効化
           />
         </div>
       </div>

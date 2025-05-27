@@ -8,8 +8,8 @@
 import { format, isToday, isTomorrow, isYesterday, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { ja } from 'date-fns/locale';
-import { LEAGUE_ID_MAPPING, DEFAULT_SEASON } from '@/config/api';
-import { Match, MATCH_STATUS_MAPPING, DateRange } from '../types/fixture';
+import { LEAGUE_ID_MAPPING } from '@/config/api';
+import { Match, DateRange } from '../types/fixture';
 import { FormattedStanding, ApiFootballTeamStanding } from '../types/standing';
 import { FormattedPlayerStats } from '../types/player';
 
@@ -201,92 +201,6 @@ export function formatDate(dateString?: string | null): string {
 }
 
 // =============================================================================
-// 試合情報フォーマット関数（Match Info Formatters）
-// =============================================================================
-
-/**
- * ラウンド情報の統合フォーマット関数
- * 例: "Regular Season - 37" → "37節"
- *
- * @param round ラウンド文字列
- * @returns フォーマットされたラウンド表示
- */
-export function formatMatchRound(round?: string): string {
-  if (!round) return '';
-
-  // "Regular Season - 37" のようなフォーマットから数字部分を抽出
-  const match = round.match(/(\d+)$/);
-  if (match && match[1]) {
-    return `${match[1]}節`;
-  }
-
-  return round;
-}
-
-/**
- * 試合ステータスの統合フォーマット関数
- *
- * @param status 試合ステータス（短縮形）
- * @param elapsed 経過時間（分）
- * @returns 表示用ステータステキストとCSSクラス
- */
-export function formatMatchStatus(
-  status: string,
-  elapsed?: number | null
-): {
-  text: string;
-  className: string;
-} {
-  switch (status) {
-    case 'NS':
-      return { text: '試合前', className: 'bg-gray-500' };
-    case '1H':
-      return {
-        text: elapsed ? `前半 ${elapsed}'` : '前半',
-        className: 'bg-green-500 animate-pulse',
-      };
-    case 'HT':
-      return { text: 'ハーフタイム', className: 'bg-yellow-500' };
-    case '2H':
-      return {
-        text: elapsed ? `後半 ${elapsed}'` : '後半',
-        className: 'bg-green-500 animate-pulse',
-      };
-    case 'ET':
-      return {
-        text: elapsed ? `延長 ${elapsed}'` : '延長戦',
-        className: 'bg-orange-500 animate-pulse',
-      };
-    case 'P':
-      return { text: 'PK戦', className: 'bg-red-500 animate-pulse' };
-    case 'FT':
-      return { text: '試合終了', className: 'bg-blue-500' };
-    case 'AET':
-      return { text: '延長終了', className: 'bg-blue-500' };
-    case 'PEN':
-      return { text: 'PK終了', className: 'bg-blue-500' };
-    case 'SUSP':
-      return { text: '中断', className: 'bg-red-500' };
-    case 'INT':
-      return { text: '中断中', className: 'bg-yellow-500' };
-    case 'PST':
-      return { text: '延期', className: 'bg-gray-500' };
-    case 'CANC':
-      return { text: '中止', className: 'bg-red-500' };
-    case 'ABD':
-      return { text: '放棄', className: 'bg-red-500' };
-    case 'AWD':
-      return { text: '没収', className: 'bg-purple-500' };
-    case 'WO':
-      return { text: '不戦勝', className: 'bg-purple-500' };
-    case 'LIVE':
-      return { text: 'LIVE', className: 'bg-red-500 animate-pulse' };
-    default:
-      return { text: status, className: 'bg-gray-500' };
-  }
-}
-
-// =============================================================================
 // 順位表データフォーマット関数（Standings Formatters）
 // =============================================================================
 
@@ -380,36 +294,6 @@ export function formatRating(rating?: string): string | undefined {
   return ratingNum ? ratingNum.toFixed(1) : undefined;
 }
 
-/**
- * シーズン配列から開始と終了のシーズンを抽出する
- *
- * @param seasons - シーズン番号の配列
- * @returns 開始と終了のシーズン情報
- */
-export function parseSeasons(seasons: string[] | number[]): {
-  startSeason: string;
-  endSeason?: string;
-} {
-  // シーズンがない場合
-  if (!seasons || seasons.length === 0) {
-    return { startSeason: '' };
-  }
-
-  // 数値を文字列に変換して昇順ソート
-  const sortedSeasons = [...seasons].map((s) => String(s)).sort();
-
-  // 開始シーズン（配列の最初の要素）
-  const startSeason = sortedSeasons.length > 0 ? sortedSeasons[0] : '';
-
-  // 終了シーズン（配列の最後の要素、ただし開始と同じ場合はundefined）
-  const endSeason =
-    sortedSeasons.length > 1 && sortedSeasons[sortedSeasons.length - 1] !== startSeason
-      ? sortedSeasons[sortedSeasons.length - 1]
-      : undefined;
-
-  return { startSeason, endSeason };
-}
-
 // =============================================================================
 // 移籍データフォーマット関数（Transfer Formatters）
 // =============================================================================
@@ -477,77 +361,4 @@ export function calculateDateRange(
   }
 
   return { dateFrom, dateTo };
-}
-
-// =============================================================================
-// データ組織化ユーティリティ（Data Organization Utilities）
-// =============================================================================
-
-/**
- * 試合データを日付でグループ化
- *
- * @param matches 試合データ配列
- * @returns 日付でグループ化された試合データ
- */
-export function groupMatchesByDate(matches: Match[]): Record<string, Match[]> {
-  return matches.reduce((acc: Record<string, Match[]>, match) => {
-    const dateKey = formatMatchDate(match.utcDate, { type: 'group' });
-    if (!acc[dateKey]) {
-      acc[dateKey] = [];
-    }
-    acc[dateKey].push(match);
-    return acc;
-  }, {});
-}
-
-// =============================================================================
-// 試合状態判定ユーティリティ（Match State Utilities）
-// =============================================================================
-
-/**
- * 試合開始判定ユーティリティ
- *
- * @param status 試合ステータス
- * @returns 試合が開始済みかどうか
- */
-export function isMatchStarted(status: string): boolean {
-  const startedStatuses = [
-    '1H',
-    'HT',
-    '2H',
-    'ET',
-    'P',
-    'FT',
-    'AET',
-    'PEN',
-    'SUSP',
-    'INT',
-    'ABD',
-    'AWD',
-    'WO',
-    'LIVE',
-  ];
-  return startedStatuses.includes(status);
-}
-
-/**
- * 試合終了判定ユーティリティ
- *
- * @param status 試合ステータス
- * @returns 試合が終了済みかどうか
- */
-export function isMatchFinished(status: string): boolean {
-  const finishedStatuses = ['FT', 'AET', 'PEN', 'ABD', 'AWD', 'WO'];
-  return finishedStatuses.includes(status);
-}
-
-/**
- * ライブ試合判定ユーティリティ
- *
- * @param status 試合ステータス
- * @returns 試合がライブ中かどうか
- */
-export function isMatchLive(status: string): boolean {
-  const liveStatuses = ['1H', '2H', 'ET', 'P', 'LIVE'];
-  return liveStatuses.includes(status);
 }

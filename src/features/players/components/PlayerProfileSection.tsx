@@ -3,7 +3,7 @@
  *
  * 選手の基本情報（写真、名前、所属チーム、身体データなど）を表示
  */
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import { PlayerDetail } from '../types/type';
 import { formatDate } from '@/lib/api-football/utils/data-formatters';
 
@@ -27,7 +27,7 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
       {/* 選手写真 */}
       <div className="relative h-80 w-full bg-slate-100">
         {player.photo ? (
-          <Image
+          <OptimizedImage
             src={player.photo}
             alt={player.name}
             fill
@@ -51,7 +51,7 @@ export default function PlayerProfileSection({ player }: PlayerProfileSectionPro
           {player.team && (
             <div className="flex items-center mt-2">
               <div className="flex-shrink-0 w-6 h-6 mr-2 flex items-center justify-center">
-                <Image
+                <OptimizedImage
                   src={player.team.logo}
                   alt={player.team.name}
                   width={20}

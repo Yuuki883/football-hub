@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    // Vercel画像最適化を無効化（402エラー対策）
-    unoptimized: true,
+    // Vercel画像最適化を再度有効化（選択的に無効化するため）
+    unoptimized: false,
     domains: [
       'upload.wikimedia.org',
       'tmssl.akamaized.net',
