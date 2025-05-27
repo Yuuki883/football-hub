@@ -17,7 +17,7 @@ export default async function NewsPage() {
 
   return (
     <PageLayout>
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">サッカーニュース</h1>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">ニュース一覧</h1>
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <NewsGrid initialNews={news} />
