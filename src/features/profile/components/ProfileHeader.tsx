@@ -39,11 +39,6 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
     return defaultImage;
   }, [user.image, imageKey]);
 
-  // デフォルト画像を使用しているかどうかを判定
-  const isUsingDefaultImage = useCallback(() => {
-    return !user.image || user.image.trim() === '';
-  }, [user.image]);
-
   // 画像読み込み失敗時の処理
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
     // デフォルト画像にフォールバック
@@ -131,7 +126,7 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
             fill
             className="object-cover"
             priority
-            disableOptimization={isUsingDefaultImage()}
+            disableOptimization={true}
             retryLoad={false}
             onError={handleImageError}
           />
