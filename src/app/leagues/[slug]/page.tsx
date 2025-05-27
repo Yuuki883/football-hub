@@ -122,14 +122,6 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
             isOverview={true}
           />
         </Suspense>
-        <div className="mt-4 text-right">
-          <Link
-            href={`/leagues/${slug}/standings?season=${season}`}
-            className="text-blue-600 hover:text-blue-800 text-sm"
-          >
-            全順位表を見る
-          </Link>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -171,6 +163,11 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
           <Suspense fallback={<div>読み込み中...</div>}>
             <ScorersRanking players={topScorers} limit={5} />
           </Suspense>
+        </div>
+        <div>
+          <Suspense fallback={<div>読み込み中...</div>}>
+            <AssistsRanking players={topAssists} limit={5} />
+          </Suspense>
           <div className="mt-4 text-right">
             <Link
               href={`/leagues/${slug}/stats?season=${season}`}
@@ -179,11 +176,6 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
               全選手スタッツを見る
             </Link>
           </div>
-        </div>
-        <div>
-          <Suspense fallback={<div>読み込み中...</div>}>
-            <AssistsRanking players={topAssists} limit={5} />
-          </Suspense>
         </div>
       </div>
     </>
