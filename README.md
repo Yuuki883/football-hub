@@ -72,9 +72,9 @@ API-Footballによる最新の情報
 
 <img src="https://img.shields.io/badge/date--fns-4.1.0-770C56?style=for-the-badge&logo=date-fns">　<img src="https://img.shields.io/badge/clsx-2.1.1-FF6B6B?style=for-the-badge">　<img src="https://img.shields.io/badge/zod-3.24.2-3E67B1?style=for-the-badge">
 
-### バックエンド・データベース
+### データベース
 
-<img src="https://img.shields.io/badge/Prisma-5.22.0-2D3748?style=for-the-badge&logo=prisma">　<img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql">　<img src="https://img.shields.io/badge/Supabase-2.49.8-3ECF8E?style=for-the-badge&logo=supabase">　<img src="https://img.shields.io/badge/Supabase_Storage-Latest-3ECF8E?style=for-the-badge&logo=supabase">　<img src="https://img.shields.io/badge/Upstash_Redis-1.34.6-DC382D?style=for-the-badge&logo=redis">
+<img src="https://img.shields.io/badge/Prisma-5.22.0-2D3748?style=for-the-badge&logo=prisma">　<img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql">　<img src="https://img.shields.io/badge/Supabase-2.49.8-3ECF8E?style=for-the-badge&logo=supabase">　<img src="https://img.shields.io/badge/Supabase_Storage-Latest-3ECF8E?style=for-the-badge&logo=supabase">
 
 ### 外部API
 
@@ -82,7 +82,7 @@ API-Footballによる最新の情報
 
 ### 認証・状態管理
 
-<img src="https://img.shields.io/badge/NextAuth.js-4.24.11-000000?style=for-the-badge&logo=next.js">　<img src="https://img.shields.io/badge/Zustand-5.0.3-000000?style=for-the-badge&logo=react">
+<img src="https://img.shields.io/badge/NextAuth.js-4.24.11-000000?style=for-the-badge&logo=next.js">　<img src="https://img.shields.io/badge/Zustand-5.0.3-000000?style=for-the-badge&logo=react"> <img src="https://img.shields.io/badge/Upstash_Redis-1.34.6-DC382D?style=for-the-badge&logo=redis">
 
 ### インフラ・DevOps
 
