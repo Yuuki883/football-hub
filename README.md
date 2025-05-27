@@ -1,7 +1,5 @@
 # Football Hub
 
-<div align="center">
-
 サッカー情報プラットフォーム
 試合・選手・チーム・ニュースなどの情報を提供
 
