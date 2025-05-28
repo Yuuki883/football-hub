@@ -6,21 +6,21 @@ import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface StatsPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
-  };
+  }>;
 }
 
 // 動的メタデータ生成
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const leagueData = await getLeagueBySlug(slug);
 
   if (!leagueData) {
@@ -36,8 +36,9 @@ export async function generateMetadata({
 }
 
 export default async function StatsPage({ params, searchParams }: StatsPageProps) {
-  const { slug } = params;
-  const season = parseInt(searchParams.season || '2024');
+  const { slug } = await params;
+  const { season: seasonParam } = await searchParams;
+  const season = parseInt(seasonParam || '2024');
 
   // 並行データ取得
   const [topScorers, topAssists] = await Promise.all([

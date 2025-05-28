@@ -51,8 +51,8 @@ async function fetchFromFeed(feedUrl: string): Promise<NewsItem[]> {
     // フィードを解析
     const feedData = await parser.parseURL(feedUrl);
 
-    // 負荷軽減のため先頭の記事のみ処理
-    const items = feedData.items.slice(0, 8);
+    // 各フィードから記事取得
+    const items = feedData.items.slice(0, 9);
 
     // 各記事を並列処理
     return await Promise.all(items.map(processNewsItem));

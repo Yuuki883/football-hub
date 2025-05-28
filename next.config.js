@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    // Vercel画像最適化を再度有効化（選択的に無効化するため）
+    unoptimized: false,
     domains: [
       'upload.wikimedia.org',
       'tmssl.akamaized.net',
@@ -11,9 +13,9 @@ const nextConfig = {
     ],
   },
   // 一時的にTypeScriptのビルド時チェックを無効化
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // クライアントサイドでは以下のモジュールを使わない

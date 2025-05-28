@@ -46,9 +46,6 @@ clear_redis_cache.sh
 # prisma
 prisma/db_migration_guide.md
 
-#doc
-docs/
-
 #scripts
 scripts/
 

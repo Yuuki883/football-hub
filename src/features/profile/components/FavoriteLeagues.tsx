@@ -2,9 +2,10 @@
  * お気に入りリーグ一覧コンポーネント
  * ユーザーがお気に入り登録したリーグのリストを表示
  */
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { FavoriteLeague, League } from '@prisma/client';
+import { getStandardLeagueSlugById } from '@/features/leagues/api/league-info';
 
 type FavoriteLeagueWithLeague = FavoriteLeague & {
   league: League;
@@ -25,27 +26,37 @@ export default function FavoriteLeagues({ favoriteLeagues }: FavoriteLeaguesProp
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {favoriteLeagues.map(({ league }) => (
-        <Link
-          key={league.id}
-          href={`/leagues/${league.slug}`}
-          className="flex items-center p-4 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition"
-        >
-          <div className="relative w-12 h-12 mr-4 flex-shrink-0">
-            {league.logo ? (
-              <Image src={league.logo} alt={league.name} fill className="object-contain" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
-                <span className="text-xs font-bold">{league.name.substring(0, 2)}</span>
-              </div>
-            )}
-          </div>
-          <div>
-            <h3 className="font-semibold text-gray-900">{league.name}</h3>
-            <p className="text-sm text-gray-500">{league.country}</p>
-          </div>
-        </Link>
-      ))}
+      {favoriteLeagues.map(({ league }) => {
+        // 標準的なslugを取得（UEFA大会の場合は短縮形を使用）
+        const standardSlug = getStandardLeagueSlugById(league.apiId) || league.slug;
+
+        return (
+          <Link
+            key={league.id}
+            href={`/leagues/${standardSlug}`}
+            className="flex items-center p-4 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition"
+          >
+            <div className="relative w-12 h-12 mr-4 flex-shrink-0">
+              {league.logo ? (
+                <OptimizedImage
+                  src={league.logo}
+                  alt={league.name}
+                  fill
+                  className="object-contain"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
+                  <span className="text-xs font-bold">{league.name.substring(0, 2)}</span>
+                </div>
+              )}
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">{league.name}</h3>
+              <p className="text-sm text-gray-500">{league.country}</p>
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 }

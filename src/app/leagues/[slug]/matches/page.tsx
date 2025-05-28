@@ -8,9 +8,9 @@ import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const leagueData = await getLeagueBySlug(slug);
 
   if (!leagueData) {
@@ -29,11 +29,12 @@ export default async function MatchesPage({
   params,
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams?: { season?: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ season?: string }>;
 }) {
-  const { slug } = params;
-  const season = parseInt(searchParams?.season || '2024');
+  const { slug } = await params;
+  const { season: seasonParam } = await searchParams;
+  const season = parseInt(seasonParam || '2024');
 
   const matches = await getLeagueFixtures(slug, { season });
 

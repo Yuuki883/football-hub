@@ -39,6 +39,11 @@ export const LEAGUE_SLUG_MAPPING: Record<string, number> = {
   'champions-league': 2,
   'europa-league': 3,
   'conference-league': 848,
+
+  // UEFA主要大会のalias（データベースのslugとの互換性）
+  'uefa-champions-league': 2,
+  'uefa-europa-league': 3,
+  'uefa-europa-conference-league': 848,
 };
 
 // シーズン設定

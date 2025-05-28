@@ -5,21 +5,21 @@ import { getLeagueTeams, FormattedTeam } from '@/features/leagues/api/league-tea
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
 interface TeamsPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
-  };
+  }>;
 }
 
 // 動的メタデータ生成
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const leagueData = await getLeagueBySlug(slug);
 
   if (!leagueData) {
@@ -35,8 +35,9 @@ export async function generateMetadata({
 }
 
 export default async function TeamsPage({ params, searchParams }: TeamsPageProps) {
-  const { slug } = params;
-  const season = parseInt(searchParams.season || '2024');
+  const { slug } = await params;
+  const { season: seasonParam } = await searchParams;
+  const season = parseInt(seasonParam || '2024');
 
   const teamsData = await getLeagueTeams(slug, { season });
 

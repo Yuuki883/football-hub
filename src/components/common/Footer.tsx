@@ -26,7 +26,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4 text-white">FootBallHub</h3>
             <p className="mb-3 text-sm">
-              欧州5大リーグ、欧州大会、代表戦の最新情報をリアルタイムで提供。
+              欧州5大リーグ、欧州大会の最新情報をリアルタイムで提供。
               サッカーファンのための総合ポータルサイト。
             </p>
           </div>

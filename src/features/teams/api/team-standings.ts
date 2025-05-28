@@ -8,25 +8,7 @@ import { fetchFromAPI, createUrl } from '@/lib/api-football/total-exports';
 import { getTeamDomesticLeague } from './team-leagues';
 import { TeamStandingInfo, TeamStandingsResult } from '../types/type';
 import { formatStanding } from '@/lib/api-football/utils/data-formatters';
-import { LEAGUE_SLUG_MAPPING } from '@/config/api';
-
-/**
- * リーグIDからスラッグを取得
- *
- * @param leagueId リーグID
- * @returns リーグスラッグ（見つからない場合はnull）
- */
-export function getLeagueSlugById(leagueId: number | string): string | null {
-  const id = typeof leagueId === 'string' ? parseInt(leagueId) : leagueId;
-
-  for (const [slug, mappedId] of Object.entries(LEAGUE_SLUG_MAPPING)) {
-    if (mappedId === id) {
-      return slug;
-    }
-  }
-
-  return null;
-}
+// getStandardLeagueSlugById は @/features/leagues/api/league-info から直接インポートしてください
 
 /**
  * チームが所属するリーグの順位表を取得

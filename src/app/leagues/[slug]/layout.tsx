@@ -7,23 +7,13 @@ import SeasonSelector from '../../../features/leagues/components/common/SeasonSe
 import PageLayout from '@/components/layout/PageLayout';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
-interface LeagueLayoutProps {
-  children: React.ReactNode;
-  params: {
-    slug: string;
-  };
-  searchParams?: {
-    season?: string;
-  };
-}
-
 // 動的メタデータ生成
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const leagueData = await getLeagueBySlug(slug);
 
   if (!leagueData) {
@@ -46,10 +36,14 @@ export async function generateMetadata({
 export default async function LeagueLayout({
   children,
   params,
-  searchParams = {}, // デフォルト値を設定
-}: LeagueLayoutProps) {
-  const { slug } = params;
-  const season = parseInt(searchParams?.season || '2024');
+}: {
+  children: React.ReactNode;
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
+  // デフォルトシーズンは2024を使用
+  const season = 2024;
 
   const leagueData = await getLeagueBySlug(slug);
 

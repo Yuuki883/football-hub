@@ -5,8 +5,8 @@
  */
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
+import { useState, useRef, useCallback } from 'react';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import { User } from '@prisma/client';
 
 type ProfileHeaderProps = {
@@ -20,42 +20,29 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
   const [isUploading, setIsUploading] = useState(false);
   // エラーメッセージの管理
   const [error, setError] = useState<string | null>(null);
-  // 実際の画像URL状態
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  // 画像更新フラグ - 強制的に再描画するための状態
+  const [imageKey, setImageKey] = useState<string>('initial');
   // ファイル入力用のref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // デフォルトのプロフィール画像
-  const defaultImage = 'https://via.placeholder.com/150';
+  const defaultImage = '/default_pic.png';
 
-  // 初期ロード時とユーザー変更時に完全な画像を取得
-  useEffect(() => {
-    // ユーザーのセッション画像がBase64の断片（省略されている）場合、完全な画像を取得
-    if (user.image && user.image.includes('...')) {
-      fetchFullProfileImage();
-    } else {
-      setImageUrl(user.image || defaultImage);
+  // 表示する画像URLを決定する関数
+  const getDisplayImageUrl = useCallback(() => {
+    // ユーザー画像が存在し、有効な場合はそれを使用
+    if (user.image && user.image.trim() !== '') {
+      // キャッシュを強制的に回避するためのクエリパラメータを追加
+      return `${user.image}?t=${imageKey}`;
     }
-  }, [user.id, user.image]);
+    // それ以外はデフォルト画像を使用
+    return defaultImage;
+  }, [user.image, imageKey]);
 
-  // 完全なプロフィール画像を取得
-  const fetchFullProfileImage = async () => {
-    try {
-      const response = await fetch('/api/user/profile-image');
-      if (response.ok) {
-        const data = await response.json();
-        if (data.image) {
-          setImageUrl(data.image);
-        } else {
-          setImageUrl(defaultImage);
-        }
-      } else {
-        setImageUrl(defaultImage);
-      }
-    } catch (err) {
-      console.error('プロフィール画像取得エラー:', err);
-      setImageUrl(defaultImage);
-    }
+  // 画像読み込み失敗時の処理
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    // デフォルト画像にフォールバック
+    e.currentTarget.src = defaultImage;
   };
 
   // 画像クリック時の処理
@@ -97,8 +84,8 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
         image: data.image,
       });
 
-      // 完全な画像をセット
-      setImageUrl(base64Image);
+      // 画像キーを更新して再描画
+      setImageKey(Date.now().toString());
     } catch (err) {
       setError(err instanceof Error ? err.message : 'アップロードに失敗しました');
       console.error('画像アップロードエラー:', err);
@@ -132,12 +119,16 @@ export default function ProfileHeader({ user: initialUser }: ProfileHeaderProps)
             accept="image/*"
             className="hidden"
           />
-          <Image
-            src={imageUrl || defaultImage}
+          <OptimizedImage
+            key={imageKey}
+            src={getDisplayImageUrl()}
             alt={user.name || 'ユーザー'}
             fill
             className="object-cover"
             priority
+            disableOptimization={true}
+            retryLoad={false}
+            onError={handleImageError}
           />
           {isUploading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">

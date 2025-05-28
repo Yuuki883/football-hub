@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { memo } from 'react';
 import { MatchPlayerEntry, Event, MatchPlayerStatistics } from '../../types';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 /**
  * レーティングに応じた背景色を取得する関数
@@ -137,7 +137,12 @@ const PlayerIcon = memo(
             className={`w-12 h-12 rounded-full bg-white overflow-hidden border-2 ${border} shadow-md transition-transform duration-200 group-hover:scale-110`}
           >
             {photo ? (
-              <Image src={photo} alt={player.name} fill className="object-cover w-full h-full" />
+              <OptimizedImage
+                src={photo}
+                alt={player.name}
+                fill
+                className="object-cover w-full h-full"
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center font-bold bg-gray-100">
                 {player.number}

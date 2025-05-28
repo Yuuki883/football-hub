@@ -56,7 +56,7 @@ const LeagueHeader: React.FC<LeagueHeaderProps> = ({ league, country, children }
     >
       {/* お気に入りボタン */}
       {session?.user && (
-        <div className="absolute top-6 right-6">
+        <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
           <FavoriteButton
             isFavorite={isFavorite}
             isLoading={isLoading}

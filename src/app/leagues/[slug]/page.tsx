@@ -12,22 +12,22 @@ import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { Match } from '@/lib/api-football/types/type-exports';
 
 interface LeaguePageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
     forceRefresh?: string;
-  };
+  }>;
 }
 
 // 動的メタデータ生成
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   const leagueData = await getLeagueBySlug(slug);
 
   if (!leagueData) {
@@ -43,9 +43,10 @@ export async function generateMetadata({
 }
 
 export default async function LeaguePage({ params, searchParams }: LeaguePageProps) {
-  const { slug } = params;
-  const season = parseInt(searchParams.season || '2024');
-  const forceRefresh = searchParams.forceRefresh === 'true';
+  const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+  const season = parseInt(resolvedSearchParams.season || '2024');
+  const forceRefresh = resolvedSearchParams.forceRefresh === 'true';
   const currentYear = new Date().getFullYear();
 
   // UEFA大会かどうかを判定
@@ -121,14 +122,6 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
             isOverview={true}
           />
         </Suspense>
-        <div className="mt-4 text-right">
-          <Link
-            href={`/leagues/${slug}/standings?season=${season}`}
-            className="text-blue-600 hover:text-blue-800 text-sm"
-          >
-            全順位表を見る
-          </Link>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -170,6 +163,11 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
           <Suspense fallback={<div>読み込み中...</div>}>
             <ScorersRanking players={topScorers} limit={5} />
           </Suspense>
+        </div>
+        <div>
+          <Suspense fallback={<div>読み込み中...</div>}>
+            <AssistsRanking players={topAssists} limit={5} />
+          </Suspense>
           <div className="mt-4 text-right">
             <Link
               href={`/leagues/${slug}/stats?season=${season}`}
@@ -178,11 +176,6 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
               全選手スタッツを見る
             </Link>
           </div>
-        </div>
-        <div>
-          <Suspense fallback={<div>読み込み中...</div>}>
-            <AssistsRanking players={topAssists} limit={5} />
-          </Suspense>
         </div>
       </div>
     </>

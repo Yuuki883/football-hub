@@ -23,9 +23,9 @@ const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) =
   ];
 
   return (
-    <div className="flex justify-between items-center border-t border-gray-200 px-4 bg-white">
-      <nav>
-        <ul className="flex space-x-8">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t border-gray-200 px-0 sm:px-4 bg-white">
+      <nav className="w-full overflow-x-auto pb-0.5">
+        <ul className="flex min-w-max space-x-4 sm:space-x-8 px-4">
           {navItems.map((item) => {
             const isActive =
               item.path === pathname ||
@@ -42,7 +42,7 @@ const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) =
                 <Link
                   href={href}
                   className={cn(
-                    'inline-block py-4 border-b-2 font-medium text-sm transition-colors',
+                    'inline-block py-3 sm:py-4 border-b-2 font-medium text-sm transition-colors whitespace-nowrap',
                     isActive
                       ? 'border-blue-600 text-blue-700'
                       : 'border-transparent text-gray-700 hover:text-blue-600 hover:border-blue-300'
@@ -55,7 +55,7 @@ const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) =
           })}
         </ul>
       </nav>
-      {children}
+      <div className="w-full sm:w-auto">{children}</div>
     </div>
   );
 };

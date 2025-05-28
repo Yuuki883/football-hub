@@ -6,9 +6,9 @@ import { Goal, AlertTriangle, ArrowRightLeft } from 'lucide-react';
 
 // MatchLayout: タブリスト定義
 export const TABS = [
-  { id: 'stats', label: 'スタッツ' },
-  { id: 'lineups', label: 'ラインナップ' },
-  { id: 'events', label: 'イベント' },
+  { id: 'stats', label: 'スタッツ', shortLabel: 'スタッツ' },
+  { id: 'lineups', label: 'ラインナップ', shortLabel: 'ラインナップ' },
+  { id: 'events', label: 'イベント', shortLabel: 'イベント' },
 ];
 
 // EventsPanel: イベントフィルターオプション

@@ -6,7 +6,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { Fixture } from '../types';
 import { getStatusText, getStatusClass } from '../utils/match-utils';
@@ -105,22 +105,22 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {/* リーグ情報 */}
-      <div className="p-4 bg-gray-50 border-b flex items-center justify-center">
+      <div className="p-3 sm:p-4 bg-gray-50 border-b flex items-center justify-center">
         {safeFixture.league.logo && (
-          <Image
+          <OptimizedImage
             src={safeFixture.league.logo}
             alt={safeFixture.league.name}
-            width={32}
-            height={32}
-            className="mr-2"
+            width={24}
+            height={24}
+            className="mr-2 sm:w-8 sm:h-8"
           />
         )}
-        <span className="text-lg font-semibold">
+        <span className="text-base sm:text-lg font-semibold">
           {safeFixture.league.name} {formattedRound}
         </span>
       </div>
 
-      <div className="p-6">
+      <div className="p-3 sm:p-6">
         <div className="flex items-center justify-between">
           {/* ホームチーム */}
           <div className="flex flex-col items-center flex-1 min-w-0">
@@ -128,33 +128,33 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
               href={`/teams/${fixture.teams.home.id}`}
               className="flex flex-col items-center hover:opacity-90 transition-opacity"
             >
-              <div className="relative w-20 h-20 mb-3 flex-shrink-0 transition-transform hover:scale-105">
-                <Image
+              <div className="relative w-14 h-14 sm:w-20 sm:h-20 mb-2 sm:mb-3 flex-shrink-0 transition-transform hover:scale-105">
+                <OptimizedImage
                   src={safeFixture.teams.home.logo}
                   alt={safeFixture.teams.home.name}
                   fill
-                  sizes="80px"
+                  sizes="(max-width: 640px) 56px, 80px"
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-extrabold truncate text-center hover:underline">
+              <span className="text-base sm:text-xl md:text-2xl font-extrabold truncate text-center hover:underline max-w-[120px] sm:max-w-full">
                 {safeFixture.teams.home.name}
               </span>
             </Link>
           </div>
 
           {/* スコア */}
-          <div className="flex flex-col items-center flex-shrink-0 mx-4">
-            <div className="text-4xl font-bold mb-2">{score}</div>
+          <div className="flex flex-col items-center flex-shrink-0 mx-2 sm:mx-4">
+            <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">{score}</div>
             <span
-              className={`px-3 py-1 text-white text-sm font-medium rounded-full mb-2 ${statusInfo.className}`}
+              className={`px-2 sm:px-3 py-0.5 sm:py-1 text-white text-xs sm:text-sm font-medium rounded-full mb-1 sm:mb-2 ${statusInfo.className}`}
             >
               {statusInfo.text}
               {isLive && safeFixture.status.elapsed && ` (${safeFixture.status.elapsed}分)`}
             </span>
-            <div className="text-sm text-gray-500">{formattedDate}</div>
+            <div className="text-xs sm:text-sm text-gray-500">{formattedDate}</div>
             {safeFixture.venue.name && (
-              <div className="mt-1 text-xs text-gray-500">
+              <div className="mt-1 text-[10px] sm:text-xs text-gray-500 text-center max-w-[150px] sm:max-w-full">
                 {safeFixture.venue.name}, {safeFixture.venue.city}
               </div>
             )}
@@ -166,16 +166,16 @@ export function MatchHeader({ fixture }: MatchHeaderProps) {
               href={`/teams/${fixture.teams.away.id}`}
               className="flex flex-col items-center hover:opacity-90 transition-opacity"
             >
-              <div className="relative w-20 h-20 mb-3 flex-shrink-0 transition-transform hover:scale-105">
-                <Image
+              <div className="relative w-14 h-14 sm:w-20 sm:h-20 mb-2 sm:mb-3 flex-shrink-0 transition-transform hover:scale-105">
+                <OptimizedImage
                   src={safeFixture.teams.away.logo}
                   alt={safeFixture.teams.away.name}
                   fill
-                  sizes="80px"
+                  sizes="(max-width: 640px) 56px, 80px"
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-extrabold truncate text-center hover:underline">
+              <span className="text-base sm:text-xl md:text-2xl font-extrabold truncate text-center hover:underline max-w-[120px] sm:max-w-full">
                 {safeFixture.teams.away.name}
               </span>
             </Link>

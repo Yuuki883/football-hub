@@ -42,13 +42,20 @@ const SeasonSelector: React.FC<SeasonSelectorProps> = ({ currentSeason = 2024 })
   );
 
   return (
-    <div className="flex items-center h-full py-2">
+    <div className="flex justify-end items-center h-full py-2 px-2 sm:px-6">
+      <label
+        htmlFor="season"
+        className="text-sm text-gray-600 dark:text-gray-300 mr-2 hidden sm:inline-block"
+      ></label>
       <select
         id="season"
         value={selectedSeason}
         onChange={(e) => handleSeasonChange(Number(e.target.value))}
-        className="bg-white border border-gray-300 text-gray-700 text-sm rounded-md 
-                  focus:ring-blue-500 focus:border-blue-500 p-2"
+        className="min-w-[110px] bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 
+                  text-gray-700 dark:text-gray-200 text-sm rounded-md 
+                  focus:ring-blue-500 focus:border-blue-500 p-1.5 sm:p-2
+                  cursor-pointer hover:border-blue-500 dark:hover:border-blue-400
+                  transition-colors duration-200"
       >
         {seasons.map((season) => (
           <option key={season.id} value={season.id}>

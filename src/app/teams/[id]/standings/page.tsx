@@ -1,26 +1,27 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { getTeamById } from '@/features/teams/api/team-info';
-import { getTeamStandings, getLeagueSlugById } from '@/features/teams/api/team-standings';
+import { getTeamStandings } from '@/features/teams/api/team-standings';
+import { getStandardLeagueSlugById } from '@/features/leagues/api/league-info';
 import StandingsTable from '@/features/leagues/components/tables/StandingsTable';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
 
 interface TeamStandingsPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
-  };
+  }>;
 }
 
 // 動的メタデータ生成
 export async function generateMetadata({ params }: TeamStandingsPageProps): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const teamData = await getTeamById(id);
@@ -47,9 +48,10 @@ export async function generateMetadata({ params }: TeamStandingsPageProps): Prom
 export const revalidate = 3600;
 
 export default async function TeamStandingsPage({ params, searchParams }: TeamStandingsPageProps) {
-  const { id } = params;
+  const { id } = await params;
+  const { season: seasonParam } = await searchParams;
 
-  const season = parseInt(searchParams.season || '2024');
+  const season = parseInt(seasonParam || '2024');
 
   try {
     // チーム情報を取得
@@ -83,7 +85,7 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
     }
 
     // リーグスラッグを取得
-    const leagueSlug = leagueId ? getLeagueSlugById(leagueId) : null;
+    const leagueSlug = leagueId ? getStandardLeagueSlugById(leagueId) : null;
 
     return (
       <PageLayout>
@@ -96,7 +98,7 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
             <div className="flex items-center gap-3 mb-5">
               {teamInLeagueData?.leagueLogo && (
                 <div className="relative w-8 h-8 flex-shrink-0">
-                  <Image
+                  <OptimizedImage
                     src={teamInLeagueData.leagueLogo}
                     alt={teamInLeagueData.leagueName || 'リーグロゴ'}
                     fill

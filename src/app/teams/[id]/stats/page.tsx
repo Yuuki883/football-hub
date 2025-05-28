@@ -13,8 +13,8 @@ import PageLayout from '@/components/layout/PageLayout';
 export const revalidate = 3600;
 
 interface TeamStatsPageProps {
-  params: { id: string };
-  searchParams: { league?: string; season?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ league?: string; season?: string }>;
 }
 
 // 動的メタデータ生成
@@ -22,8 +22,10 @@ export async function generateMetadata({
   params,
   searchParams,
 }: TeamStatsPageProps): Promise<Metadata> {
-  const teamId = parseInt(params.id);
-  const season = parseInt(searchParams.season || '2024');
+  const { id } = await params;
+  const { season: seasonParam } = await searchParams;
+  const teamId = parseInt(id);
+  const season = parseInt(seasonParam || '2024');
 
   try {
     // チーム基本情報取得
@@ -63,8 +65,10 @@ export async function generateMetadata({
 
 // ページコンポーネント
 export default async function TeamStatsPage({ params, searchParams }: TeamStatsPageProps) {
-  const teamId = parseInt(params.id);
-  const season = parseInt(searchParams.season || '2024');
+  const { id } = await params;
+  const { season: seasonParam, league } = await searchParams;
+  const teamId = parseInt(id);
+  const season = parseInt(seasonParam || '2024');
 
   try {
     // チーム基本情報の取得
@@ -79,7 +83,7 @@ export default async function TeamStatsPage({ params, searchParams }: TeamStatsP
 
     if (!leagueId) {
       // 所属リーグが見つからない場合はデフォルトリーグを使用
-      const fallbackLeagueId = parseInt(searchParams.league || '39'); // デフォルトはプレミアリーグ
+      const fallbackLeagueId = parseInt(league || '39'); // デフォルトはプレミアリーグ
       const stats = await fetchTeamStats(teamId, fallbackLeagueId, season);
 
       if (!stats) {

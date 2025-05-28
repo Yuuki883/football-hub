@@ -5,9 +5,9 @@
 
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
 import { MatchPlayerPerformance } from '../types';
+import OptimizedImage from '@/components/common/OptimizedImage';
 
 export default function PlayerPerformanceModal({
   player,
@@ -28,20 +28,24 @@ export default function PlayerPerformanceModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ヘッダー */}
         <div className="p-4 border-b flex items-center justify-between">
           <div className="flex items-center">
             <div className="relative w-12 h-12 mr-3 bg-gray-100 rounded-full overflow-hidden">
-              {player.player.photo && (
-                <Image
+              {player.player.photo ? (
+                <OptimizedImage
                   src={player.player.photo}
                   alt={player.player.name}
                   fill
                   className="object-cover"
                 />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  <span className="text-xs">画像なし</span>
+                </div>
               )}
             </div>
             <div>

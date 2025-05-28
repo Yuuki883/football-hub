@@ -4,7 +4,9 @@
  * ゴール数、アシスト数、出場数などの主要スタッツをカードで表示
  */
 import Image from 'next/image';
+import Link from 'next/link';
 import { PlayerDetailStats } from '../types/type';
+import { getStandardLeagueSlugById } from '@/features/leagues/api/league-info';
 
 interface PlayerStatsSectionProps {
   stats: PlayerDetailStats;
@@ -178,12 +180,26 @@ export default function PlayerStatsSection({ stats }: PlayerStatsSectionProps) {
                     width={32}
                     height={32}
                     className="object-contain"
+                    unoptimized // 外部API画像のため最適化を無効化
                   />
                 </div>
               )}
               <div>
                 <h2 className="text-xl font-bold text-slate-800 flex items-center">
-                  {stats.league.name} {stats.league.season && formatSeason(stats.league.season)}
+                  {(() => {
+                    const leagueSlug = getStandardLeagueSlugById(stats.league.id);
+                    return leagueSlug ? (
+                      <Link
+                        href={`/leagues/${leagueSlug}`}
+                        className="hover:text-blue-600 hover:underline transition-colors"
+                      >
+                        {stats.league.name}
+                      </Link>
+                    ) : (
+                      <span>{stats.league.name}</span>
+                    );
+                  })()}
+                  {stats.league.season && ` ${formatSeason(stats.league.season)}`}
                 </h2>
                 <p className="text-sm text-slate-500">今シーズンの成績</p>
               </div>

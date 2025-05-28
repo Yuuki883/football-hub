@@ -2,7 +2,7 @@
  * お気に入りチーム一覧コンポーネント
  * ユーザーがお気に入り登録したチームのリストを表示
  */
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import { FavoriteTeam, Team } from '@prisma/client';
 
@@ -33,7 +33,7 @@ export default function FavoriteTeams({ favoriteTeams }: FavoriteTeamsProps) {
         >
           <div className="relative w-12 h-12 mr-4 flex-shrink-0">
             {team.logo ? (
-              <Image src={team.logo} alt={team.name} fill className="object-contain" />
+              <OptimizedImage src={team.logo} alt={team.name} fill className="object-contain" />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
                 <span className="text-xs font-bold">

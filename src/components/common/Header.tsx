@@ -3,19 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import AuthButtons from '@/features/auth/components/AuthButtons';
+import Navigation from './Navigation';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
-
-  // パス変更時にメニューを閉じる
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
 
   // メニュー外クリック時に閉じる
   useEffect(() => {
@@ -38,23 +32,14 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
-  const navItems = [
-    { name: 'ホーム', path: '/' },
-    // { name: 'リーグ', path: '/leagues' },
-    // { name: '試合', path: '/matches' },
-    { name: 'ニュース', path: '/news' },
-  ];
-
-  const isActive = (path: string) => {
-    if (path === '/') {
-      return pathname === '/';
-    }
-    return pathname.startsWith(path);
-  };
-
   // メニューの開閉
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // メニューアイテムクリック時の処理
+  const handleMenuItemClick = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -80,19 +65,7 @@ export default function Header() {
 
           {/* PCナビゲーション */}
           <div className="hidden md:flex items-center">
-            <nav className="flex space-x-8 mr-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  className={`font-medium text-sm uppercase tracking-wide transition-colors hover:text-blue-200 flex items-center py-5 cursor-pointer ${
-                    isActive(item.path) ? 'text-white border-b-2 border-white' : 'text-blue-100'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
+            <Navigation />
 
             {/* 認証ボタン (PC) */}
             <div className="hidden md:block">
@@ -133,26 +106,12 @@ export default function Header() {
           isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <nav className="flex flex-col px-4 py-2 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`py-3 px-2 font-medium text-sm transition-colors rounded-md cursor-pointer ${
-                isActive(item.path)
-                  ? 'bg-blue-700 text-white'
-                  : 'text-blue-100 hover:bg-blue-700 hover:text-white'
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
+        <Navigation isMobile={true} onItemClick={handleMenuItemClick} />
 
-          {/* 認証ボタン (モバイル) */}
-          <div className="py-3 px-2 border-t border-blue-700 mt-2 pt-4">
-            <AuthButtons />
-          </div>
-        </nav>
+        {/* 認証ボタン (モバイル) */}
+        <div className="py-3 px-2 border-t border-blue-700 mt-2 pt-4">
+          <AuthButtons />
+        </div>
       </div>
     </header>
   );

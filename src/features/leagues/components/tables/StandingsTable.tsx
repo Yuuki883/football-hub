@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import OptimizedImage from '@/components/common/OptimizedImage';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -191,7 +191,7 @@ export default function StandingsTable({
                     <td className={getCellClass(headers[1])}>
                       <div className="flex items-center gap-2">
                         <div className="relative w-6 h-6 flex-shrink-0">
-                          <Image
+                          <OptimizedImage
                             src={s.team.crest}
                             alt={s.team.name}
                             fill
