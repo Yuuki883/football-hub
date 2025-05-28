@@ -6,7 +6,7 @@ import LeagueNavigation from '@/features/leagues/components/common/HomeLeagueNav
 
 export const metadata: Metadata = {
   title: 'FootBallHub - サッカー試合&ニュースポータル',
-  description: '欧州5大リーグ、欧州大会、代表戦の最新情報をリアルタイムで提供',
+  description: '欧州5大リーグ、欧州大会の最新情報をリアルタイムで提供',
 };
 
 // ISR - 30分ごとに再検証
