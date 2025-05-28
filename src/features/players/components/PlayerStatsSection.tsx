@@ -6,6 +6,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlayerDetailStats } from '../types/type';
+import { getStandardLeagueSlugById } from '@/features/leagues/api/league-info';
 
 interface PlayerStatsSectionProps {
   stats: PlayerDetailStats;
@@ -185,12 +186,19 @@ export default function PlayerStatsSection({ stats }: PlayerStatsSectionProps) {
               )}
               <div>
                 <h2 className="text-xl font-bold text-slate-800 flex items-center">
-                  <Link
-                    href={`/leagues/${stats.league.id}`}
-                    className="hover:text-blue-600 hover:underline transition-colors"
-                  >
-                    {stats.league.name}
-                  </Link>
+                  {(() => {
+                    const leagueSlug = getStandardLeagueSlugById(stats.league.id);
+                    return leagueSlug ? (
+                      <Link
+                        href={`/leagues/${leagueSlug}`}
+                        className="hover:text-blue-600 hover:underline transition-colors"
+                      >
+                        {stats.league.name}
+                      </Link>
+                    ) : (
+                      <span>{stats.league.name}</span>
+                    );
+                  })()}
                   {stats.league.season && ` ${formatSeason(stats.league.season)}`}
                 </h2>
                 <p className="text-sm text-slate-500">今シーズンの成績</p>
