@@ -5,8 +5,15 @@ import AllMatchesSection from '@/features/matches/components/AllMatchesSection';
 import LeagueNavigation from '@/features/leagues/components/common/HomeLeagueNavigation';
 
 export const metadata: Metadata = {
-  title: 'FootBallHub - サッカー試合&ニュースポータル',
-  description: '欧州5大リーグ、欧州大会の最新情報をリアルタイムで提供',
+  title: 'Football Hub | 欧州サッカー5大リーグの最新情報・試合結果',
+  description:
+    '欧州5大リーグ、欧州大会の最新情報をリアルタイムで提供。試合結果、順位表、スタッツ、ニュースなど、サッカーファンに必要な情報を網羅。',
+  openGraph: {
+    title: 'Football Hub | 欧州サッカー5大リーグの最新情報・試合結果',
+    description:
+      '欧州5大リーグ、欧州大会の最新情報をリアルタイムで提供。試合結果、順位表、スタッツ、ニュースなど、サッカーファンに必要な情報を網羅。',
+    type: 'website',
+  },
 };
 
 // ISR - 30分ごとに再検証
