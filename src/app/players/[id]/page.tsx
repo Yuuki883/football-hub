@@ -19,14 +19,14 @@ import PageLayout from '@/components/layout/PageLayout';
 export const revalidate = 3600;
 
 interface PlayerDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // 動的メタデータの生成
 export async function generateMetadata({ params }: PlayerDetailPageProps): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const playerData = await getPlayerDetails(id, DEFAULT_SEASON);
@@ -70,7 +70,7 @@ function PlayerContent({ playerData }: { playerData: any }) {
 
 // メインページコンポーネント
 export default async function PlayerDetailPage({ params }: PlayerDetailPageProps) {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     // 選手データを取得

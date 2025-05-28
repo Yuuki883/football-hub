@@ -13,9 +13,9 @@ const nextConfig = {
     ],
   },
   // 一時的にTypeScriptのビルド時チェックを無効化
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // クライアントサイドでは以下のモジュールを使わない

@@ -11,17 +11,17 @@ import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
 
 interface TeamStandingsPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
-  };
+  }>;
 }
 
 // 動的メタデータ生成
 export async function generateMetadata({ params }: TeamStandingsPageProps): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const teamData = await getTeamById(id);
@@ -48,9 +48,10 @@ export async function generateMetadata({ params }: TeamStandingsPageProps): Prom
 export const revalidate = 3600;
 
 export default async function TeamStandingsPage({ params, searchParams }: TeamStandingsPageProps) {
-  const { id } = params;
+  const { id } = await params;
+  const { season: seasonParam } = await searchParams;
 
-  const season = parseInt(searchParams.season || '2024');
+  const season = parseInt(seasonParam || '2024');
 
   try {
     // チーム情報を取得

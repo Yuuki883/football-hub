@@ -12,16 +12,16 @@ import { Metadata } from 'next';
 export const revalidate = 600;
 
 interface MatchPageProps {
-  params: {
+  params: Promise<{
     fixtureId: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     tab?: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: MatchPageProps): Promise<Metadata> {
-  const { fixtureId } = params;
+  const { fixtureId } = await params;
 
   try {
     // 後で実装する: 試合情報に基づくメタデータの生成
@@ -45,15 +45,18 @@ export async function generateMetadata({ params }: MatchPageProps): Promise<Meta
  */
 export default async function MatchPage({ params, searchParams }: MatchPageProps) {
   try {
+    const { fixtureId } = await params;
+    const { tab } = await searchParams;
+
     // 試合基本情報を取得
-    const fixture = await getFixture(params.fixtureId);
+    const fixture = await getFixture(fixtureId);
 
     // 試合が存在しない場合は404
     if (!fixture) {
       notFound();
     }
 
-    return <MatchLayout fixture={fixture} initialTab={searchParams.tab || 'stats'} />;
+    return <MatchLayout fixture={fixture} initialTab={tab || 'stats'} />;
   } catch (error) {
     // エラーが発生した場合は404
     console.error('Failed to fetch fixture:', error);

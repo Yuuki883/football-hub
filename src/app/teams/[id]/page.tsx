@@ -8,16 +8,16 @@ import { getTeamById } from '@/features/teams/api/team-info';
 import { getTeamFixtures } from '@/features/teams/api/team-fixtures';
 
 interface TeamPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     season?: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: TeamPageProps): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const teamData = await getTeamById(id);
@@ -41,8 +41,9 @@ export async function generateMetadata({ params }: TeamPageProps): Promise<Metad
 }
 
 export default async function TeamPage({ params, searchParams }: TeamPageProps) {
-  const { id } = params;
-  const season = parseInt(searchParams.season || '2024');
+  const { id } = await params;
+  const { season: seasonParam } = await searchParams;
+  const season = parseInt(seasonParam || '2024');
 
   // チーム情報を取得
   const teamData = await getTeamById(id);

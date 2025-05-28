@@ -7,15 +7,15 @@ import SeasonSelector from '../../../features/leagues/components/common/SeasonSe
 import PageLayout from '@/components/layout/PageLayout';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
 
-interface LeagueLayoutProps {
+type LeagueLayoutProps = {
   children: React.ReactNode;
   params: Promise<{
     slug: string;
   }>;
-  searchParams?: Promise<{
+  searchParams: Promise<{
     season?: string;
   }>;
-}
+};
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -43,14 +43,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function LeagueLayout({
-  children,
-  params,
-  searchParams, // Promiseなので初期値は設定しない
-}: LeagueLayoutProps) {
+export default async function LeagueLayout({ children, params, searchParams }: LeagueLayoutProps) {
   const { slug } = await params;
-  const resolvedSearchParams = searchParams ? await searchParams : {};
-  const season = parseInt(resolvedSearchParams?.season || '2024');
+  const { season: seasonParam } = await searchParams;
+  const season = parseInt(seasonParam || '2024');
 
   const leagueData = await getLeagueBySlug(slug);
 

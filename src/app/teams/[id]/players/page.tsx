@@ -8,14 +8,14 @@ import PlayersList from '@/features/teams/components/PlayersList';
 import PageLayout from '@/components/layout/PageLayout';
 
 interface TeamPlayersPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // メタデータを動的に生成
 export async function generateMetadata({ params }: TeamPlayersPageProps): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const teamData = await getTeamById(id);
@@ -73,7 +73,7 @@ async function PlayersContent({ teamId }: { teamId: string }) {
 
 // メインページコンポーネント
 export default async function TeamPlayersPage({ params }: TeamPlayersPageProps) {
-  const { id } = params;
+  const { id } = await params;
 
   // チーム基本情報を取得
   const teamData = await getTeamById(id);
