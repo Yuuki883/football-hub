@@ -60,7 +60,7 @@ export default function Header() {
                 sizes="32px"
               />
             </div>
-            <span className="font-bold text-xl tracking-tight">FootBallHub</span>
+            <span className="font-bold text-xl tracking-tight">FootballHub</span>
           </Link>
 
           {/* PCナビゲーション */}

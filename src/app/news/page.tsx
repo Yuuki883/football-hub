@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import PageLayout from '@/components/layout/PageLayout';
 
 export const metadata: Metadata = {
-  title: 'サッカーニュース | FootBallHub',
+  title: 'サッカーニュース | FootballHub',
   description: '欧州5大リーグ、欧州大会の最新ニュース情報',
 };
 

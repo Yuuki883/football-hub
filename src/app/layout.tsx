@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'FootBallHub - サッカー情報ポータル',
+  title: 'FootballHub - サッカー情報ポータル',
   description: '欧州5大リーグ、欧州大会の最新情報をリアルタイムで提供',
   icons: {
     icon: [
