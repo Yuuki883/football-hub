@@ -13,6 +13,18 @@ export const API_FOOTBALL = {
   BASE_URL: process.env.API_FOOTBALL_BASE_URL || process.env.NEXT_PUBLIC_API_FOOTBALL_BASE_URL,
 };
 
+// 追加: デフォルトシーズン算出
+export function getDefaultSeason(): string {
+  const now = new Date();
+  const month = now.getUTCMonth() + 1; // 1-12
+  const year = now.getUTCFullYear();
+  const seasonYear = month >= 7 ? year : year - 1;
+  return String(seasonYear);
+}
+
+// シーズン設定（動的）
+export const DEFAULT_SEASON = getDefaultSeason();
+
 // リーグID (API-Football)のマッピング
 export const LEAGUE_ID_MAPPING: Record<string, number> = {
   PL: 39, // プレミアリーグ
@@ -45,9 +57,6 @@ export const LEAGUE_SLUG_MAPPING: Record<string, number> = {
   'uefa-europa-league': 3,
   'uefa-europa-conference-league': 848,
 };
-
-// シーズン設定
-export const DEFAULT_SEASON = '2024';
 
 // キャッシュTTL（秒）
 export const CACHE_TTL = {

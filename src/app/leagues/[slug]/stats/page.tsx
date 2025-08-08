@@ -4,6 +4,7 @@ import ScorersRanking from '../../../../features/leagues/components/rankings/Sco
 import AssistsRanking from '../../../../features/leagues/components/rankings/AssistsRanking';
 import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { DEFAULT_SEASON } from '@/config/api';
 
 interface StatsPageProps {
   params: Promise<{
@@ -38,7 +39,7 @@ export async function generateMetadata({
 export default async function StatsPage({ params, searchParams }: StatsPageProps) {
   const { slug } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
+  const season = parseInt(seasonParam || String(DEFAULT_SEASON));
 
   // 並行データ取得
   const [topScorers, topAssists] = await Promise.all([

@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import StandingsTable from '../../../../features/leagues/components/tables/StandingsTable';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { DEFAULT_SEASON } from '@/config/api';
 
 interface StandingsPageProps {
   params: Promise<{
@@ -37,7 +38,7 @@ export async function generateMetadata({
 export default async function StandingsPage({ params, searchParams }: StandingsPageProps) {
   const { slug } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
+  const season = parseInt(seasonParam || String(DEFAULT_SEASON));
 
   const standings = await getLeagueStandings(slug, season);
 

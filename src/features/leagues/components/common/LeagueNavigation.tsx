@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { cn } from '@/utils/cn';
+import { DEFAULT_SEASON } from '@/config/api';
 
 interface LeagueNavigationProps {
   slug: string;
@@ -12,7 +13,7 @@ interface LeagueNavigationProps {
 const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const season = searchParams.get('season') || '2024';
+  const season = searchParams.get('season') || String(DEFAULT_SEASON);
 
   const navItems = [
     { name: '概要', path: `/leagues/${slug}` },

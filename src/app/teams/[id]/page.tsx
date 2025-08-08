@@ -6,6 +6,7 @@ import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
 import { getTeamById } from '@/features/teams/api/team-info';
 import { getTeamFixtures } from '@/features/teams/api/team-fixtures';
+import { DEFAULT_SEASON } from '@/config/api';
 
 interface TeamPageProps {
   params: Promise<{
@@ -43,8 +44,7 @@ export async function generateMetadata({ params }: TeamPageProps): Promise<Metad
 export default async function TeamPage({ params, searchParams }: TeamPageProps) {
   const { id } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
-
+  const season = parseInt(seasonParam || String(DEFAULT_SEASON));
   // チーム情報を取得
   const teamData = await getTeamById(id);
 

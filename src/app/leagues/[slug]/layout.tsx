@@ -6,6 +6,7 @@ import LeagueNavigation from '../../../features/leagues/components/common/League
 import SeasonSelector from '../../../features/leagues/components/common/SeasonSelector';
 import PageLayout from '@/components/layout/PageLayout';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { DEFAULT_SEASON } from '@/config/api';
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -42,8 +43,7 @@ export default async function LeagueLayout({
 }) {
   const { slug } = await params;
 
-  // デフォルトシーズンは2024を使用
-  const season = 2024;
+  const season = Number(DEFAULT_SEASON);
 
   const leagueData = await getLeagueBySlug(slug);
 
@@ -51,14 +51,21 @@ export default async function LeagueLayout({
     notFound();
   }
 
-  const { league, country } = leagueData;
+  const { league, country, seasons } = leagueData;
+
+  // SeasonSelector 用の表示可能シーズンを算出
+  // 現在のデフォルトシーズンより+1を除外
+  const seasonYears: number[] = Array.isArray(seasons)
+    ? seasons.map((s: any) => Number(s.year)).filter((y: number) => !Number.isNaN(y))
+    : [];
+  const availableSeasons = seasonYears.filter((y) => y <= season);
 
   return (
     <PageLayout className="p-0">
       <div className="mb-6">
         <LeagueHeader league={league} country={country}>
           <LeagueNavigation slug={slug}>
-            <SeasonSelector currentSeason={season} />
+            <SeasonSelector currentSeason={season} availableSeasons={availableSeasons} />
           </LeagueNavigation>
         </LeagueHeader>
       </div>

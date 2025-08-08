@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Match } from '@/lib/api-football/types/type-exports';
 import { getTeamFixtures } from '../services/team-fixtures-service';
+import { DEFAULT_SEASON } from '@/config/api';
 
 interface UseTeamFixturesOptions {
   teamId: number | string;
@@ -20,7 +21,7 @@ interface UseTeamFixturesResult {
 
 export function useTeamFixtures({
   teamId,
-  season = 2024,
+  season = DEFAULT_SEASON,
   past = true,
   future = true,
   limit = 5,

@@ -3,7 +3,7 @@
  *
  * 選手の基本情報、今シーズンの統計、所属チーム履歴を取得して統合
  */
-import { API_FOOTBALL } from '@/config/api';
+import { API_FOOTBALL, DEFAULT_SEASON } from '@/config/api';
 import { PlayerDetail } from '../types/type';
 import { ApiResponse } from '@/types/type';
 import { ApiPlayerProfile } from '@/lib/api-football/types/type-exports';
@@ -52,6 +52,46 @@ async function getPlayerProfile(playerId: string): Promise<ApiPlayerProfile | nu
     return profileData.response[0];
   } catch (error) {
     console.error('選手プロフィール取得エラー:', error);
+    return null;
+  }
+}
+
+/**
+ * 指定選手の利用可能なシーズン一覧を取得
+ *
+ * 概要:
+ * - API-Footballの players/seasons エンドポイントを用いて、その選手に紐づくシーズン年の配列を取得
+ * 制限事項:
+ * - 空配列や取得失敗時は null を返す
+ *
+ * @param playerId 選手ID
+ * @returns シーズン年の配列（例: [2025, 2024, ...]）
+ */
+async function getPlayerAvailableSeasons(playerId: string): Promise<number[] | null> {
+  if (!API_FOOTBALL.KEY) {
+    throw new Error('API key is not configured');
+  }
+
+  const headers: Record<string, string> = {
+    'x-apisports-key': API_FOOTBALL.KEY,
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const res = await fetch(`${API_FOOTBALL.BASE_URL}/players/seasons?player=${playerId}`, {
+      headers,
+      next: { revalidate: 3600 * 24 },
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const data = (await res.json()) as { response?: (string | number)[] };
+    const seasons = (data.response || []).map((y) => Number(y)).filter((y) => !Number.isNaN(y));
+    return seasons.length > 0 ? seasons : null;
+  } catch (error) {
+    console.error('選手シーズン一覧の取得エラー:', error);
     return null;
   }
 }
@@ -115,14 +155,38 @@ export async function getPlayerDetails(
     }
 
     // APIレスポンス解析
-    const playerInfoData = await playerInfoResponse.json();
+    let playerInfoData = await playerInfoResponse.json();
     const teamsHistoryData = await teamsHistoryResponse.json();
     const transfersData = await transfersResponse.json();
 
-    // APIからデータがない場合
+    // APIからデータがない場合は、利用可能な最新シーズンへフォールバック
     if (!playerInfoData.response?.length) {
-      console.error('選手データが見つかりません:', playerId);
-      return null;
+      const seasons = await getPlayerAvailableSeasons(playerId);
+      if (seasons && seasons.length > 0) {
+        // 現行デフォルトシーズン以下で直近の年を優先
+        const defaultYear = Number(DEFAULT_SEASON);
+        const sortedDesc = [...seasons].sort((a, b) => b - a);
+        const fallbackYear = sortedDesc.find((y) => y <= defaultYear) ?? sortedDesc[0];
+
+        if (fallbackYear && String(fallbackYear) !== season) {
+          const fallbackRes = await fetch(
+            `${API_FOOTBALL.BASE_URL}/players?id=${playerId}&season=${fallbackYear}`,
+            { headers, next: { revalidate: 3600 } }
+          );
+          if (fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json();
+            if (fallbackData?.response?.length) {
+              playerInfoData = fallbackData;
+            }
+          }
+        }
+      }
+
+      // それでも無ければ null を返却
+      if (!playerInfoData.response?.length) {
+        console.error('選手データが見つかりません:', playerId, '(season:', season, ')');
+        return null;
+      }
     }
 
     // 選手情報の抽出

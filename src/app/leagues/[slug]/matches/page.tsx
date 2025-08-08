@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import MatchesList from '../../../../features/leagues/components/matches/MatchesList';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { DEFAULT_SEASON } from '@/config/api';
+import { getLeagueSeasonFixtures } from '@/features/leagues/api/league-fixtures';
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -34,9 +36,8 @@ export default async function MatchesPage({
 }) {
   const { slug } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
-
-  const matches = await getLeagueFixtures(slug, { season });
+  const season = parseInt(seasonParam || DEFAULT_SEASON);
+  const matches = await getLeagueSeasonFixtures(slug, season);
 
   return (
     <>

@@ -11,7 +11,6 @@ import type { Match } from '@/lib/api-football/utils/data-formatters';
 import { getLeagueBySlug } from './league-info';
 import { withCache, createCacheKey } from '@/lib/api-football/client/cache';
 import { CACHE_TTL } from '@/config/api';
-
 /**
  * リーグの試合を取得
  *
@@ -58,31 +57,6 @@ export async function getLeagueFixtures(
     limit,
     forceRefresh,
   });
-}
-
-/**
- * リーグの試合を取得
- *
- * getLeagueFixtures のエイリアス関数。後方互換性のために提供。
- *
- * @param leagueIdOrSlug リーグID または スラグ
- * @param season シーズン
- * @returns 試合データの配列
- */
-export async function getLeagueMatches(
-  leagueIdOrSlug: number | string,
-  season: number | string = DEFAULT_SEASON
-): Promise<Match[]> {
-  try {
-    // 日付や上限の制限なしで全試合データを取得
-    return await getLeagueFixtures(leagueIdOrSlug, {
-      season,
-      forceRefresh: false, // キャッシュを使用
-    });
-  } catch (error: any) {
-    console.error('Error fetching league matches:', error);
-    return [];
-  }
 }
 
 /**
@@ -249,4 +223,37 @@ export async function getAllLeagueMatchDates(
     cacheTTL,
     forceRefresh
   );
+}
+
+/**
+ * 指定シーズンの期間（欧州型: 7/1〜翌6/30）を返すユーティリティ
+ *
+ * 概要:
+ * - 既存の取得関数へ dateFrom/dateTo を提供するための補助
+ * 仕様:
+ * - season はシーズン開始年（例: 2025）
+ * - 返却形式は YYYY-MM-DD
+ */
+export function getSeasonDateRange(season: number | string): { dateFrom: string; dateTo: string } {
+  const y = Number(season);
+  return {
+    dateFrom: `${y}-07-01`,
+    dateTo: `${y + 1}-06-30`,
+  };
+}
+
+/**
+ * シーズン全体の試合取得
+ *
+ * @param leagueIdOrSlug リーグIDまたはスラグ
+ * @param season シーズン開始年（例: 2025）
+ * @param forceRefresh キャッシュ無視フラグ
+ */
+export async function getLeagueSeasonFixtures(
+  leagueIdOrSlug: number | string,
+  season: number | string = DEFAULT_SEASON,
+  forceRefresh: boolean = false
+): Promise<Match[]> {
+  const { dateFrom, dateTo } = getSeasonDateRange(season);
+  return getLeagueFixtures(leagueIdOrSlug, { season, dateFrom, dateTo, forceRefresh });
 }
