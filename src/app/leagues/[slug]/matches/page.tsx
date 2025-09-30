@@ -39,7 +39,12 @@ export default async function MatchesPage({
   // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
   const season = parseInt(seasonParam || getCurrentSeason().toString());
 
-  const matches = await getLeagueFixtures(slug, { season });
+  // シーズン全体の試合を取得するため、dateFromとdateToは指定しない
+  const matches = await getLeagueFixtures(slug, {
+    season,
+    dateFrom: undefined,
+    dateTo: undefined,
+  });
 
   return (
     <>

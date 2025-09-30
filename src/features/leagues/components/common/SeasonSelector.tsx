@@ -37,6 +37,15 @@ const SeasonSelector: React.FC<SeasonSelectorProps> = ({ currentSeason = getCurr
   const [selectedSeason, setSelectedSeason] = useState(season || getCurrentSeason());
 
   /**
+   * URLパラメータが変更された時に内部状態を同期
+   */
+  useEffect(() => {
+    if (season) {
+      setSelectedSeason(season);
+    }
+  }, [season]);
+
+  /**
    * 利用可能なシーズンリスト
    *
    * 動的に生成されるため、シーズンが変わっても自動的に最新のリストが表示される

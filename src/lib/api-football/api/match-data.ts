@@ -41,8 +41,12 @@ export async function getFixtures({
   limit?: number;
   forceRefresh?: boolean;
 }): Promise<Match[]> {
-  // 日付範囲が指定されていない場合は計算
-  if (!dateFrom || !dateTo) {
+  // 日付範囲が明示的にundefinedとして渡された場合はスキップ
+  // (seasonパラメータだけで全試合を取得する場合)
+  const skipDateRange = dateFrom === undefined && dateTo === undefined;
+
+  // 日付範囲が指定されていない場合のみ計算
+  if (!skipDateRange && (!dateFrom || !dateTo)) {
     const dateRange = calculateDateRange(past, future);
     if (!dateFrom) dateFrom = dateRange.dateFrom;
     if (!dateTo) dateTo = dateRange.dateTo;
@@ -53,9 +57,11 @@ export async function getFixtures({
     team: teamId,
     league: leagueId || leagueCode,
     season,
-    from: dateFrom,
-    to: dateTo,
   };
+
+  // 日付範囲が指定されている場合のみキャッシュキーに含める
+  if (dateFrom) cacheParams.from = dateFrom;
+  if (dateTo) cacheParams.to = dateTo;
 
   const cacheKey = createCacheKey('fixtures', cacheParams);
   const cacheTTL = CACHE_TTL.MEDIUM; // 3時間
@@ -66,10 +72,12 @@ export async function getFixtures({
       // APIリクエストのパラメータを構築
       const params: Record<string, any> = {
         season,
-        from: dateFrom,
-        to: dateTo,
         timezone: 'Asia/Tokyo',
       };
+
+      // 日付範囲が指定されている場合のみ追加
+      if (dateFrom) params.from = dateFrom;
+      if (dateTo) params.to = dateTo;
 
       if (teamId) params.team = teamId;
       if (leagueId) params.league = leagueId;

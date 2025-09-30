@@ -33,6 +33,14 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * リーグレイアウトコンポーネント
+ *
+ * リーグページ全体の共通レイアウト
+ *
+ * @param {Object} props - レイアウトプロパティ
+ * @returns {JSX.Element} レイアウト
+ */
 export default async function LeagueLayout({
   children,
   params,
@@ -41,9 +49,6 @@ export default async function LeagueLayout({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  // デフォルトシーズンは2024を使用
-  const season = 2024;
 
   const leagueData = await getLeagueBySlug(slug);
 
@@ -58,7 +63,8 @@ export default async function LeagueLayout({
       <div className="mb-6">
         <LeagueHeader league={league} country={country}>
           <LeagueNavigation slug={slug}>
-            <SeasonSelector currentSeason={season} />
+            {/* SeasonSelectorは内部でURLパラメータ（?season=XXXX）を読み取ります */}
+            <SeasonSelector />
           </LeagueNavigation>
         </LeagueHeader>
       </div>
