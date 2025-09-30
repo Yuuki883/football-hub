@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { cn } from '@/utils/cn';
 
+/**
+ * リーグナビゲーションコンポーネント
+ *
+ * URLに含まれるシーズンパラメータを保持してタブ間を移動
+ */
 interface LeagueNavigationProps {
   slug: string;
   children?: React.ReactNode;
@@ -12,7 +17,9 @@ interface LeagueNavigationProps {
 const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const season = searchParams.get('season') || '2024';
+
+  // URLパラメータからシーズンを取得（存在しない場合は空文字列）
+  const season = searchParams.get('season') || '';
 
   const navItems = [
     { name: '概要', path: `/leagues/${slug}` },
@@ -31,11 +38,9 @@ const LeagueNavigation: React.FC<LeagueNavigationProps> = ({ slug, children }) =
               item.path === pathname ||
               (item.path !== `/leagues/${slug}` && pathname.startsWith(item.path));
 
-            // シーズンパラメータを保持
-            const href =
-              item.path === `/leagues/${slug}`
-                ? `${item.path}${season ? `?season=${season}` : ''}`
-                : `${item.path}${season ? `?season=${season}` : ''}`;
+            // シーズンパラメータが存在する場合のみURLに追加
+            // パラメータがない場合は各ページで現在のシーズンがデフォルトとして使用される
+            const href = season ? `${item.path}?season=${season}` : item.path;
 
             return (
               <li key={item.path}>

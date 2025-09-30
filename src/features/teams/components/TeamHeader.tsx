@@ -7,7 +7,13 @@ import EntityHeader from '@/components/common/EntityHeader';
 import TabNavigation from '@/components/common/TabNavigation';
 import { FavoriteButton } from '@/features/favorites/components/FavoriteButton';
 import { useTeamFavorite } from '@/features/favorites/hooks/useFavorite';
+import { getCurrentSeason } from '@/utils/season-utils';
 
+/**
+ * チームヘッダーコンポーネント
+ *
+ * チームの基本情報とナビゲーションタブを表示します。
+ */
 interface TeamHeaderProps {
   team: {
     id: number;
@@ -21,7 +27,11 @@ interface TeamHeaderProps {
   children?: React.ReactNode;
 }
 
-export default function TeamHeader({ team, season = 2024, children }: TeamHeaderProps) {
+export default function TeamHeader({
+  team,
+  season = getCurrentSeason(),
+  children,
+}: TeamHeaderProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [initialChecked, setInitialChecked] = useState(false);
