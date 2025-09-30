@@ -7,12 +7,21 @@ import type { FormattedStanding } from '@/lib/api-football/types/standing';
 
 type Info = { color: string; label: string };
 
-// 各種判定ロジックを小関数に分割
+/**
+ * UEFA大会の新フォーマット（2024シーズン以降）での順位情報判定
+ *
+ * 新フォーマットでは全大会（CL、EL、ECL）で統一されたルールを使用：
+ * - 1-8位: ラウンド16直接進出（決勝トーナメント）
+ * - 9-24位: プレーオフ（knockout round playoffs）
+ * - 25位以降: 敗退
+ *
+ * @param position - チームの順位
+ * @returns 色とラベルの情報
+ */
 const uefaNew = (position?: number): Info => {
-  if (position && position <= 8)
-    return { color: 'bg-blue-600', label: LEGEND_LABELS.championsLeague };
+  if (position && position <= 8) return { color: 'bg-blue-600', label: LEGEND_LABELS.knockout };
   if (position && position <= 24) return { color: 'bg-purple-500', label: LEGEND_LABELS.playoff };
-  return { color: 'bg-gray-400', label: 'elimination' };
+  return { color: 'bg-gray-400', label: LEGEND_LABELS.elimination };
 };
 
 const uefaOld = (position?: number, slug?: string): Info => {
@@ -124,6 +133,11 @@ export function getPositionInfo(
 
 /**
  * 凡例アイテムを取得（重複なく、順序も保証）
+ *
+ * @param standings - 順位表データ
+ * @param leagueSlug - リーグのスラッグ
+ * @param season - シーズン（2024以降は新フォーマット）
+ * @returns 凡例アイテムの配列
  */
 export function getLegendItems(
   standings: FormattedStanding[],
@@ -138,47 +152,75 @@ export function getLegendItems(
     if (info.label && !map.has(info.label)) map.set(info.label, info);
   });
 
-  // UEFA旧フォーマットでは必要な凡例を大会ごとに追加
-  if (
+  // UEFA大会の場合は必要な凡例を追加
+  const isUefa =
     leagueSlug &&
     UEFA_LEAGUE_SLUGS.includes(
       leagueSlug as 'champions-league' | 'europa-league' | 'conference-league'
-    ) &&
-    season < 2024
-  ) {
-    // 決勝トーナメント進出は全大会共通
-    if (!map.has(LEGEND_LABELS.knockout)) {
-      map.set(LEGEND_LABELS.knockout, {
-        color: 'bg-blue-600',
-        label: LEGEND_LABELS.knockout,
-      });
-    }
+    );
 
-    // 各大会ごとの降格先を追加
-    if (leagueSlug === 'champions-league') {
-      // CLの場合はELへの降格のみ
-      if (!map.has(LEGEND_LABELS.elRelegation)) {
-        map.set(LEGEND_LABELS.elRelegation, {
-          color: 'bg-orange-500',
-          label: LEGEND_LABELS.elRelegation,
+  if (isUefa) {
+    if (season >= 2024) {
+      // 新フォーマット（2024シーズン以降）
+      // 決勝トーナメント進出は全大会共通
+      if (!map.has(LEGEND_LABELS.knockout)) {
+        map.set(LEGEND_LABELS.knockout, {
+          color: 'bg-blue-600',
+          label: LEGEND_LABELS.knockout,
         });
       }
-    } else if (leagueSlug === 'europa-league') {
-      // ELの場合はECLへの降格のみ
-      if (!map.has(LEGEND_LABELS.eclRelegation)) {
-        map.set(LEGEND_LABELS.eclRelegation, {
-          color: 'bg-green-500',
-          label: LEGEND_LABELS.eclRelegation,
+
+      // プレーオフは全大会共通
+      if (!map.has(LEGEND_LABELS.playoff)) {
+        map.set(LEGEND_LABELS.playoff, {
+          color: 'bg-purple-500',
+          label: LEGEND_LABELS.playoff,
         });
       }
-    }
 
-    // 敗退は全大会共通
-    if (!map.has(LEGEND_LABELS.elimination)) {
-      map.set(LEGEND_LABELS.elimination, {
-        color: 'bg-gray-400',
-        label: LEGEND_LABELS.elimination,
-      });
+      // 敗退は全大会共通
+      if (!map.has(LEGEND_LABELS.elimination)) {
+        map.set(LEGEND_LABELS.elimination, {
+          color: 'bg-gray-400',
+          label: LEGEND_LABELS.elimination,
+        });
+      }
+    } else {
+      // 旧フォーマット（2023シーズン以前）
+      // 決勝トーナメント進出は全大会共通
+      if (!map.has(LEGEND_LABELS.knockout)) {
+        map.set(LEGEND_LABELS.knockout, {
+          color: 'bg-blue-600',
+          label: LEGEND_LABELS.knockout,
+        });
+      }
+
+      // 各大会ごとの降格先を追加
+      if (leagueSlug === 'champions-league') {
+        // CLの場合はELへの降格のみ
+        if (!map.has(LEGEND_LABELS.elRelegation)) {
+          map.set(LEGEND_LABELS.elRelegation, {
+            color: 'bg-orange-500',
+            label: LEGEND_LABELS.elRelegation,
+          });
+        }
+      } else if (leagueSlug === 'europa-league') {
+        // ELの場合はECLへの降格のみ
+        if (!map.has(LEGEND_LABELS.eclRelegation)) {
+          map.set(LEGEND_LABELS.eclRelegation, {
+            color: 'bg-green-500',
+            label: LEGEND_LABELS.eclRelegation,
+          });
+        }
+      }
+
+      // 敗退は全大会共通
+      if (!map.has(LEGEND_LABELS.elimination)) {
+        map.set(LEGEND_LABELS.elimination, {
+          color: 'bg-gray-400',
+          label: LEGEND_LABELS.elimination,
+        });
+      }
     }
   }
 
