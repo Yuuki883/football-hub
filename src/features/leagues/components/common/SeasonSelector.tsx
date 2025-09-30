@@ -2,40 +2,65 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { generateSeasonOptions, getCurrentSeason } from '@/utils/season-utils';
 
+/**
+ * シーズンセレクターのプロパティ
+ */
 interface SeasonSelectorProps {
+  /** 現在のシーズン（オプション）。指定されない場合は動的に取得される */
   currentSeason?: number;
 }
 
-const SeasonSelector: React.FC<SeasonSelectorProps> = ({ currentSeason = 2024 }) => {
+/**
+ * シーズンセレクターコンポーネント
+ *
+ * ユーザーがシーズンを選択できるUI
+ * 現在のシーズンとそれ以前の3シーズンを選択肢として表示
+ *
+ * 機能:
+ * - 動的なシーズンリスト生成
+ * - URLパラメータとの連携
+ * - シーズン変更時の自動ページ遷移
+ *
+ * @param {SeasonSelectorProps} props - コンポーネントのプロパティ
+ * @returns {JSX.Element} シーズンセレクターUI
+ */
+const SeasonSelector: React.FC<SeasonSelectorProps> = ({ currentSeason = getCurrentSeason() }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const season = searchParams.get('season');
 
   // 内部の選択状態を管理
-  const [selectedSeason, setSelectedSeason] = useState(season || 2024);
+  // URLパラメータが存在する場合はそれを使用、なければ現在のシーズンを使用
+  const [selectedSeason, setSelectedSeason] = useState(season || getCurrentSeason());
 
-  // currentSeasonが変更されたときに内部の状態も更新
-  // useEffect(() => {
-  //   setSelectedSeason(currentSeason);
-  // }, [currentSeason]);
+  /**
+   * 利用可能なシーズンリスト
+   *
+   * 動的に生成されるため、シーズンが変わっても自動的に最新のリストが表示される
+   */
+  const seasons = generateSeasonOptions(false, 3);
 
-  // 利用可能なシーズンリスト（最新から過去3シーズンまで）
-  const seasons = [
-    { id: 2024, name: '2024-2025' },
-    { id: 2023, name: '2023-2024' },
-    { id: 2022, name: '2022-2023' },
-  ];
-
-  // シーズン変更ハンドラー
+  /**
+   * シーズン変更ハンドラー
+   *
+   * ユーザーがシーズンを選択したときに呼ばれます。
+   * 選択されたシーズンをURLパラメータに反映し、ページを再読み込みします。
+   *
+   * @param {number} season - 選択されたシーズン
+   */
   const handleSeasonChange = useCallback(
     (season: number) => {
+      // 内部状態を更新
       setSelectedSeason(season);
 
+      // URLパラメータを更新
       const params = new URLSearchParams(searchParams.toString());
       params.set('season', season.toString());
 
+      // 新しいURLにナビゲート
       router.push(`${pathname}?${params.toString()}`);
     },
     [pathname, router, searchParams]

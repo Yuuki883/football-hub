@@ -49,3 +49,6 @@ prisma/db_migration_guide.md
 #scripts
 scripts/
 
+# documentation (temporary/work files)
+docs/detail/
+

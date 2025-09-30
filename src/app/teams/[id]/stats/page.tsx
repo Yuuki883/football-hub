@@ -8,6 +8,7 @@ import { getTeamDomesticLeague } from '@/features/teams/api/team-leagues';
 import TeamStatsView from '@/features/teams/components/TeamStatsView';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 // ISR - 1時間ごとに再検証
 export const revalidate = 3600;
@@ -25,7 +26,9 @@ export async function generateMetadata({
   const { id } = await params;
   const { season: seasonParam } = await searchParams;
   const teamId = parseInt(id);
-  const season = parseInt(seasonParam || '2024');
+
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(seasonParam || getCurrentSeason().toString());
 
   try {
     // チーム基本情報取得
@@ -68,7 +71,9 @@ export default async function TeamStatsPage({ params, searchParams }: TeamStatsP
   const { id } = await params;
   const { season: seasonParam, league } = await searchParams;
   const teamId = parseInt(id);
-  const season = parseInt(seasonParam || '2024');
+
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(seasonParam || getCurrentSeason().toString());
 
   try {
     // チーム基本情報の取得

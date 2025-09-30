@@ -9,6 +9,7 @@ import { getStandardLeagueSlugById } from '@/features/leagues/api/league-info';
 import StandingsTable from '@/features/leagues/components/tables/StandingsTable';
 import TeamHeader from '@/features/teams/components/TeamHeader';
 import PageLayout from '@/components/layout/PageLayout';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 interface TeamStandingsPageProps {
   params: Promise<{
@@ -51,7 +52,8 @@ export default async function TeamStandingsPage({ params, searchParams }: TeamSt
   const { id } = await params;
   const { season: seasonParam } = await searchParams;
 
-  const season = parseInt(seasonParam || '2024');
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(seasonParam || getCurrentSeason().toString());
 
   try {
     // チーム情報を取得

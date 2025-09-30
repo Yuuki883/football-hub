@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import TeamGrid from '../../../../features/leagues/components/matches/TeamGrid';
 import { getLeagueTeams, FormattedTeam } from '@/features/leagues/api/league-teams';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 interface TeamsPageProps {
   params: Promise<{
@@ -37,7 +38,9 @@ export async function generateMetadata({
 export default async function TeamsPage({ params, searchParams }: TeamsPageProps) {
   const { slug } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
+
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(seasonParam || getCurrentSeason().toString());
 
   const teamsData = await getLeagueTeams(slug, { season });
 

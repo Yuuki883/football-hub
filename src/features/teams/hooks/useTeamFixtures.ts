@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Match } from '@/lib/api-football/types/type-exports';
 import { getTeamFixtures } from '../services/team-fixtures-service';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 interface UseTeamFixturesOptions {
   teamId: number | string;
@@ -18,9 +19,15 @@ interface UseTeamFixturesResult {
   error: Error | null;
 }
 
+/**
+ * 指定されたチームの試合データを取得し、過去と未来の試合に分類します。
+ *
+ * @param {UseTeamFixturesOptions} options - フック設定オプション
+ * @returns {UseTeamFixturesResult} 試合データと状態
+ */
 export function useTeamFixtures({
   teamId,
-  season = 2024,
+  season = getCurrentSeason(),
   past = true,
   future = true,
   limit = 5,

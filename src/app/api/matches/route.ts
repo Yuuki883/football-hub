@@ -6,6 +6,7 @@ import {
 } from '@/features/leagues/api/league-fixtures';
 import { getTeamFixtures } from '@/features/teams/api/team-fixtures';
 
+// DEFAULT_SEASONは動的に現在のシーズンを取得する（src/config/api.ts）
 import { DEFAULT_SEASON } from '@/config/api';
 
 // APIルートが動的であることを明示

@@ -5,6 +5,8 @@
  * プロジェクト全体で一貫した設定値を使用するために参照
  */
 
+import { getCurrentSeason } from '@/utils/season-utils';
+
 // API-Football API設定
 export const API_FOOTBALL = {
   KEY: process.env.API_FOOTBALL_KEY || process.env.NEXT_PUBLIC_API_FOOTBALL_KEY,
@@ -46,8 +48,19 @@ export const LEAGUE_SLUG_MAPPING: Record<string, number> = {
   'uefa-europa-conference-league': 848,
 };
 
-// シーズン設定
-export const DEFAULT_SEASON = '2024';
+/**
+ * デフォルトシーズン設定
+ *
+ * 現在のシーズンを動的に取得して使用します。
+ * シーズンは8月を基準に判定されます：
+ * - 8月以降: 新シーズン（例: 2025年9月 → 2025-2026シーズン）
+ * - 7月以前: 前シーズン（例: 2025年5月 → 2024-2025シーズン）
+ *
+ * この値は文字列型として提供され、API-Footballのseason パラメータで使用されます。
+ *
+ * @constant {string}
+ */
+export const DEFAULT_SEASON = getCurrentSeason().toString();
 
 // キャッシュTTL（秒）
 export const CACHE_TTL = {

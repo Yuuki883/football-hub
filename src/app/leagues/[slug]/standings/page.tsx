@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import StandingsTable from '../../../../features/leagues/components/tables/StandingsTable';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 interface StandingsPageProps {
   params: Promise<{
@@ -37,7 +38,9 @@ export async function generateMetadata({
 export default async function StandingsPage({ params, searchParams }: StandingsPageProps) {
   const { slug } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
+
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(seasonParam || getCurrentSeason().toString());
 
   const standings = await getLeagueStandings(slug, season);
 

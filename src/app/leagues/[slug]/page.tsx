@@ -10,6 +10,7 @@ import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueTopScorers, getLeagueTopAssists } from '@/features/leagues/api/league-stats';
 import { getLeagueStandings } from '@/features/leagues/api/league-standings';
 import { Match } from '@/lib/api-football/types/type-exports';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 interface LeaguePageProps {
   params: Promise<{
@@ -45,7 +46,9 @@ export async function generateMetadata({
 export default async function LeaguePage({ params, searchParams }: LeaguePageProps) {
   const { slug } = await params;
   const resolvedSearchParams = await searchParams;
-  const season = parseInt(resolvedSearchParams.season || '2024');
+
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(resolvedSearchParams.season || getCurrentSeason().toString());
   const forceRefresh = resolvedSearchParams.forceRefresh === 'true';
   const currentYear = new Date().getFullYear();
 
@@ -54,9 +57,9 @@ export default async function LeaguePage({ params, searchParams }: LeaguePagePro
     slug
   );
 
-  // 過去のシーズンかどうか（2023年以前を過去シーズンとする）
-  // 注: 2025年は今のシステム上の現在年で、2024は現行シーズン
-  const isPastSeason = season < 2024;
+  // 過去のシーズンかどうかを動的に判定
+  // 現在のシーズンより前のシーズンは過去シーズンとして扱う
+  const isPastSeason = season < getCurrentSeason();
 
   // 並行データ取得
   const [standings, topScorers, topAssists] = await Promise.all([

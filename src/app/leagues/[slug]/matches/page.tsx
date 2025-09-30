@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import MatchesList from '../../../../features/leagues/components/matches/MatchesList';
 import { getLeagueFixtures } from '@/features/leagues/api/league-fixtures';
 import { getLeagueBySlug } from '@/features/leagues/api/league-info';
+import { getCurrentSeason } from '@/utils/season-utils';
 
 // 動的メタデータ生成
 export async function generateMetadata({
@@ -34,7 +35,9 @@ export default async function MatchesPage({
 }) {
   const { slug } = await params;
   const { season: seasonParam } = await searchParams;
-  const season = parseInt(seasonParam || '2024');
+
+  // シーズンの取得：URLパラメータが指定されていない場合は現在のシーズンを使用
+  const season = parseInt(seasonParam || getCurrentSeason().toString());
 
   const matches = await getLeagueFixtures(slug, { season });
 
