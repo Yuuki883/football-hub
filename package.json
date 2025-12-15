@@ -45,7 +45,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.3.2",
     "eslint-config-prettier": "^10.1.5",
-    "next": "^15.3.2",
+    "next": "15.3.8",
     "next-auth": "^4.24.11",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
